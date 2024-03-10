@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/presentation/providers/_providers.dart';
-import 'package:ghanta/presentation/providers/auth/login_form_provider.dart';
+import 'package:ghanta/presentation/providers/auth/register_form_provider.dart';
 import 'package:go_router/go_router.dart';
 
 class RegisterScreen extends ConsumerWidget {
@@ -13,7 +13,9 @@ class RegisterScreen extends ConsumerWidget {
     final sizes = MediaQuery.of(context).size;
 
     ref.listen(authProvider, (prev, next) {
-      if (next.errorMessage!.isEmpty) return;
+      if (next.errorMessage.isEmpty) return;
+
+
 
       Future.delayed(const Duration(seconds: 2));
       if (next.authStatus == AuthStatus.authenticated) {
@@ -78,7 +80,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
-    final loginForm = ref.watch(loginFormProvider);
+    final registerForm = ref.watch(registerFormProvider);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -87,50 +89,83 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
         const Text(
           'Formulario de registro',
           style: TextStyle(
-            fontSize: 30,
+            fontSize: 28,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 20),
+
         TextField(
           keyboardType: TextInputType.emailAddress,
           autofocus: true,
-          onChanged: (value) =>
-              ref.read(loginFormProvider.notifier).onEmailChange(value),
+          onChanged: (value) => ref.read(registerFormProvider.notifier).onNameChanged(value),
+          decoration: const InputDecoration(
+            hintText: 'Nombre',
+            prefixIcon:  Icon(Icons.person),
+            errorText: "",
+          ),
+        ),
+
+        TextField(
+          keyboardType: TextInputType.emailAddress,
+          autofocus: true,
+          onChanged: (value) => ref.read(registerFormProvider.notifier).onEmailChanged(value),
           decoration: InputDecoration(
             hintText: 'Correo electrónico',
             prefixIcon: const Icon(Icons.email_outlined),
             errorText:
-                loginForm.isEmailValid.isNotValid && loginForm.isFormPosted
-                    ? 'Email no válido'
-                    : null,
+                registerForm.isFormPosted 
+                  ? registerForm.email.errorMessage
+                  : null,
           ),
         ),
         const SizedBox(height: 20),
+
         TextField(
           obscureText: _obscureText,
-          onChanged: (value) =>
-              ref.read(loginFormProvider.notifier).onPasswordChange(value),
+          onChanged: (value) => ref.read(registerFormProvider.notifier).onPasswordChanged(value),
           decoration: InputDecoration(
-              hintText: 'Contraseña',
-              prefixIcon: const Icon(Icons.lock_outline),
-              errorText:
-                  loginForm.isPasswordValid.isNotValid && loginForm.isFormPosted
-                      ? 'Contraseña no válida'
-                      : null,
-              suffixIcon: IconButton(
-                  icon: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off),
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  })),
+            hintText: 'Contraseña',
+            prefixIcon: const Icon(Icons.lock_outline),
+            errorText:
+              registerForm.isFormPosted 
+                  ? registerForm.password.errorMessage
+                  : null,
+            suffixIcon: IconButton(
+              icon: Icon(
+                _obscureText ? Icons.visibility : Icons.visibility_off),
+              onPressed: () {
+                setState(() {
+                  _obscureText = !_obscureText;
+                });
+              })),
         ),
         const SizedBox(height: 20),
+
+        TextField(
+        obscureText: _obscureText,
+        onChanged: (value) => ref.read(registerFormProvider.notifier).onPasswordConfirmationChanged(value),
+        decoration: InputDecoration(
+          hintText: 'Repite la contraseña',
+          prefixIcon: const Icon(Icons.lock_outline),
+          errorText:
+            registerForm.isFormPosted 
+              ? registerForm.passwordConfirmation.errorMessage
+              : null,
+          suffixIcon: IconButton(
+            icon: Icon(
+              _obscureText ? Icons.visibility : Icons.visibility_off),
+            onPressed: () {
+              setState(() {
+                _obscureText = !_obscureText;
+              });
+            })),
+      ),
+      const SizedBox(height: 30),
+
         FilledButton(
             onPressed: () {
-              ref.read(loginFormProvider.notifier).onFormSubmitted();
+              ref.read(registerFormProvider.notifier).onFormSubmit();
               // Cerramos el teclado
               FocusScope.of(context).unfocus();
             },
@@ -160,7 +195,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
             const Text('¿Ya tienes una cuenta?'),
             TextButton(
               onPressed: () {
-                context.go('/login');
+                context.push('/login');
               },
               child: const Text('Inicia sesión'),
             ),

@@ -6,12 +6,9 @@ enum PasswordError { empty, length, format }
 // Extend FormzInput and provide the input type and error type.
 class Password extends FormzInput<String, PasswordError> {
 
-
   static final RegExp passwordRegExp = 
   //REgex only letters
   RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$');
-  
-
 
   // Call super.pure to represent an unmodified form input.
   const Password.pure() : super.pure('');

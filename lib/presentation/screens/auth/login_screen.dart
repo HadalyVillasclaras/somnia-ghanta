@@ -15,6 +15,7 @@ class LoginScreen extends ConsumerWidget {
     ref.listen(authProvider, (prev, next) {
       if (next.errorMessage!.isEmpty) return;
 
+
       Future.delayed(const Duration(seconds: 2));
       if (next.authStatus == AuthStatus.authenticated) {
         context.go('/auth');
@@ -76,9 +77,23 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   bool _obscureText = true;
   bool _isLoading = false;
 
+    void  showSnackbar(BuildContext context, String message){
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content:   Text(message))
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final loginForm = ref.watch(loginFormProvider);
+
+    ref.listen(authProvider, ((previous, next) { 
+    if (next.errorMessage!.isEmpty  ) return;
+
+    showSnackbar(context, next.errorMessage);
+
+    }));
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -115,7 +130,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
               hintText: 'Contraseña',
               prefixIcon: const Icon(Icons.lock_outline),
               errorText:
-                  loginForm.isPasswordValid.isNotValid && loginForm.isFormPosted
+                  loginForm.isPasswordValid.isNotValid && loginForm.isFormPosted  
                       ? 'Contraseña no válida'
                       : null,
               suffixIcon: IconButton(
@@ -160,8 +175,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             const Text('¿No tienes una cuenta?'),
             TextButton(
               onPressed: () {
-                context.go('/register');
-
+                context.push('/register');
               },
               child: const Text('Regístrate'),
             ),

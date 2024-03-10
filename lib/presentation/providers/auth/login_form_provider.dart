@@ -7,9 +7,8 @@ import 'package:ghanta/presentation/providers/_providers.dart';
 
 final loginFormProvider =
     StateNotifierProvider.autoDispose<LoginFormNotifier, LoginFormState>((ref) {
-
-      final loginCallback = ref.watch(authProvider.notifier).loginUser;
-  return LoginFormNotifier(loginCallback: loginCallback);
+    final loginCallback = ref.watch(authProvider.notifier).loginUser;
+    return LoginFormNotifier(loginCallback: loginCallback);
 });
 
 class LoginFormState {

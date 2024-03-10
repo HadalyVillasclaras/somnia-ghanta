@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/domain/entities/user.dart';
@@ -19,21 +18,43 @@ final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
 });
 
 class AuthNotifier extends StateNotifier<AuthState> {
-  AuthNotifier(
-      {required this.authRepository, required this.keyValueStorageService})
-      : super(AuthState()) {
-    checkAuthStatus();
-  }
-
   final AuthRepository authRepository;
   final KeyValueStorageService keyValueStorageService;
 
+  AuthNotifier({
+    required this.authRepository, 
+    required this.keyValueStorageService
+  }): super(AuthState()) {
+    checkAuthStatus();
+  }
+
   Future<void> loginUser(String email, String password) async {
+    await Future.delayed(const Duration(milliseconds: 1000)); //ralentizamos un poco el log
+
     try {
       final user = await authRepository.login(email, password);
       _setLoggedUser(user);
     } on WrongCredentialsError {
       logout(errorMessage: 'Credenciales incorrectas');
+      print('onwrong credentials');
+      state = state.copyWith(
+          authStatus: AuthStatus.unauthenticated,
+          user: null,
+          errorMessage: 'Credenciales incorrectas');
+    } catch (e) {
+      logout(errorMessage: 'Ha ocurrido un error');
+    }
+  }
+
+    Future<void> registerUser(String name, String email, String password, String passwordConfirmation) async {
+    await Future.delayed(const Duration(milliseconds: 1000)); //ralentizamos un poco el log
+
+    try {
+      final user = await authRepository.login(email, password);
+      _setLoggedUser(user);
+    } on WrongCredentialsError {
+      logout(errorMessage: 'Credenciales incorrectas');
+      print('onwrong credentials');
       state = state.copyWith(
           authStatus: AuthStatus.unauthenticated,
           user: null,
@@ -60,8 +81,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> logout({String? errorMessage}) async {
-    final String token =
-        await keyValueStorageService.getValue<String>('token') ?? '';
+    final String token = await keyValueStorageService.getValue<String>('token') ?? '';
 
     if (token.isNotEmpty) {
       try {
@@ -100,16 +120,21 @@ enum AuthStatus { checking, authenticated, unauthenticated }
 class AuthState {
   final AuthStatus authStatus;
   final User? user;
-  final String? errorMessage;
+  final String errorMessage;
 
   AuthState(
       {this.authStatus = AuthStatus.checking,
       this.user,
       this.errorMessage = ''});
-  AuthState copyWith(
-          {AuthStatus? authStatus, User? user, String? errorMessage}) =>
-      AuthState(
-          authStatus: authStatus ?? this.authStatus,
-          user: user ?? this.user,
-          errorMessage: errorMessage ?? this.errorMessage);
+
+  AuthState copyWith({
+    AuthStatus? authStatus, 
+    User? user, 
+    String? errorMessage
+  }) =>
+    AuthState(
+      authStatus: authStatus ?? this.authStatus,
+      user: user ?? this.user,
+      errorMessage: errorMessage ?? this.errorMessage
+    );
 }
