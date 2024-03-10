@@ -1,0 +1,24 @@
+{
+    "home_page_header_greeting": "Good morning, {username}!",
+    "home_page_header_feelings": "How are you feeling today?",
+    "home_page_body_my_recent_courses": "My recent courses",
+    "course_card_phase" : "Phase {current_phase}/{total_phases}",
+    "course_card_current_subphase" : "Current subphase",
+
+    "bottom_bar_home": "Home",
+    "bottom_bar_courses": "Courses",
+    "bottom_bar_profile": "Profile",
+    "bottom_bar_settings": "Settings",
+
+    "home_profile_my_profile" : "My Profile",
+    "home_profile_my_activity" : "My Activity",
+    "home_profile_my_achievements" : "My Achievements",
+
+    "home_profile_streak" : "Streak",
+    "home_profile_points" : "Points",
+    "home_profile_level" : "Level",
+
+    "home_store_ready_to_enroll" : "Ready to enroll a new course?",
+    "home_store_find_by_name" : "Find by name",
+    "home_store_available_courses" : "Available courses"
+}

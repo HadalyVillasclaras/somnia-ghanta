@@ -1,0 +1,25 @@
+{
+    "home_page_header_greeting": "Bon dia, {username}!",
+    "home_page_header_feelings": "Com et sents avui?",
+    "home_page_body_my_recent_courses": "Els meus cursos recents",
+    "course_card_phase" : "Fase {current_phase}/{total_phases}",
+    "course_card_current_subphase" : "Subfase actual",
+
+    "bottom_bar_home": "Inici",
+    "bottom_bar_courses": "Cursos",
+    "bottom_bar_profile": "Perfil",
+    "bottom_bar_settings": "Configuració",
+
+    "home_profile_my_profile" : "Perfil",
+    "home_profile_my_activity" : "La meva activitat",
+    "home_profile_my_achievements" : "Éxits",
+    
+    "home_profile_streak" : "Ratxa",
+    "home_profile_points" : "Punts",
+    "home_profile_level" : "Nivell",
+
+    "home_store_ready_to_enroll" : "Apunta't a un nou curs!",
+    "home_store_find_by_name" : "Cerca per nom",
+    "home_store_available_courses" : "Cursos disponibles"
+
+}
