@@ -1,4 +1,5 @@
 import 'package:ghanta/presentation/screens/_presentation.dart';
+import 'package:ghanta/presentation/screens/auth/register_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(routes: [
@@ -38,6 +39,10 @@ final appRouter = GoRouter(routes: [
   GoRoute(
     path: '/login',
     builder: (context, state) => const LoginScreen(),
+  ),
+  GoRoute(
+  path: '/register',
+  builder: (context, state) => const RegisterScreen(),
   ),
   GoRoute(
     path: '/auth',

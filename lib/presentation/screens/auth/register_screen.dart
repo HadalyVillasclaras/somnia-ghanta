@@ -4,8 +4,8 @@ import 'package:ghanta/presentation/providers/_providers.dart';
 import 'package:ghanta/presentation/providers/auth/login_form_provider.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginScreen extends ConsumerWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends ConsumerWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
@@ -50,7 +50,7 @@ class LoginScreen extends ConsumerWidget {
                     ),
                   ),
                   child: SingleChildScrollView(
-                    child: LoginForm(sizes: sizes),
+                    child: RegisterForm(sizes: sizes),
                   ),
                 ),
               ),
@@ -60,8 +60,8 @@ class LoginScreen extends ConsumerWidget {
   }
 }
 
-class LoginForm extends ConsumerStatefulWidget {
-  const LoginForm({
+class RegisterForm extends ConsumerStatefulWidget {
+  const RegisterForm({
     super.key,
     required this.sizes,
   });
@@ -69,10 +69,10 @@ class LoginForm extends ConsumerStatefulWidget {
   final Size sizes;
 
   @override
-  ConsumerState<LoginForm> createState() => _LoginFormState();
+  ConsumerState<RegisterForm> createState() => _RegisterFormState();
 }
 
-class _LoginFormState extends ConsumerState<LoginForm> {
+class _RegisterFormState extends ConsumerState<RegisterForm> {
   bool _obscureText = true;
   bool _isLoading = false;
 
@@ -85,7 +85,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
       children: [
         SizedBox(height: widget.sizes.height * 0.05),
         const Text(
-          'Iniciar Sesión',
+          'Formulario de registro',
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
@@ -157,13 +157,12 @@ class _LoginFormState extends ConsumerState<LoginForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('¿No tienes una cuenta?'),
+            const Text('¿Ya tienes una cuenta?'),
             TextButton(
               onPressed: () {
-                context.go('/register');
-
+                context.go('/login');
               },
-              child: const Text('Regístrate'),
+              child: const Text('Inicia sesión'),
             ),
           ],
         ),
