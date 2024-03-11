@@ -15,13 +15,15 @@ class LoginApiResponse {
         required this.authorization,
     });
 
-    factory LoginApiResponse.fromJson(Map<String, dynamic> json) => LoginApiResponse(
+    factory LoginApiResponse.fromJson(Map<String, dynamic> json) {  
+    return LoginApiResponse(
         user: UserApiModel.fromJson(json["data"]),
         status: json["status"],
         code: json["code"],
         message: json["message"],
         authorization: Authorization.fromJson(json["authorization"]),
     );
+}
 
 }
 

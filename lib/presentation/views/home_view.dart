@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/config/constants/enviroment.dart';
+import 'package:ghanta/presentation/providers/auth/auth_provider.dart';
 import 'package:ghanta/presentation/providers/courses_provider.dart';
 import 'package:ghanta/presentation/widgets/home/home_body.dart';
 import 'package:ghanta/presentation/widgets/home/home_header.dart';
-
+import 'package:go_router/go_router.dart';
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
@@ -78,11 +79,26 @@ class _HomeViewState extends ConsumerState<HomeView> {
             ),
           ),
         ),
+
         SliverList(
           delegate: SliverChildListDelegate(
             [const HomeBody()],
           ),
+
         ),
+        SliverToBoxAdapter(
+      // Use SliverToBoxAdapter to add a single widget, in this case, a Text widget
+      child: Container(
+        alignment: Alignment.center, // Center the text horizontally
+        child: TextButton(
+              onPressed: () {
+                ref.read(authProvider.notifier).logout(errorMessage: '¡Hasta pronto!');
+                Future.microtask(() => context.go('/login'));
+              },
+              child: const Text('Log-out'),
+            ),
+      ),
+    ),
       ],
     );
   }

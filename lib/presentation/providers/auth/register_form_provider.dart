@@ -21,6 +21,7 @@ class RegisterFormState {
   final Email email;
   final Password password;
   final PasswordConfirmation passwordConfirmation;
+  final Set<String> editedFieldsAfterSubmit;
 
   RegisterFormState({
     this.isPosting = false,
@@ -30,6 +31,7 @@ class RegisterFormState {
     this.email = const Email.pure(),
     this.password = const Password.pure(),
     this.passwordConfirmation = const PasswordConfirmation.pure(),
+    this.editedFieldsAfterSubmit = const <String>{},
   });
 
   @override
@@ -54,6 +56,7 @@ class RegisterFormState {
     Email? email,
     Password? password,
     PasswordConfirmation? passwordConfirmation,
+    Set<String>? editedFieldsAfterSubmit,
     bool? arePasswordsEqual}) =>
 RegisterFormState(
     isPosting: isPosting ?? this.isPosting,
@@ -63,6 +66,7 @@ RegisterFormState(
     email: email ?? this.email,
     password: password ?? this.password,
     passwordConfirmation: passwordConfirmation ?? this.passwordConfirmation,
+    editedFieldsAfterSubmit: editedFieldsAfterSubmit ?? this.editedFieldsAfterSubmit,
     );
 }
 
@@ -75,15 +79,22 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
 
   onEmailChanged(String value) {
     final newEmail = Email.dirty(value);
+    final updatedFields = Set<String>.from(state.editedFieldsAfterSubmit)..add('email');
     state = state.copyWith(
-        email: newEmail, isValid: Formz.validate([newEmail, state.password]));
+      email: newEmail,
+      editedFieldsAfterSubmit: updatedFields,
+      isValid: Formz.validate([newEmail, state.password]),
+    );
   }
 
   onPasswordChanged(String value) {
     final newPassword = Password.dirty(value);
+    final updatedFields = Set<String>.from(state.editedFieldsAfterSubmit)..add('password');
     state = state.copyWith(
-        password: newPassword,
-        isValid: Formz.validate([newPassword, state.email]));
+      password: newPassword,
+      editedFieldsAfterSubmit: updatedFields,
+      isValid: Formz.validate([state.email, newPassword]),
+    );
   }
 
   onPasswordConfirmationChanged(String value) {
@@ -91,23 +102,42 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
       originalPassword: state.password.value,
       passwordConfirmation: value,
     );
+    final updatedFields = Set<String>.from(state.editedFieldsAfterSubmit)..add('passwordConfirmation');
+
     state = state.copyWith(
       passwordConfirmation: newPasswordConfirmation,
+      editedFieldsAfterSubmit: updatedFields,
       isValid: Formz.validate([state.password, newPasswordConfirmation,]),
     );
   }
 
   onNameChanged(String value) {
+    final updatedFields = Set<String>.from(state.editedFieldsAfterSubmit)..add('name');
+
     state = state.copyWith(
       name: value,
+      editedFieldsAfterSubmit: updatedFields,
     );
   }
 
   onFormSubmit() async {
-    _touchEveryField();
+     _touchEveryField();
+    if (!state.isValid) return;
+    
+    state = state.copyWith(
+      isPosting: true,
 
-    print(state);
-    // if (!state.isValid) return;
+    );
+
+    registerUserCallback(
+      state.name, 
+      state.email.value, 
+      state.password.value,
+      state.passwordConfirmation.value
+    );
+
+    state = state.copyWith(isPosting: false);
+    
   }
 
   _touchEveryField() {
@@ -117,14 +147,17 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
     originalPassword: state.password.value, 
     passwordConfirmation: state.passwordConfirmation.value
   );
-    //esto es para que cuando haya un cambio en el estado, se notifica a todos los listeners que estén pendiente de este estado
+
     state = state.copyWith(
-        isFormPosted: true,
-        name: state.name,
-        email: email,
-        password: password,
-        passwordConfirmation: passwordConfirmation,
-        isValid: Formz.validate([email, password, passwordConfirmation]),
-        );
+      isFormPosted: true,
+      isPosting: false,
+      name: state.name,
+      email: email,
+      password: password,
+      passwordConfirmation: passwordConfirmation,
+      isValid: Formz.validate([email, password, passwordConfirmation]),
+      editedFieldsAfterSubmit: Set<String>(),
+    );
   }
+
 }

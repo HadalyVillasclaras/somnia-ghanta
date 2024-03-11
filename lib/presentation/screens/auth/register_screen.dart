@@ -15,8 +15,6 @@ class RegisterScreen extends ConsumerWidget {
     ref.listen(authProvider, (prev, next) {
       if (next.errorMessage.isEmpty) return;
 
-
-
       Future.delayed(const Duration(seconds: 2));
       if (next.authStatus == AuthStatus.authenticated) {
         context.go('/auth');
@@ -75,95 +73,100 @@ class RegisterForm extends ConsumerStatefulWidget {
 }
 
 class _RegisterFormState extends ConsumerState<RegisterForm> {
-  bool _obscureText = true;
+  bool _obscureText1 = true;
+  bool _obscureText2 = true;
+
   bool _isLoading = false;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final registerForm = ref.watch(registerFormProvider);
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(height: widget.sizes.height * 0.05),
-        const Text(
-          'Formulario de registro',
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: widget.sizes.height * 0.05),
+          const Text(
+            'Formulario de registro',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        const SizedBox(height: 20),
-
-        TextField(
-          keyboardType: TextInputType.emailAddress,
-          autofocus: true,
-          onChanged: (value) => ref.read(registerFormProvider.notifier).onNameChanged(value),
-          decoration: const InputDecoration(
-            hintText: 'Nombre',
-            prefixIcon:  Icon(Icons.person),
-            errorText: "",
+          const SizedBox(height: 20),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            autofocus: true,
+            onChanged: (value) =>
+                ref.read(registerFormProvider.notifier).onNameChanged(value),
+            decoration:  InputDecoration(
+              hintText: 'Nombre',
+              prefixIcon: const Icon(Icons.person),
+              errorText: registerForm.isFormPosted && registerForm.name.isEmpty 
+                ? 'El campo es requerido' 
+                : null,
+            ),
           ),
-        ),
-
-        TextField(
-          keyboardType: TextInputType.emailAddress,
-          autofocus: true,
-          onChanged: (value) => ref.read(registerFormProvider.notifier).onEmailChanged(value),
-          decoration: InputDecoration(
-            hintText: 'Correo electrónico',
-            prefixIcon: const Icon(Icons.email_outlined),
-            errorText:
-                registerForm.isFormPosted 
+          const SizedBox(height: 20),
+          TextFormField(
+            keyboardType: TextInputType.emailAddress,
+            autofocus: true,
+            onChanged: (value) =>
+                ref.read(registerFormProvider.notifier).onEmailChanged(value),
+            decoration: InputDecoration(
+              hintText: 'Correo electrónico',
+              prefixIcon: const Icon(Icons.email_outlined),
+              errorText: registerForm.isFormPosted && !registerForm.editedFieldsAfterSubmit.contains('email')
                   ? registerForm.email.errorMessage
                   : null,
+            ),
           ),
-        ),
-        const SizedBox(height: 20),
-
-        TextField(
-          obscureText: _obscureText,
-          onChanged: (value) => ref.read(registerFormProvider.notifier).onPasswordChanged(value),
-          decoration: InputDecoration(
-            hintText: 'Contraseña',
-            prefixIcon: const Icon(Icons.lock_outline),
-            errorText:
-              registerForm.isFormPosted 
-                  ? registerForm.password.errorMessage
-                  : null,
-            suffixIcon: IconButton(
-              icon: Icon(
-                _obscureText ? Icons.visibility : Icons.visibility_off),
-              onPressed: () {
-                setState(() {
-                  _obscureText = !_obscureText;
-                });
-              })),
-        ),
-        const SizedBox(height: 20),
-
-        TextField(
-        obscureText: _obscureText,
-        onChanged: (value) => ref.read(registerFormProvider.notifier).onPasswordConfirmationChanged(value),
-        decoration: InputDecoration(
-          hintText: 'Repite la contraseña',
-          prefixIcon: const Icon(Icons.lock_outline),
-          errorText:
-            registerForm.isFormPosted 
-              ? registerForm.passwordConfirmation.errorMessage
-              : null,
-          suffixIcon: IconButton(
-            icon: Icon(
-              _obscureText ? Icons.visibility : Icons.visibility_off),
-            onPressed: () {
-              setState(() {
-                _obscureText = !_obscureText;
-              });
-            })),
-      ),
-      const SizedBox(height: 30),
-
-        FilledButton(
+          const SizedBox(height: 20),
+          TextFormField(
+            obscureText: _obscureText1,
+            onChanged: (value) =>
+                ref.read(registerFormProvider.notifier).onPasswordChanged(value),
+            decoration: InputDecoration(
+                hintText: 'Contraseña',
+                prefixIcon: const Icon(Icons.lock_outline),
+                errorText: registerForm.isFormPosted && !registerForm.editedFieldsAfterSubmit.contains('password')
+                    ? registerForm.password.errorMessage
+                    : null,
+                suffixIcon: IconButton(
+                    icon: Icon(
+                        _obscureText1 ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText1 = !_obscureText1;
+                      });
+                    })),
+          ),
+          const SizedBox(height: 20),
+          TextFormField(
+            obscureText: _obscureText2,
+            onChanged: (value) => ref
+              .read(registerFormProvider.notifier)
+              .onPasswordConfirmationChanged(value),
+            decoration: InputDecoration(
+              hintText: 'Repite la contraseña',
+              prefixIcon: const Icon(Icons.lock_outline),
+              errorText: registerForm.isFormPosted && !registerForm.editedFieldsAfterSubmit.contains('passwordConfirmation')
+                ? registerForm.passwordConfirmation.errorMessage
+                : null,
+              suffixIcon: IconButton(
+                    icon: Icon(
+                        _obscureText2 ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText2 = !_obscureText2;
+                      });
+                    })),
+          ),
+          const SizedBox(height: 30),
+          FilledButton(
             onPressed: () {
               ref.read(registerFormProvider.notifier).onFormSubmit();
               // Cerramos el teclado
@@ -176,32 +179,33 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
               ),
             ),
             child: _isLoading
-                ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                    ),
-                  )
-                : Text('Iniciar Sesión',
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ))),
-        const SizedBox(height: 40),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('¿Ya tienes una cuenta?'),
-            TextButton(
-              onPressed: () {
-                context.push('/login');
-              },
-              child: const Text('Inicia sesión'),
-            ),
-          ],
-        ),
-      ],
+              ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              )
+              : Text('Iniciar Sesión',
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ))),
+          const SizedBox(height: 40),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('¿Ya tienes una cuenta?'),
+              TextButton(
+                onPressed: () {
+                  context.push('/login');
+                },
+                child: const Text('Inicia sesión'),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

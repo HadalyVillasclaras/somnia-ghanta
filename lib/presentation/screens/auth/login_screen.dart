@@ -13,10 +13,10 @@ class LoginScreen extends ConsumerWidget {
     final sizes = MediaQuery.of(context).size;
 
     ref.listen(authProvider, (prev, next) {
-      if (next.errorMessage!.isEmpty) return;
+      if (next.errorMessage.isEmpty) return;
 
 
-      Future.delayed(const Duration(seconds: 2));
+    Future.delayed(const Duration(seconds: 2));
       if (next.authStatus == AuthStatus.authenticated) {
         context.go('/auth');
       }
@@ -89,7 +89,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     final loginForm = ref.watch(loginFormProvider);
 
     ref.listen(authProvider, ((previous, next) { 
-    if (next.errorMessage!.isEmpty  ) return;
+    if (next.errorMessage.isEmpty  ) return;
 
     showSnackbar(context, next.errorMessage);
 
@@ -116,9 +116,9 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             hintText: 'Correo electrónico',
             prefixIcon: const Icon(Icons.email_outlined),
             errorText:
-                loginForm.isEmailValid.isNotValid && loginForm.isFormPosted
-                    ? 'Email no válido'
-                    : null,
+              loginForm.isEmailValid.isNotValid && loginForm.isFormPosted
+                ? 'Email no válido'
+                : null,
           ),
         ),
         const SizedBox(height: 20),

@@ -1,6 +1,7 @@
 import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/domain/datasources/auth/auth_datasource.dart';
 import 'package:ghanta/domain/entities/user.dart';
+import 'package:ghanta/infraestructure/models/responses/register_api_response.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final AuthDatasource _authDatasource;
@@ -33,7 +34,7 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<User> register(String email, String password) {
-    return _authDatasource.register(email, password);
+  Future<RegisterApiResponse> register(String name, String email, String password, String passwordConfirmation) {
+    return _authDatasource.register(name, email, password, passwordConfirmation);
   }
 }

@@ -16,16 +16,15 @@ class AuthScreen extends ConsumerWidget {
       ref.read(coursesProvider.notifier).getUserCourses(Environment.apiToken);
 
       Future.delayed(const Duration(seconds: 1), () {
-        final course = ref
-            .watch(coursesProvider)
-            .firstWhere((course) => course.phases.isNotEmpty);
+        final course = ref.watch(coursesProvider);
 
-        final courseId = course.id;
-        //  context.go('/home/3');
+        if (course.isEmpty) {
+         context.go('/home/0');
+        } else {
+        final notEmptyCourse = course.firstWhere((course) => course.phases.isNotEmpty);
+        context.go('/course/${notEmptyCourse.id}');
+        }
 
-
-
-        context.go('/course/${course.id}');
       });
     } else if (authStatus == AuthStatus.unauthenticated) {
       Future.microtask(() => context.go('/login'));

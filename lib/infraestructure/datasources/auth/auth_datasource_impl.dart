@@ -5,6 +5,7 @@ import 'package:ghanta/domain/entities/user.dart';
 import 'package:ghanta/infraestructure/errors/_errors.dart';
 import 'package:ghanta/infraestructure/mappers/user_mapper.dart';
 import 'package:ghanta/infraestructure/models/responses/login_api_response.dart';
+import 'package:ghanta/infraestructure/models/responses/register_api_response.dart';
 
 class AuthDatasourceImpl extends AuthDatasource {
   @override
@@ -56,7 +57,6 @@ class AuthDatasourceImpl extends AuthDatasource {
       if (user.role != Role.roleUser) {
         throw WrongCredentialsError();
       }
-
       return user;
     } on DioException catch (e) {
       if (e.response?.statusCode == 401 ||
@@ -64,7 +64,6 @@ class AuthDatasourceImpl extends AuthDatasource {
           e.response?.statusCode == 400) {
         throw WrongCredentialsError();
       }
-
       rethrow;
     } catch (e) {
       rethrow;
@@ -79,17 +78,15 @@ class AuthDatasourceImpl extends AuthDatasource {
             'Accept': 'application/json',
             'Authorization': 'Bearer $token',
           }));
-
     } on DioException catch (e) {
       if (e.response?.statusCode == 401 ||
           e.response?.statusCode == 403 ||
           e.response?.statusCode == 400) {
-        
         throw WrongCredentialsError();
       }
 
       rethrow;
-    }  catch (e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -101,8 +98,41 @@ class AuthDatasourceImpl extends AuthDatasource {
   }
 
   @override
-  Future<User> register(String email, String password) {
-    // TODO: implement register
-    throw UnimplementedError();
+  Future<RegisterApiResponse> register(String name, String email,
+      String password, String passwordConfirmation) async {
+    try {
+      final formData = FormData.fromMap({
+        'name': name,
+        'email': email,
+        'password': password,
+        'password_confirmation': passwordConfirmation,
+        'role': 'ROLE_USER'
+      });
+
+      final response = await ApiConfig.dio.post('/register',
+          data: formData, options: Options(contentType: 'multipart/form-data'));
+
+      final registerResponse = RegisterApiResponse.fromJson(response.data);
+
+      return registerResponse;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401 ||
+          e.response?.statusCode == 403 ||
+          e.response?.statusCode == 400) {
+        final errors = e.response?.data['errors'];
+        final emailErrors = errors?['email'];
+
+        if (emailErrors is List &&
+            emailErrors.contains("The email has already been taken.")) {
+          throw CustomError('El email que has introducido ya existe.', 400);
+        }
+
+        throw WrongCredentialsError();
+      }
+
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
   }
 }
