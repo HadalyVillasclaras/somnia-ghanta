@@ -1,52 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class NavigationTop extends StatelessWidget implements PreferredSizeWidget {
-  const NavigationTop({super.key, this.backgroundTransparent = false, this.showLogo = true});
-
-  final bool backgroundTransparent;
-  final bool showLogo;
+  const NavigationTop({super.key});
 
   @override
   Widget build(BuildContext context) {
     final sizes = MediaQuery.of(context).size;
     final theme = Theme.of(context).colorScheme;
     return AppBar(
-      //Trailing icon color
-      iconTheme: IconThemeData(
-        color: backgroundTransparent
-            ? Colors.white
-            : Theme.of(context).colorScheme.primary,
+      iconTheme: const IconThemeData(
+        color: Colors.white
       ),
       surfaceTintColor: Colors.transparent,
-      centerTitle: false,
-      title: showLogo ? Image.asset(
-        backgroundTransparent
-            ? 'assets/images/logo_negativo.png'
-            : theme.brightness == Brightness.dark
-                ? 'assets/images/logo_negativo.png'
-                : 'assets/images/logo_positivo.png',
+      title: Image.asset(
+        theme.brightness == Brightness.dark
+          ? 'assets/images/logo_negativo.png'
+          : 'assets/images/logo_positivo.png',
         height: sizes.height * 0.08,
         fit: BoxFit.scaleDown,
-      ) : null,
-      backgroundColor: backgroundTransparent
-          ? Colors.transparent
-          : Theme.of(context).colorScheme.background,
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.search),
-          color: backgroundTransparent
-              ? Colors.white
-              : Theme.of(context).colorScheme.primary,
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.more_vert),
-          color: backgroundTransparent
-              ? Colors.white
-              : Theme.of(context).colorScheme.primary,
-        ),
-      ],
+      ),
+      backgroundColor: Color.fromARGB(255, 20, 27, 61),
+       actions: [
+          IconButton(
+            onPressed: () {
+              context.go('/home/1');
+            },
+            icon: const Icon(
+              Icons.calendar_today_outlined,
+              size: 30,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              //Profile
+              context.go('/home/3');
+            },
+            icon: const Icon(
+              Icons.settings,
+              size: 30,
+            ),
+          ),
+        ],
     );
   }
 
