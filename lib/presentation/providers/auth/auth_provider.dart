@@ -28,9 +28,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> loginUser(String email, String password) async {
-    await Future.delayed(
-        const Duration(milliseconds: 1000)); //ralentizamos un poco el log
-
     try {
       final user = await authRepository.login(email, password);
       _setLoggedUser(user);
@@ -45,18 +42,28 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> registerUser(String name, String email, String password,
-      String passwordConfirmation) async {
-    await Future.delayed(
-        const Duration(milliseconds: 1000)); //ralentizamos un poco el log
-
+  Future<void> registerUser(String name, String email, String password, String passwordConfirmation) async {
     try {
       final registerResponse = await authRepository.register(
           name, email, password, passwordConfirmation);
-      // _setLoggedUser(user);
+      
+      state = state.copyWith(
+        authStatus: AuthStatus.unauthenticated,
+        user: User(
+          id: registerResponse.id, 
+          name: registerResponse.name, 
+          email: registerResponse.email, 
+          role: registerResponse.role, 
+          status: Status.inactive,
+          token: registerResponse.authorization.token
+        ),
+        errorMessage: null,
+      );
+
       print('registrado!');
     } on WrongCredentialsError {
       print('onwrong credentials');
+
       state = state.copyWith(
           authStatus: AuthStatus.unauthenticated,
           user: null,

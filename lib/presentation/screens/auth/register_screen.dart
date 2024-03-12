@@ -13,50 +13,69 @@ class RegisterScreen extends ConsumerWidget {
     final sizes = MediaQuery.of(context).size;
 
     ref.listen(authProvider, (prev, next) {
-      if (next.errorMessage.isEmpty) return;
+      print('ENTRA');
 
-      Future.delayed(const Duration(seconds: 2));
-      if (next.authStatus == AuthStatus.authenticated) {
-        context.go('/auth');
+      if(next.user != null && next.authStatus == AuthStatus.unauthenticated) {
+        print('gracias por registrarte. puedes ir al login');
+
+        // dialog
+        showDialog(
+          context: context,
+          barrierDismissible: false,//obliga a que selecciona un boton, ya que no se puede cerrar si se pulsa fuera
+          builder: (context) {
+            return AlertDialog(
+              title:  Text('Hola ${next.user?.name}'),
+              content: const Text(
+                  'Gracias por registrarte en Ghanta. Puedes acceder al login en el siguiente botón.'),
+              actions: [
+                FilledButton(
+                  onPressed: () { context.go('/login');},
+                  child: const Text('Ir a login')),
+              ],
+            );
+          },
+        );
       }
+
+      if (next.errorMessage.isEmpty) return;
     });
 
     return Scaffold(
-        backgroundColor: theme.primary,
-        body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('assets/images/bg-night.png'),
-                fit: BoxFit.cover),
-          ),
-          child: Column(
-            children: [
-              Container(
-                  padding: const EdgeInsets.all(20),
-                  width: double.infinity,
-                  height: sizes.height * 0.3,
-                  child: Image.asset(
-                    'assets/images/logo_negativo.png',
-                    width: sizes.width * 0.2,
-                  )),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: theme.background,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
-                    ),
-                  ),
-                  child: SingleChildScrollView(
-                    child: RegisterForm(sizes: sizes),
+      backgroundColor: theme.primary,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/bg-night.png'),
+              fit: BoxFit.cover),
+        ),
+        child: Column(
+          children: [
+            Container(
+                padding: const EdgeInsets.all(20),
+                width: double.infinity,
+                height: sizes.height * 0.3,
+                child: Image.asset(
+                  'assets/images/logo_negativo.png',
+                  width: sizes.width * 0.2,
+                )),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: theme.background,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
                   ),
                 ),
+                child: SingleChildScrollView(
+                  child: RegisterForm(sizes: sizes),
+                ),
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ));
   }
 }
 
@@ -76,7 +95,6 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
   bool _obscureText1 = true;
   bool _obscureText2 = true;
 
-  bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -178,7 +196,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
-            child: _isLoading
+            child: registerForm.isPosting
               ? const SizedBox(
                 height: 20,
                 width: 20,
@@ -186,7 +204,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
                   color: Colors.white,
                 ),
               )
-              : Text('Iniciar Sesión',
+              : Text('Registrarse',
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

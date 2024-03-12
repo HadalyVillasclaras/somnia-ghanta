@@ -8,7 +8,7 @@ class UserApiModel {
     DateTime createdAt;
     DateTime updatedAt;
     Role role;
-    String status;
+    Status status;
 
     UserApiModel({
         required this.id,
@@ -30,7 +30,7 @@ class UserApiModel {
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         role: User.roleFromJson(json["role"]),
-        status: json["status"],
+        status: User.statusFromJson(json["status"]),
     );
 
 }

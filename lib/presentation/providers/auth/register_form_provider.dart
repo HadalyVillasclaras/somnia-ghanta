@@ -22,6 +22,7 @@ class RegisterFormState {
   final Password password;
   final PasswordConfirmation passwordConfirmation;
   final Set<String> editedFieldsAfterSubmit;
+  final bool isRegisterOk;
 
   RegisterFormState({
     this.isPosting = false,
@@ -32,6 +33,7 @@ class RegisterFormState {
     this.password = const Password.pure(),
     this.passwordConfirmation = const PasswordConfirmation.pure(),
     this.editedFieldsAfterSubmit = const <String>{},
+    this.isRegisterOk = false
   });
 
   @override
@@ -45,11 +47,12 @@ class RegisterFormState {
         email: $email
         password: $password
         passwordConfirmation: $passwordConfirmation
+        isRegisterOk: $isRegisterOk
     ''';
   }
 
-  RegisterFormState copyWith(
-    {bool? isPosting,
+  RegisterFormState copyWith({
+    bool? isPosting,
     bool? isFormPosted,
     bool? isValid,
     String? name,
@@ -57,16 +60,19 @@ class RegisterFormState {
     Password? password,
     PasswordConfirmation? passwordConfirmation,
     Set<String>? editedFieldsAfterSubmit,
-    bool? arePasswordsEqual}) =>
-RegisterFormState(
-    isPosting: isPosting ?? this.isPosting,
-    isFormPosted: isFormPosted ?? this.isFormPosted,
-    isValid: isValid ?? this.isValid,
-    name: name ?? this.name,
-    email: email ?? this.email,
-    password: password ?? this.password,
-    passwordConfirmation: passwordConfirmation ?? this.passwordConfirmation,
-    editedFieldsAfterSubmit: editedFieldsAfterSubmit ?? this.editedFieldsAfterSubmit,
+    bool? arePasswordsEqual,
+    bool? isRegisterOk
+  }) =>
+    RegisterFormState(
+      isPosting: isPosting ?? this.isPosting,
+      isFormPosted: isFormPosted ?? this.isFormPosted,
+      isValid: isValid ?? this.isValid,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      passwordConfirmation: passwordConfirmation ?? this.passwordConfirmation,
+      editedFieldsAfterSubmit: editedFieldsAfterSubmit ?? this.editedFieldsAfterSubmit,
+      isRegisterOk: isRegisterOk ?? this.isRegisterOk
     );
 }
 
@@ -124,10 +130,10 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
      _touchEveryField();
     if (!state.isValid) return;
     
-    state = state.copyWith(
-      isPosting: true,
-
-    );
+    state = state.copyWith(isPosting: true);
+    
+    await Future.delayed(
+      const Duration(milliseconds: 1000)); //ralentizamos para que salga el spinner
 
     registerUserCallback(
       state.name, 
@@ -137,7 +143,7 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
     );
 
     state = state.copyWith(isPosting: false);
-    
+    state = state.copyWith(isFormPosted: true);
   }
 
   _touchEveryField() {
@@ -157,6 +163,7 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
       passwordConfirmation: passwordConfirmation,
       isValid: Formz.validate([email, password, passwordConfirmation]),
       editedFieldsAfterSubmit: Set<String>(),
+      isRegisterOk: false
     );
   }
 

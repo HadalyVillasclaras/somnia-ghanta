@@ -155,7 +155,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
-            child: _isLoading
+            child: loginForm.isPosting
                 ? const SizedBox(
                     height: 20,
                     width: 20,

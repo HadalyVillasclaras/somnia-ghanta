@@ -68,15 +68,23 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
   onPasswordChange(String password) {
     final newPassword = Password.dirty(password);
     state = state.copyWith(
-        isPasswordValid: newPassword,
-        isFormValid: Formz.validate([newPassword, state.isEmailValid]));
+      isPasswordValid: newPassword,
+      isFormValid: Formz.validate([newPassword, state.isEmailValid]));
   }
 
-  onFormSubmitted() {
+  onFormSubmitted() async{
     _touchEveryField();
-    state = state.copyWith(isFormPosted: true);
     if (!state.isFormValid) return;
+
+    state = state.copyWith(isPosting: true);
+    
+    await Future.delayed(
+    const Duration(milliseconds: 1000)); //ralentizamos para que salga el spinner
+    
     loginCallback(state.isEmailValid.value, state.isPasswordValid.value);
+
+    state = state.copyWith(isPosting: false);
+    state = state.copyWith(isFormPosted: true);
   }
 
   _touchEveryField() {
