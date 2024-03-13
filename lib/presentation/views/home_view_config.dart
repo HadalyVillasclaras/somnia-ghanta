@@ -87,10 +87,12 @@ class HomeConfigList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const Text('Configuración',
-          style: TextStyle(
-              fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black)),
+      Text(
+        'Configuración',
+        style: theme.textTheme.headlineLarge,
+      ),
       const SizedBox(height: 40),
       Expanded(child: ConfigOptions(onTap: onChangeIndex)),
     ]);
@@ -106,6 +108,8 @@ class ConfigOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return ListView(children: [
       ListTile(
         leading: const Icon(Icons.person),
@@ -138,7 +142,9 @@ class ConfigOptions extends StatelessWidget {
           Icons.arrow_forward_ios,
           size: 15,
         ),
-        onTap: () {onTap(3);},
+        onTap: () {
+          onTap(3);
+        },
       ),
       const Divider(),
       ListTile(
@@ -148,7 +154,9 @@ class ConfigOptions extends StatelessWidget {
           Icons.arrow_forward_ios,
           size: 15,
         ),
-        onTap: () {onTap(4);},
+        onTap: () {
+          onTap(4);
+        },
       ),
       const Divider(),
       ListTile(
@@ -159,70 +167,73 @@ class ConfigOptions extends StatelessWidget {
           size: 15,
         ),
         onTap: () {
-showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)), // Making the dialog box a bit rounded
-        child: Container(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min, // Making the dialog content take only the space it needs
-            children: <Widget>[
-              Align(
-                alignment: Alignment.topCenter,
-                child: IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.of(context).pop(), // Close the dialog
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 20.0),
-                child: Text(
-                  "¿Seguro que quieres salir de la aplicación?",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.white), // Button color
-                        foregroundColor: MaterialStateProperty.all<Color>(Colors.blue), // Text color
-                        elevation: MaterialStateProperty.all<double>(2), // Shadow
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Dialog(
+                backgroundColor: theme.colorScheme.background,
+                elevation: 0,
+                surfaceTintColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(17)),
+                child: Container(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min, // Making the dialog content take only the space it needs
+                    children: <Widget>[
+                      CircleAvatar(
+                        backgroundColor: theme.colorScheme.primary,
+                        radius: 30,
+                        child: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 30,
+                        ),
                       ),
-                      onPressed: () {
-                        // Your action for "No"
-                        Navigator.of(context).pop(); // Close the dialog
-                      },
-                      child: const Text('No'),
-                    ),
-                  ),
-                  const SizedBox(width: 10), // Spacing between buttons
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.white), // Button color
-                        foregroundColor: MaterialStateProperty.all<Color>(Colors.blue), // Text color
-                        elevation: MaterialStateProperty.all<double>(2), // Shadow
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 30.0),
+                        child: Text(
+                          "¿Seguro que quieres cerrar sesión?",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
                       ),
-                      onPressed: () {
-                        // Your action for "Yes"
-                        Navigator.of(context).pop(); // Close the dialog
-                      },
-                      child: const Text('Sí'),
-                    ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context).colorScheme.background, 
+                                foregroundColor: Theme.of(context).colorScheme.primary,
+                              ),
+                              onPressed: () {
+                                // Your action for "No"
+                                Navigator.of(context).pop(); // Close the dialog
+                              },
+                              child: const Text('Sí'),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 2,
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Close the dialog
+                              },
+                              child: const Text('Cancelar'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      );
-    },
-  );
+                ),
+              );
+            },
+          );
           // ref
           //     .read(authProvider.notifier)
           //     .logout(errorMessage: '¡Hasta pronto!');

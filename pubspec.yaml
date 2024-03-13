@@ -31,7 +31,6 @@ dependencies:
   animate_do: ^3.1.2
   appinio_swiper: ^2.1.0
   auto_size_text: ^3.0.0
-  confetti: ^0.7.0
   cupertino_icons: ^1.0.2
   dio: ^5.3.3
   easy_date_timeline: ^1.0.2

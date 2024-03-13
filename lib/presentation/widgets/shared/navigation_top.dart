@@ -14,13 +14,11 @@ class NavigationTop extends StatelessWidget implements PreferredSizeWidget {
         color: Colors.white
       ),
       title: Image.asset(
-        theme.brightness == Brightness.dark
-          ? 'assets/images/logo_negativo.png'
-          : 'assets/images/logo_positivo.png',
-        height: sizes.height * 0.08,
+        'assets/images/logo-ghanta.png',
+        height: sizes.height * 0.03,
         fit: BoxFit.scaleDown,
       ),
-      backgroundColor: const Color.fromARGB(255, 20, 27, 61),
+      backgroundColor: theme.primary,
        actions: [
           IconButton(
             onPressed: () {
