@@ -7,6 +7,7 @@ import 'package:ghanta/presentation/views/settings/setting_help.dart';
 import 'package:ghanta/presentation/views/settings/setting_language.dart';
 import 'package:ghanta/presentation/views/settings/setting_option_wrapper.dart';
 import 'package:ghanta/presentation/views/settings/setting_privacy.dart';
+import 'package:ghanta/presentation/widgets/_widgets.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeViewConfig extends StatefulWidget {
@@ -44,31 +45,34 @@ class _HomeViewConfigState extends State<HomeViewConfig> {
             label: const Text('Volver', style: TextStyle(color: Colors.grey)),
           ),
           Expanded(
-            child: IndexedStack(
-              index: _selectedIndex,
-              children: [
-                HomeConfigList(onChangeIndex: _changeIndex),
-                SettingOptionWrapper(
-                  title: 'Mi cuenta',
-                  child: const SettingAccount(),
-                  onBack: () => _changeIndex(0),
-                ),
-                SettingOptionWrapper(
-                  title: 'Idioma',
-                  child: const SettingLanguage(),
-                  onBack: () => _changeIndex(0),
-                ),
-                SettingOptionWrapper(
-                  title: 'Privacidad',
-                  child: const SettingPrivacy(),
-                  onBack: () => _changeIndex(0),
-                ),
-                SettingOptionWrapper(
-                  title: 'Ayuda',
-                  child: const SettingHelp(),
-                  onBack: () => _changeIndex(0),
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18),
+              child: IndexedStack(
+                index: _selectedIndex,
+                children: [
+                  HomeConfigList(onChangeIndex: _changeIndex),
+                  SettingOptionWrapper(
+                    title: 'Mi cuenta',
+                    child: const SettingAccount(),
+                    onBack: () => _changeIndex(0),
+                  ),
+                  SettingOptionWrapper(
+                    title: 'Idioma',
+                    child: const SettingLanguage(),
+                    onBack: () => _changeIndex(0),
+                  ),
+                  SettingOptionWrapper(
+                    title: 'Privacidad',
+                    child: const SettingPrivacy(),
+                    onBack: () => _changeIndex(0),
+                  ),
+                  SettingOptionWrapper(
+                    title: 'Ayuda',
+                    child: const SettingHelp(),
+                    onBack: () => _changeIndex(0),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -88,14 +92,16 @@ class HomeConfigList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(
-        'Configuración',
-        style: theme.textTheme.headlineLarge,
-      ),
-      const SizedBox(height: 40),
-      Expanded(child: ConfigOptions(onTap: onChangeIndex)),
-    ]);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start, 
+      children: [
+        Text(
+          'Configuración',
+          style: theme.textTheme.headlineLarge,
+        ),
+        const SizedBox(height: 40),
+        Expanded(child: ConfigOptions(onTap: onChangeIndex)),
+      ]);
   }
 }
 
@@ -108,8 +114,6 @@ class ConfigOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return ListView(children: [
       ListTile(
         leading: const Icon(Icons.person),
@@ -170,77 +174,13 @@ class ConfigOptions extends StatelessWidget {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return Dialog(
-                backgroundColor: theme.colorScheme.background,
-                elevation: 0,
-                surfaceTintColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(17)),
-                child: Container(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min, // Making the dialog content take only the space it needs
-                    children: <Widget>[
-                      CircleAvatar(
-                        backgroundColor: theme.colorScheme.primary,
-                        radius: 30,
-                        child: const Icon(
-                          Icons.close,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 30.0),
-                        child: Text(
-                          "¿Seguro que quieres cerrar sesión?",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(context).colorScheme.background, 
-                                foregroundColor: Theme.of(context).colorScheme.primary,
-                              ),
-                              onPressed: () {
-                                // Your action for "No"
-                                Navigator.of(context).pop(); // Close the dialog
-                              },
-                              child: const Text('Sí'),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: 2,
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).pop(); // Close the dialog
-                              },
-                              child: const Text('Cancelar'),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              );
+              return const LogoutModal();
             },
           );
-          // ref
-          //     .read(authProvider.notifier)
-          //     .logout(errorMessage: '¡Hasta pronto!');
-          // Future.microtask(() => context.go('/login'));
         },
       ),
       const Divider(),
     ]);
   }
 }
+

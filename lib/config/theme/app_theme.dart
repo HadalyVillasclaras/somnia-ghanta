@@ -30,12 +30,12 @@ class AppTheme {
       headlineLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
       headlineMedium: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
       headlineSmall: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-      titleLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
-      titleMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-      titleSmall: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-      bodyLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-      bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-      bodySmall: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+      titleLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+      titleMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+      titleSmall: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+      bodyLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+      bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+      bodySmall: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
       // Further customization can be added as needed
     );
 
@@ -43,7 +43,7 @@ class AppTheme {
     final inputDecorationTheme = InputDecorationTheme(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(20),
-        borderSide: BorderSide(color: colorScheme.primary),
+        borderSide: BorderSide(color: Color.fromARGB(255, 221, 45, 45)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(20),

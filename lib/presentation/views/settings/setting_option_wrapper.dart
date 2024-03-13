@@ -15,14 +15,21 @@ class SettingOptionWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: onBack,
-        ),
-        title: Text(title),
+        automaticallyImplyLeading: false,
+        centerTitle: false,
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back),
+        //   onPressed: onBack,
+        // ),
+        
+        title: Text(title, style: Theme.of(context).textTheme.headlineLarge,),
       ),
-      body: child,
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: child,
+      ),
     );
   }
 }
