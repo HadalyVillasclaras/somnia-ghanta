@@ -5,8 +5,7 @@ import 'package:go_router/go_router.dart';
 final appRouter = GoRouter(routes: [
   GoRoute(
     path: '/',
-    //Esta ruta redirige a la ruta /home/0
-    // redirect: (context, state) => '/home/0',
+   
     redirect: (context, state) => '/auth',
   ),
   GoRoute(
@@ -14,8 +13,31 @@ final appRouter = GoRouter(routes: [
     builder: (context, state) {
       final tabIndex = int.parse(state.pathParameters['tabIndex'] ?? '0');
       return HomeScreen(tabIndex: tabIndex);
-    },
+    }
   ),
+  // GoRoute(
+  //     path: '/home',
+  //         builder: (context, state) => HomeScreen(child: HomeView()),
+
+  //     routes: [
+  //       GoRoute(
+  //         path: 'x',
+  //         builder: (context, state) => HomeScreen(child: HomeView()),
+  //       ),
+  //       GoRoute(
+  //         path: 'profile',
+  //         builder: (context, state) => HomeScreen(child: HomeProfileView()),
+  //       ),
+  //       GoRoute(
+  //         path: 'courses',
+  //         builder: (context, state) => HomeScreen(child: HomeCoursesView()),
+  //       ),
+  //       GoRoute(
+  //         path: 'settings',
+  //         builder: (context, state) => HomeScreen(child: HomeViewConfig()),
+  //       ),
+  //     ],
+  //   ),
   GoRoute(
       path: '/course/:courseId',
       builder: (context, state) {

@@ -9,10 +9,10 @@ class NavigationTop extends StatelessWidget implements PreferredSizeWidget {
     final sizes = MediaQuery.of(context).size;
     final theme = Theme.of(context).colorScheme;
     return AppBar(
+      automaticallyImplyLeading: false,
       iconTheme: const IconThemeData(
         color: Colors.white
       ),
-      surfaceTintColor: Colors.transparent,
       title: Image.asset(
         theme.brightness == Brightness.dark
           ? 'assets/images/logo_negativo.png'
@@ -20,11 +20,11 @@ class NavigationTop extends StatelessWidget implements PreferredSizeWidget {
         height: sizes.height * 0.08,
         fit: BoxFit.scaleDown,
       ),
-      backgroundColor: Color.fromARGB(255, 20, 27, 61),
+      backgroundColor: const Color.fromARGB(255, 20, 27, 61),
        actions: [
           IconButton(
             onPressed: () {
-              context.go('/home/1');
+              context.push('/home/0'); //HomeView
             },
             icon: const Icon(
               Icons.calendar_today_outlined,
@@ -34,7 +34,7 @@ class NavigationTop extends StatelessWidget implements PreferredSizeWidget {
           IconButton(
             onPressed: () {
               //Profile
-              context.go('/home/3');
+              context.push('/home/3'); //HomeViewConfig
             },
             icon: const Icon(
               Icons.settings,

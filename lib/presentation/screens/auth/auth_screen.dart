@@ -19,7 +19,7 @@ class AuthScreen extends ConsumerWidget {
         final course = ref.watch(coursesProvider);
 
         if (course.isEmpty) {
-         context.go('/home/0');
+         context.go('/home/0');//HomeView()
         } else {
         final notEmptyCourse = course.firstWhere((course) => course.phases.isNotEmpty);
         context.go('/course/${notEmptyCourse.id}');

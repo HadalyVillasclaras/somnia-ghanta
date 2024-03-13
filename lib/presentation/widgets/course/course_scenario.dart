@@ -42,8 +42,8 @@ class CourseScenario extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(phase.getTitle(lang: Lang.getDeviceLang(context)),
-                    style: textTheme.headlineSmall!
-                        .copyWith(color: colors.primaryContainer)),
+                  style: textTheme.headlineSmall!
+                    .copyWith(color: colors.primaryContainer)),
                 const SizedBox(height: 10),
                 Text('Fase ${currentPhase + 1}',
                     style: textTheme.titleMedium!
