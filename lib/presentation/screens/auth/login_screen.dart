@@ -27,7 +27,7 @@ class LoginScreen extends ConsumerWidget {
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/images/bg-night.png'),
+                image: AssetImage('assets/images/gradient-bg.png'),
                 fit: BoxFit.cover),
           ),
           child: Column(
@@ -35,11 +35,8 @@ class LoginScreen extends ConsumerWidget {
               Container(
                   padding: const EdgeInsets.all(20),
                   width: double.infinity,
-                  height: sizes.height * 0.3,
-                  child: Image.asset(
-                    'assets/images/logo_negativo.png',
-                    width: sizes.width * 0.2,
-                  )),
+                  height: sizes.height * 0.2,
+                  ),
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.all(20),
@@ -87,6 +84,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   @override
   Widget build(BuildContext context) {
     final loginForm = ref.watch(loginFormProvider);
+    final theme = Theme.of(context);
 
     ref.listen(authProvider, ((previous, next) { 
     if (next.errorMessage.isEmpty  ) return;
@@ -106,7 +104,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 40),
         TextField(
           keyboardType: TextInputType.emailAddress,
           autofocus: true,
@@ -142,8 +140,8 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                     });
                   })),
         ),
-        const SizedBox(height: 20),
-        FilledButton(
+        const SizedBox(height: 40),
+        ElevatedButton(
             onPressed: () {
               ref.read(loginFormProvider.notifier).onFormSubmitted();
               // Cerramos el teclado
@@ -151,9 +149,6 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(double.infinity, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
             ),
             child: loginForm.isPosting
                 ? const SizedBox(
@@ -163,16 +158,12 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                       color: Colors.white,
                     ),
                   )
-                : Text('Iniciar Sesión',
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ))),
+                : const Text('Iniciar Sesión')),
         const SizedBox(height: 40),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('¿No tienes una cuenta?'),
+            Text('¿No tienes una cuenta?', style: TextStyle(color: theme.colorScheme.tertiary ),),
             TextButton(
               onPressed: () {
                 context.push('/register');

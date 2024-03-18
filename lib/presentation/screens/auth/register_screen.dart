@@ -45,7 +45,7 @@ class RegisterScreen extends ConsumerWidget {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/images/bg-night.png'),
+              image: AssetImage('assets/images/gradient-bg.png'),
               fit: BoxFit.cover),
         ),
         child: Column(
@@ -53,11 +53,8 @@ class RegisterScreen extends ConsumerWidget {
             Container(
                 padding: const EdgeInsets.all(20),
                 width: double.infinity,
-                height: sizes.height * 0.3,
-                child: Image.asset(
-                  'assets/images/logo_negativo.png',
-                  width: sizes.width * 0.2,
-                )),
+                height: sizes.height * 0.2,
+              ),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(20),
@@ -99,6 +96,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final registerForm = ref.watch(registerFormProvider);
 
     return Form(
@@ -114,7 +112,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 40),
           TextFormField(
             keyboardType: TextInputType.text,
             autofocus: true,
@@ -183,8 +181,8 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
                       });
                     })),
           ),
-          const SizedBox(height: 30),
-          FilledButton(
+          const SizedBox(height: 40),
+          ElevatedButton(
             onPressed: () {
               ref.read(registerFormProvider.notifier).onFormSubmit();
               // Cerramos el teclado
@@ -192,9 +190,6 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
             },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(double.infinity, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
             ),
             child: registerForm.isPosting
               ? const SizedBox(
@@ -204,16 +199,13 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
                   color: Colors.white,
                 ),
               )
-              : Text('Registrarse',
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ))),
+              : Text('Registrarse',)
+            ),
           const SizedBox(height: 40),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('¿Ya tienes una cuenta?'),
+              Text('¿Ya tienes una cuenta?', style: TextStyle(color: theme.colorScheme.tertiary ),),
               TextButton(
                 onPressed: () {
                   context.push('/login');
