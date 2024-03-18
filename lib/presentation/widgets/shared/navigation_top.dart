@@ -8,10 +8,17 @@ class NavigationTop extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final sizes = MediaQuery.of(context).size;
     final theme = Theme.of(context).colorScheme;
+    final currentLocation = _getCurrentLocation(context);
+
+    String _iconForRoute(String route, String iconBaseName) {
+      final isActive = currentLocation.contains(route);
+      return 'assets/icons/nav/${iconBaseName}${isActive ? '_filled' : '_outline'}.png';
+    }
+
     return AppBar(
       automaticallyImplyLeading: false,
       iconTheme: const IconThemeData(
-        color: Colors.white
+        color: Colors.white,
       ),
       title: Image.asset(
         'assets/images/logo-ghanta.png',
@@ -19,30 +26,46 @@ class NavigationTop extends StatelessWidget implements PreferredSizeWidget {
         fit: BoxFit.scaleDown,
       ),
       backgroundColor: theme.primary,
-       actions: [
-          IconButton(
-            onPressed: () {
-              context.push('/home/0'); //HomeView
-            },
-            icon: const Icon(
-              Icons.calendar_today_outlined,
-              size: 30,
-            ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            context.push('/home/0'); //HomeView
+          },
+          icon: Image.asset(
+            _iconForRoute('/home/0', 'flor'),
+            height: 28,
           ),
-          IconButton(
-            onPressed: () {
-              //Profile
-              context.push('/home/3'); //HomeViewConfig
-            },
-            icon: const Icon(
-              Icons.settings,
-              size: 30,
-            ),
+        ),
+        IconButton(
+          onPressed: () {
+            context.push('/home/1'); //calendar
+          },
+          icon: Image.asset(
+            _iconForRoute('/home/1', 'calendar'),
+            height: 28,
           ),
-        ],
+        ),
+        IconButton(
+          onPressed: () {
+            context.push('/home/3'); //HomeViewConfig
+          },
+          icon: Image.asset(
+            _iconForRoute('/home/3', 'settings'),
+            height: 28,
+          ),
+        ),
+      ],
     );
   }
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  String _getCurrentLocation(BuildContext context) {
+    final GoRouter router = GoRouter.of(context);
+    final RouteMatch lastMatch = router.routerDelegate.currentConfiguration.last;
+    final RouteMatchList matchList = lastMatch is ImperativeRouteMatch ? lastMatch.matches : router.routerDelegate.currentConfiguration;
+    final String location = matchList.uri.toString();
+    return location;
+  }
 }
