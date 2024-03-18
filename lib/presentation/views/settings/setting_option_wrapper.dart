@@ -19,16 +19,26 @@ class SettingOptionWrapper extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: false,
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back),
-        //   onPressed: onBack,
-        // ),
-        
-        title: Text(title, style: Theme.of(context).textTheme.headlineLarge,),
+        leadingWidth: 100,
+        leading: TextButton.icon(
+            onPressed: onBack,
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.grey,
+              size: 15,
+            ),
+            label: const Text('Volver', style: TextStyle(color: Colors.grey)),
+          ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: child,
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: Theme.of(context).textTheme.headlineLarge,),
+            child,
+          ],
+        ),
       ),
     );
   }

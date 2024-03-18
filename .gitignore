@@ -11,6 +11,8 @@ ghanta_postman.json
 .history
 .svn/
 migrate_working_dir/
+notes.md
+
 
 # IntelliJ related
 *.iml

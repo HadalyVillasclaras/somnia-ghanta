@@ -1,6 +1,8 @@
 export 'package:ghanta/presentation/screens/auth/auth_screen.dart';
 
 export 'package:ghanta/presentation/screens/auth/login_screen.dart';
+export 'package:ghanta/presentation/screens/splash/splash_screen.dart';
+
 
 export 'package:ghanta/presentation/views/home_view_config.dart';
 

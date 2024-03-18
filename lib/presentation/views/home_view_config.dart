@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ghanta/presentation/providers/_providers.dart';
 import 'package:ghanta/presentation/views/settings/setting_account.dart';
 import 'package:ghanta/presentation/views/settings/setting_help.dart';
 import 'package:ghanta/presentation/views/settings/setting_language.dart';
 import 'package:ghanta/presentation/views/settings/setting_option_wrapper.dart';
 import 'package:ghanta/presentation/views/settings/setting_privacy.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
-import 'package:go_router/go_router.dart';
 
 class HomeViewConfig extends StatefulWidget {
   const HomeViewConfig({Key? key}) : super(key: key);
@@ -33,46 +29,43 @@ class _HomeViewConfigState extends State<HomeViewConfig> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextButton.icon(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.grey,
-              size: 15,
-            ),
-            label: const Text('Volver', style: TextStyle(color: Colors.grey)),
-          ),
+          // TextButton.icon(
+          //   onPressed: () {
+          //     Navigator.pop(context);
+          //   },
+          //   icon: const Icon(
+          //     Icons.arrow_back_ios,
+          //     color: Colors.grey,
+          //     size: 15,
+          //   ),
+          //   label: const Text('Volver', style: TextStyle(color: Colors.grey)),
+          // ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18),
-              child: IndexedStack(
-                index: _selectedIndex,
-                children: [
-                  HomeConfigList(onChangeIndex: _changeIndex),
-                  SettingOptionWrapper(
-                    title: 'Mi cuenta',
-                    child: const SettingAccount(),
-                    onBack: () => _changeIndex(0),
-                  ),
-                  SettingOptionWrapper(
-                    title: 'Idioma',
-                    child: const SettingLanguage(),
-                    onBack: () => _changeIndex(0),
-                  ),
-                  SettingOptionWrapper(
-                    title: 'Privacidad',
-                    child: const SettingPrivacy(),
-                    onBack: () => _changeIndex(0),
-                  ),
-                  SettingOptionWrapper(
-                    title: 'Ayuda',
-                    child: const SettingHelp(),
-                    onBack: () => _changeIndex(0),
-                  ),
-                ],
-              ),
+            child: IndexedStack(
+              index: _selectedIndex,
+              children: [
+                HomeConfigList(onChangeIndex: _changeIndex),
+                SettingOptionWrapper(
+                  title: 'Mi cuenta',
+                  child: const SettingAccount(),
+                  onBack: () => _changeIndex(0),
+                ),
+                SettingOptionWrapper(
+                  title: 'Idioma',
+                  child: const SettingLanguage(),
+                  onBack: () => _changeIndex(0),
+                ),
+                SettingOptionWrapper(
+                  title: 'Privacidad',
+                  child: const SettingPrivacy(),
+                  onBack: () => _changeIndex(0),
+                ),
+                SettingOptionWrapper(
+                  title: 'Ayuda',
+                  child: const SettingHelp(),
+                  onBack: () => _changeIndex(0),
+                ),
+              ],
             ),
           ),
         ],
@@ -92,16 +85,35 @@ class HomeConfigList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start, 
-      children: [
-        Text(
-          'Configuración',
-          style: theme.textTheme.headlineLarge,
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: false,
+        leadingWidth: 100,
+        leading: TextButton.icon(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.grey,
+            size: 15,
+          ),
+          label: const Text('Volver', style: TextStyle(color: Colors.grey)),
         ),
-        const SizedBox(height: 40),
-        Expanded(child: ConfigOptions(onTap: onChangeIndex)),
-      ]);
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Configuración',
+            style: theme.textTheme.headlineLarge,
+          ),
+          const SizedBox(height: 40),
+          Expanded(child: ConfigOptions(onTap: onChangeIndex)),
+        ]),
+      ),
+    );
   }
 }
 
@@ -183,4 +195,3 @@ class ConfigOptions extends StatelessWidget {
     ]);
   }
 }
-
