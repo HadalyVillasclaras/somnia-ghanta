@@ -54,9 +54,9 @@ class AuthDatasourceImpl extends AuthDatasource {
       final user = UserMapper()
           .userApiToEntity(LoginApiResponse.fromJson(response.data));
 
-      if (user.role != Role.roleUser) {
-        throw WrongCredentialsError();
-      }
+      // if (user.role != Role.roleUser) {
+      //   throw WrongCredentialsError();
+      // }
       return user;
     } on DioException catch (e) {
       if (e.response?.statusCode == 401 ||
@@ -135,4 +135,38 @@ class AuthDatasourceImpl extends AuthDatasource {
       rethrow;
     }
   }
+
+
+  // I have faked the verifyPassword with the login service. This is a workaround because there is no verifyPassword service in the API
+  @override
+  Future<bool> verifyPassword(String email, String password) async {
+     var isValidPassword = false;
+
+    try {
+      final formData = FormData.fromMap({
+        'email': email,
+        'password': password,
+      });
+
+      final response = await ApiConfig.dio.post('/login',
+          data: formData, options: Options(contentType: 'multipart/form-data'));
+
+      if (response.statusCode == 200) {
+        isValidPassword = true;
+      }
+      return isValidPassword;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401 ||
+          e.response?.statusCode == 403 ||
+          e.response?.statusCode == 400) {
+        throw WrongCredentialsError();
+      }
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
+
+
+

@@ -15,29 +15,29 @@ class LoginFormState {
   final bool isPosting;
   final bool isFormPosted;
   final bool isFormValid;
-  final Email isEmailValid;
-  final Password isPasswordValid;
+  final Email email;
+  final Password password;
 
   LoginFormState copyWith({
     bool? isPosting,
     bool? isFormPosted,
     bool? isFormValid,
-    Email? isEmailValid,
-    Password? isPasswordValid,
+    Email? email,
+    Password? password,
   }) =>
-      LoginFormState(
-          isPosting: isPosting ?? this.isPosting,
-          isFormPosted: isFormPosted ?? this.isFormPosted,
-          isFormValid: isFormValid ?? this.isFormValid,
-          isEmailValid: isEmailValid ?? this.isEmailValid,
-          isPasswordValid: isPasswordValid ?? this.isPasswordValid);
+    LoginFormState(
+      isPosting: isPosting ?? this.isPosting,
+      isFormPosted: isFormPosted ?? this.isFormPosted,
+      isFormValid: isFormValid ?? this.isFormValid,
+      email: email ?? this.email,
+      password: password ?? this.password);
 
   LoginFormState(
       {this.isPosting = false,
       this.isFormPosted = false,
       this.isFormValid = false,
-      this.isEmailValid = const Email.pure(),
-      this.isPasswordValid = const Password.pure()});
+      this.email = const Email.pure(),
+      this.password = const Password.pure()});
 
   @override
   String toString() {
@@ -46,8 +46,8 @@ class LoginFormState {
         isPosting: $isPosting,
         isFormPosted: $isFormPosted,
         isFormValid: $isFormValid,
-        isEmailValid: $isEmailValid,
-        isPasswordValid: $isPasswordValid,
+        email: $email,
+        password: $password,
     ''';
   }
 }
@@ -61,15 +61,15 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
   onEmailChange(String email) {
     final newEmail = Email.dirty(email);
     state = state.copyWith(
-        isEmailValid: newEmail,
-        isFormValid: Formz.validate([newEmail, state.isPasswordValid]));
+        email: newEmail,
+        isFormValid: Formz.validate([newEmail, state.password]));
   }
 
   onPasswordChange(String password) {
     final newPassword = Password.dirty(password);
     state = state.copyWith(
-      isPasswordValid: newPassword,
-      isFormValid: Formz.validate([newPassword, state.isEmailValid]));
+      password: newPassword,
+      isFormValid: Formz.validate([newPassword, state.email]));
   }
 
   onFormSubmitted() async{
@@ -79,21 +79,21 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
     state = state.copyWith(isPosting: true);
     
     await Future.delayed(
-    const Duration(milliseconds: 1000)); //ralentizamos para que salga el spinner
+      const Duration(milliseconds: 1000)); //ralentizamos para que salga el spinner
     
-    loginCallback(state.isEmailValid.value, state.isPasswordValid.value);
+    loginCallback(state.email.value, state.password.value);
 
     state = state.copyWith(isPosting: false);
     state = state.copyWith(isFormPosted: true);
   }
 
   _touchEveryField() {
-    final email = Email.dirty(state.isEmailValid.value);
-    final password = Password.dirty(state.isPasswordValid.value);
+    final email = Email.dirty(state.email.value);
+    final password = Password.dirty(state.password.value);
 
     state = state.copyWith(
-        isEmailValid: email,
-        isPasswordValid: password,
-        isFormValid: Formz.validate([email, password]));
+      email: email,
+      password: password,
+      isFormValid: Formz.validate([email, password]));
   }
 }

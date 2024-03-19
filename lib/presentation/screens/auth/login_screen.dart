@@ -114,7 +114,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             hintText: 'Correo electrónico',
             prefixIcon: const Icon(Icons.email_outlined),
             errorText:
-              loginForm.isEmailValid.isNotValid && loginForm.isFormPosted
+              loginForm.email.isNotValid && loginForm.isFormPosted
                 ? 'Email no válido'
                 : null,
           ),
@@ -128,7 +128,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
               hintText: 'Contraseña',
               prefixIcon: const Icon(Icons.lock_outline),
               errorText:
-                  loginForm.isPasswordValid.isNotValid && loginForm.isFormPosted  
+                  loginForm.password.isNotValid && loginForm.isFormPosted  
                       ? 'Contraseña no válida'
                       : null,
               suffixIcon: IconButton(

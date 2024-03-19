@@ -147,7 +147,7 @@ class _EnterPasswordModalState extends ConsumerState<EnterPasswordModal> {
                     });
                   }),
                   errorText:
-                    loginForm.isPasswordValid.isNotValid && loginForm.isFormPosted  
+                    loginForm.password.isNotValid && loginForm.isFormPosted  
                         ? 'Contraseña no válida'
                         : null,
               ),

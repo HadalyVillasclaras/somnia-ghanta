@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/domain/entities/user.dart';
@@ -39,6 +38,21 @@ class AuthNotifier extends StateNotifier<AuthState> {
           errorMessage: 'Credenciales incorrectas');
     } catch (e) {
       logout(errorMessage: 'Ha ocurrido un error');
+    }
+  }
+
+    Future<bool> verifyPassword(String password) async {
+    try {
+      final user = state.user;
+      if (user == null) return false;
+      final isValidPass =  await authRepository.verifyPassword(user.email, password);
+      return isValidPass;
+    } on WrongCredentialsError {
+      state = state.copyWith(
+        errorMessage: 'El password no es válido.');
+      return false;
+    } catch (e) {
+      return false;
     }
   }
 
@@ -128,11 +142,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
     // await keyValueStorageService.setKeyValue<String>('user', jsonEncode(user.toJson()));
 
     state = state.copyWith(
-        authStatus: AuthStatus.authenticated,
-        user: user,
-        errorMessage: 'Bienvenido a Ghanta');
+      authStatus: AuthStatus.authenticated,
+      user: user,
+      errorMessage: 'Bienvenido a Ghanta');
   }
-
   
 }
 
@@ -146,14 +159,14 @@ class AuthState {
   final String errorMessage;
 
   AuthState(
-      {this.authStatus = AuthStatus.checking,
-      this.user,
-      this.errorMessage = ''});
+    {this.authStatus = AuthStatus.checking,
+    this.user,
+    this.errorMessage = ''});
 
-  AuthState copyWith(
-          {AuthStatus? authStatus, User? user, String? errorMessage}) =>
-      AuthState(
-          authStatus: authStatus ?? this.authStatus,
-          user: user ?? this.user,
-          errorMessage: errorMessage ?? this.errorMessage);
+  AuthState copyWith({AuthStatus? authStatus, User? user, String? errorMessage}) =>
+    AuthState(
+      authStatus: authStatus ?? this.authStatus,
+      user: user ?? this.user,
+      errorMessage: errorMessage ?? this.errorMessage
+    );
 }

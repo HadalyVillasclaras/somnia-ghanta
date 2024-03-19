@@ -16,4 +16,6 @@ abstract class AuthDatasource {
   Future<User> getUser();
 
   Future<void> logout(String token);
+
+  Future<bool> verifyPassword(String email, String password);
 }

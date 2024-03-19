@@ -170,13 +170,15 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
                 ? registerForm.passwordConfirmation.errorMessage
                 : null,
               suffixIcon: IconButton(
-                    icon: Icon(
-                        _obscureText2 ? Icons.visibility : Icons.visibility_off),
-                    onPressed: () {
-                      setState(() {
-                        _obscureText2 = !_obscureText2;
-                      });
-                    })),
+                icon: Icon(
+                  _obscureText2 ? Icons.visibility : Icons.visibility_off),
+                onPressed: () {
+                  setState(() {
+                    _obscureText2 = !_obscureText2;
+                  });
+                }
+              )
+            ),
           ),
           const SizedBox(height: 40),
           ElevatedButton(
@@ -196,7 +198,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
                   color: Colors.white,
                 ),
               )
-              : Text('Registrarse',)
+              : const Text('Registrarse',)
             ),
           const SizedBox(height: 40),
           Row(

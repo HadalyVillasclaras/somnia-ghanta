@@ -37,4 +37,9 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<RegisterApiResponse> register(String name, String email, String password, String passwordConfirmation) {
     return _authDatasource.register(name, email, password, passwordConfirmation);
   }
+
+  @override
+  Future<bool> verifyPassword(String email, String password) {
+    return _authDatasource.verifyPassword(email, password);
+  }
 }

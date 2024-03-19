@@ -59,7 +59,7 @@ class CoursesDatasourceImpl extends CoursesDatasource {
 
       final enrolledCourses = response.data['data'];
       enrolledCourses.forEach((course) {
-        print(course['id']);
+        // print(course['id']);
       });
 
       // List<dynamic> coursesList = await Future.wait(

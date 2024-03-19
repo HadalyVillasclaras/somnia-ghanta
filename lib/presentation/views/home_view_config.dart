@@ -24,7 +24,6 @@ class _HomeViewConfigState extends State<HomeViewConfig> {
 
   @override
   Widget build(BuildContext context) {
-    final sizes = MediaQuery.of(context).size;
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
