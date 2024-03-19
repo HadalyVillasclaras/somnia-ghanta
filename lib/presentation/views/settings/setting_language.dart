@@ -79,15 +79,6 @@ class _SettingLanguageState extends State<SettingLanguage> {
           ),
         ),
         const Divider(height: 0.0),
-        const SizedBox(height: 40,),
-        FilledButton(
-           style: ElevatedButton.styleFrom(
-              minimumSize: const Size(double.infinity, 50),
-            ),
-          onPressed: (){}, 
-          child: const Text('Guardar cambios'))
-
-
       ],
     );
   }

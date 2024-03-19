@@ -13,9 +13,9 @@ class AuthScreen extends ConsumerWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.delayed(const Duration(seconds: 2));
 
-      final authStatus = ref.watch(authProvider).authStatus;
       
       if (context.mounted) {
+      final authStatus = ref.watch(authProvider).authStatus;
         if (authStatus == AuthStatus.authenticated) {
           ref
               .read(coursesProvider.notifier)

@@ -138,7 +138,8 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                     setState(() {
                       _obscureText = !_obscureText;
                     });
-                  })),
+                  })
+              ),
         ),
         const SizedBox(height: 40),
         ElevatedButton(

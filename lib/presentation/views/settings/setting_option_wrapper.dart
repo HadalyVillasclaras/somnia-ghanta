@@ -19,8 +19,11 @@ class SettingOptionWrapper extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: false,
-        leadingWidth: 100,
-        leading: TextButton.icon(
+        leadingWidth: 200,
+        leading: Row(
+          mainAxisAlignment: MainAxisAlignment.start, 
+          children: [
+          TextButton.icon(
             onPressed: onBack,
             icon: const Icon(
               Icons.arrow_back_ios,
@@ -28,7 +31,7 @@ class SettingOptionWrapper extends StatelessWidget {
               size: 15,
             ),
             label: const Text('Volver', style: TextStyle(color: Colors.grey)),
-          ),
+          ),])
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),

@@ -13,10 +13,7 @@ class RegisterScreen extends ConsumerWidget {
     final sizes = MediaQuery.of(context).size;
 
     ref.listen(authProvider, (prev, next) {
-      print('ENTRA');
-
       if(next.user != null && next.authStatus == AuthStatus.unauthenticated) {
-        print('gracias por registrarte. puedes ir al login');
 
         // dialog
         showDialog(

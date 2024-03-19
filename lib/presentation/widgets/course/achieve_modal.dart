@@ -21,9 +21,15 @@ class AchievModal extends ConsumerWidget {
   final bool isLast;
   final Subphase subphase;
 
+  static int _flowerImgIndex = 0; 
+
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final authProv = ref.watch(authProvider);
+    
+    _flowerImgIndex = (_flowerImgIndex + 1) % 8; 
+    String flowerImgPath = 'assets/images/flores_logros/flor${_flowerImgIndex + 1}.png';
+
     return Dialog(
       backgroundColor: Theme.of(context).colorScheme.background,
       elevation: 0,
@@ -33,15 +39,19 @@ class AchievModal extends ConsumerWidget {
         padding: const EdgeInsets.all(25),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min, // Making the dialog content take only the space it needs
+          mainAxisSize: MainAxisSize.min, 
           children: [
             CircleAvatar(
               backgroundColor: Theme.of(context).colorScheme.primary,
               radius: 40,
-              child: Icon(
-                Icons.circle,
-                color: Theme.of(context).colorScheme.primary,
-                size: 30,
+              child: Padding(
+                padding: const EdgeInsets.all(3), 
+                child: ClipOval(
+                  child: Image.asset(
+                    flowerImgPath, 
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 20),

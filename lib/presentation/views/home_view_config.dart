@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ghanta/presentation/views/settings/setting_account.dart';
+import 'package:ghanta/presentation/views/settings/account/setting_account.dart';
 import 'package:ghanta/presentation/views/settings/setting_help.dart';
 import 'package:ghanta/presentation/views/settings/setting_language.dart';
 import 'package:ghanta/presentation/views/settings/setting_option_wrapper.dart';
@@ -89,17 +89,22 @@ class HomeConfigList extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: false,
-        leadingWidth: 100,
-        leading: TextButton.icon(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.grey,
-            size: 15,
-          ),
-          label: const Text('Volver', style: TextStyle(color: Colors.grey)),
+        leadingWidth: 200,
+        leading: Row(
+          mainAxisAlignment: MainAxisAlignment.start, 
+          children: [
+            TextButton.icon(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.grey,
+                size: 15,
+              ),
+              label: const Text('Volver', style: TextStyle(color: Colors.grey)),
+            ),
+          ],
         ),
       ),
       body: Padding(
