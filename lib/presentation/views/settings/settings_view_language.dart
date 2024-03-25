@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 enum LanguageOption { spanish, catalan }
 
-class SettingLanguage extends StatefulWidget {
-  const SettingLanguage({super.key});
+class SettingsViewLanguage extends StatefulWidget {
+  const SettingsViewLanguage({super.key});
 
   @override
-  State<SettingLanguage> createState() => _SettingLanguageState();
+  State<SettingsViewLanguage> createState() => _SettingsViewLanguageState();
 }
 
-class _SettingLanguageState extends State<SettingLanguage> {
+class _SettingsViewLanguageState extends State<SettingsViewLanguage> {
   LanguageOption? _lang = LanguageOption.spanish;
 
   @override

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 
-class SettingHelp extends StatelessWidget {
-  const SettingHelp({super.key});
+class SettingsViewHelp extends StatelessWidget {
+  const SettingsViewHelp({super.key});
 
   @override
   Widget build(BuildContext context) {

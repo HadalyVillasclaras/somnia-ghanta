@@ -3,8 +3,8 @@ import 'package:ghanta/presentation/widgets/shared/delete_account_modal.dart';
 import 'package:ghanta/presentation/views/settings/account/change_password_form.dart';
 
 
-class SettingAccount extends StatelessWidget {
-  const SettingAccount({super.key});
+class SettingsViewAccount extends StatelessWidget {
+  const SettingsViewAccount({super.key});
 
   @override
   Widget build(BuildContext context) {

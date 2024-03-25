@@ -108,8 +108,8 @@ const List<String> text16Responsabilidad = [
 
 //create and array of strings for each paragraph:
 
-class SettingPrivacy extends StatelessWidget {
-  const SettingPrivacy({super.key});
+class SettingsViewPrivacy extends StatelessWidget {
+  const SettingsViewPrivacy({super.key});
 
   @override
   Widget build(BuildContext context) {

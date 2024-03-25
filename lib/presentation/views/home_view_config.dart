@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ghanta/presentation/views/settings/account/setting_account.dart';
-import 'package:ghanta/presentation/views/settings/setting_help.dart';
-import 'package:ghanta/presentation/views/settings/setting_language.dart';
+import 'package:ghanta/presentation/views/settings/account/settings_view_account.dart';
+import 'package:ghanta/presentation/views/settings/settings_view_help.dart';
+import 'package:ghanta/presentation/views/settings/settings_view_language.dart';
 import 'package:ghanta/presentation/views/settings/setting_option_wrapper.dart';
-import 'package:ghanta/presentation/views/settings/setting_privacy.dart';
+import 'package:ghanta/presentation/views/settings/settings_view_privacy.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
 
 class HomeViewConfig extends StatefulWidget {
@@ -46,22 +46,22 @@ class _HomeViewConfigState extends State<HomeViewConfig> {
                 HomeConfigList(onChangeIndex: _changeIndex),
                 SettingOptionWrapper(
                   title: 'Mi cuenta',
-                  child: const SettingAccount(),
+                  child: const SettingsViewAccount(),
                   onBack: () => _changeIndex(0),
                 ),
                 SettingOptionWrapper(
                   title: 'Idioma',
-                  child: const SettingLanguage(),
+                  child: const SettingsViewLanguage(),
                   onBack: () => _changeIndex(0),
                 ),
                 SettingOptionWrapper(
                   title: 'Privacidad',
-                  child: const SettingPrivacy(),
+                  child: const SettingsViewPrivacy(),
                   onBack: () => _changeIndex(0),
                 ),
                 SettingOptionWrapper(
                   title: 'Ayuda',
-                  child: const SettingHelp(),
+                  child: const SettingsViewHelp(),
                   onBack: () => _changeIndex(0),
                 ),
               ],
