@@ -48,17 +48,18 @@ dependencies:
   formz: ^0.6.1
   go_router: ^11.1.2
   google_fonts: ^4.0.4
+  intl: ^0.18.0
   salomon_bottom_bar: ^3.3.2
   shared_preferences: ^2.2.2
   shimmer: ^3.0.0
   smooth_page_indicator: ^1.1.0
   super_tooltip: ^2.0.7
+  table_calendar: ^3.0.9
 
 dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-  intl: ^0.18.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -78,7 +79,6 @@ flutter:
     - assets/actividades/
     - assets/icons/
     - assets/icons/nav/
-
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

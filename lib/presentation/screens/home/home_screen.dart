@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/presentation/screens/_presentation.dart';
+import 'package:ghanta/presentation/views/home_view_calendar.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -17,7 +18,8 @@ class HomeScreen extends ConsumerWidget {
         index: tabIndex,
         children: const [
           HomeView(), 
-          HomeProfileView(),
+          // HomeProfileView(),
+          HomeCalendarView(),
           HomeCoursesView(), 
           HomeViewConfig(), 
           ]),
