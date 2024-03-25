@@ -18,7 +18,7 @@ class SettingAccount extends StatelessWidget {
         const Divider(height: 0.0),
         const ListTile(
           leading: Icon(Icons.email_outlined),
-          title: Text('user@gmail.com'),
+          title: Text('javier35@example.net'),
         ),
         const Divider(height: 0.0),
         const ListTile(

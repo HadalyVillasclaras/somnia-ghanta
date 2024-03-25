@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/presentation/providers/auth/auth_provider.dart';
+import 'package:ghanta/presentation/providers/auth/change_password_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ghanta/presentation/providers/_providers.dart';
 import 'package:ghanta/presentation/providers/auth/login_form_provider.dart';
@@ -99,11 +100,10 @@ class _EnterPasswordModalState extends ConsumerState<EnterPasswordModal> {
 
   @override
   Widget build(BuildContext context) {
-    final loginForm = ref.watch(loginFormProvider);
+    final changePassState = ref.watch(changePasswordProvider);
+    final changePassNotifier = ref.watch(changePasswordProvider.notifier);
 
-    ref.listen(authProvider, ((previous, next) { 
-    if (next.errorMessage.isEmpty  ) return;
-    }));
+
     return Dialog(
       backgroundColor: Theme.of(context).colorScheme.background,
       elevation: 0,
@@ -134,22 +134,21 @@ class _EnterPasswordModalState extends ConsumerState<EnterPasswordModal> {
             ),
             TextField(
               obscureText: _obscureText,
-              onChanged: (value) {},
+              onChanged: (value) {changePassNotifier.onCurrentPasswordChange(value);},
               decoration: InputDecoration(
-                  hintText: 'Contraseña',
-                  prefixIcon: const Icon(Icons.lock_outline),
-                  suffixIcon: IconButton(
-                  icon: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off),
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  }),
-                  errorText:
-                    loginForm.password.isNotValid && loginForm.isFormPosted  
-                        ? 'Contraseña no válida'
-                        : null,
+                hintText: 'Contraseña',
+                prefixIcon: const Icon(Icons.lock_outline),
+                suffixIcon: IconButton(
+                icon: Icon(
+                    _obscureText ? Icons.visibility : Icons.visibility_off),
+                onPressed: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                }),
+                errorText: (!changePassState.isPosting && changePassState.isFormPosted && !changePassState.editedFieldsAfterSubmit.contains('currentPassword') && !changePassState.isCurrentPassValid)
+                  ? 'La contraseña no es correcta.'
+                  : null,
               ),
                   
             ),
@@ -165,10 +164,20 @@ class _EnterPasswordModalState extends ConsumerState<EnterPasswordModal> {
                       foregroundColor: Theme.of(context).colorScheme.primary,
                     ),
                     onPressed: () {
-                      // ref.read(authProvider.notifier).logout();
-                      // Future.microtask(() => context.go('/login'));
+                      ref.read(changePasswordProvider.notifier).onFormSubmit((isValidPass) {
+                        if (isValidPass) {
+                          ref.read(authProvider.notifier).logout();
+                          Future.microtask(() => context.go('/login'));
+                        }
+                      });
                     },
-                    child: const Text('Eliminar cuenta'),
+                    child: changePassState.isPosting
+                      ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(),
+                      )
+                      : const Text('Eliminar cuenta'),
                   ),
                 ),
                 const SizedBox(height: 10),

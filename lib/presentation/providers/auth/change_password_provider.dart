@@ -108,18 +108,23 @@ class ChangePassFormNotifier extends StateNotifier<ChangePassFormState> {
   }
 
 
-  Future<void> onFormSubmit() async {
+  Future<void> onFormSubmit([Function(dynamic)? onCompletion]) async {
      _touchEveryField();
 
     state = state.copyWith(isPosting: true);
-
     final isValidPass = await verifyPasswordCallback(state.currentPassword);
-  print(isValidPass);
+    
+    await Future.delayed( const Duration(milliseconds: 1000));
+    print('isValidPass $isValidPass');
     state = state.copyWith(
       isPosting: false,
       isFormPosted: true,
       isCurrentPassValid: isValidPass
     );
+
+    if (onCompletion != null) {
+    onCompletion(isValidPass);
+  }
   }
 
   _touchEveryField() {
