@@ -24,32 +24,16 @@ class FeedbackScreen extends StatelessWidget {
           child: SafeArea(
             child: Column(
               children: [
-                Text('¿Cómo te sientes hoy?',
-                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: ColorsTheme.primaryColorBlue)),
-                SizedBox(height: MediaQuery.sizeOf(context).height * 0.05),
+                Text('¿Cómo te sientes hoy?', style: Theme.of(context).textTheme.headlineSmall!),
+                SizedBox(height: 20),
                 const FeedbackOptions(),
-                SizedBox(height: MediaQuery.sizeOf(context).height * 0.05),
+                SizedBox(height: 20),
                 const FeedbackComment(),
-                SizedBox(height: MediaQuery.sizeOf(context).height * 0.05),
-                FilledButton(
+                SizedBox(height: 20),
+                ElevatedButton(
                   onPressed: () {},
-                  style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all(
-                          const Size(double.infinity, 0)),
-                      backgroundColor: MaterialStateProperty.all(
-                          ColorsTheme.primaryColorBlue),
-                      padding: MaterialStateProperty.all(
-                          const EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 30)),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)))),
-                  child: Text(
-                    'Guardar',
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
+                  style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 50)),
+                  child: const Text('Guardar'),
                 ),
               ],
             ),
@@ -115,15 +99,15 @@ class _FeedbackOptionsState extends State<FeedbackOptions> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.sizeOf(context).height * 0.25 + 20,
+      height: MediaQuery.sizeOf(context).height * 0.25 + 90,
       child: GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 5,
         ),
-        itemCount: 11,
+        itemCount: 16,
         itemBuilder: (context, index) => Container(
           padding: const EdgeInsets.fromLTRB(5, 5, 0, 0),
           decoration: BoxDecoration(
@@ -142,7 +126,7 @@ class _FeedbackOptionsState extends State<FeedbackOptions> {
             child: Align(
               alignment: Alignment.center,
               child: Image.asset(
-                'assets/icons/emoji-${index + 1}.png',
+                'assets/icons/emotions/emoji-${index + 1}.png',
                 fit: BoxFit.cover,
                 width: 70,
                 height: 70,

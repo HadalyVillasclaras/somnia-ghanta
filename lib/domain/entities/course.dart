@@ -39,8 +39,6 @@ class Course {
     this.category,
   });
 
-  /// Metodo para devolver el titulo dependiendo del idioma
-
   String getTitle({String lang = 'es'}) {
     if (lang == 'ca') {
       return titleCa;
@@ -50,7 +48,6 @@ class Course {
   }
 
   /// Metodo para devolver la descripcion dependiendo del idioma
-
   String getDescription({String lang = 'es'}) {
     if (lang == 'ca') {
       return descriptionCa;
