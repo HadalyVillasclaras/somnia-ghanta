@@ -1,6 +1,6 @@
 class Feedback {
   final int id;
-  final String activityId;
+  final int activityId;
   final String activityName;
   final String userId;
   final String userName;

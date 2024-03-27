@@ -6,7 +6,7 @@ class FeedbackRepositoryImpl extends FeedbackRepository {
   FeedbackRepositoryImpl(this._datasource);
 
   @override
-  Future<(List<Feedback>, String)> getUserFeedback(String userToken) {
+  Future<List<Feedback>> getUserFeedback(String userToken) {
     return _datasource.getUserFeedback(userToken);
   }
   

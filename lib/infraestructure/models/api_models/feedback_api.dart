@@ -3,7 +3,7 @@ class FeedbackApiModel {
     // final CurrentCourseStatus? currentCourseStatus;
 
     final int id;
-    final String activityId;
+    final int activityId;
     final String activityName;
     final int userId;
     final String userName;
@@ -23,17 +23,14 @@ class FeedbackApiModel {
     });
 
     factory FeedbackApiModel.fromJson(Map<String, dynamic> json) => FeedbackApiModel(
-        id: json["id"],
-        activityId: json["activity_id"],
-        activityName: json["activity_name"],
-        userId: json["user_id"],
-        userName: json["user_name"],
-        feedback: json["feedback"],
-        date: DateTime.parse(json["date"]),
-        emotion: json["emotion"],
-
-        //phases: List<PhaseApiModel>.from(json["phases"].map((x) => PhaseApiModel.fromJson(x))),
-        //currentCourseStatus: json["current_course_status"] == null ? null : CurrentCourseStatus.fromJson(json["current_course_status"]),
+      id: json["id"],
+      activityId: json["activity_id"],
+      activityName: json["activity_name"],
+      userId: json["user_id"],
+      userName: json["user_name"],
+      feedback: json["feedback"],
+      date: DateTime.parse(json["date"]),
+      emotion: json["emotion"],
     );
 
 }
