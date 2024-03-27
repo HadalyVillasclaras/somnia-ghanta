@@ -71,7 +71,10 @@ class _ChangePasswordFormState extends ConsumerState<ChangePasswordForm> {
             obscureText: _obscurePass2,
             decoration: InputDecoration(
                 hintText: 'Nueva contraseña',
-                prefixIcon: const Icon(Icons.lock_outline),
+                prefixIcon: Transform.rotate(
+                  angle: 90 , // Rotate the icon 90 degrees counter-clockwise
+                  child: const Icon(Icons.key),
+                ),
                 suffixIcon: IconButton(
                     icon: Icon(_obscurePass2
                         ? Icons.visibility
@@ -89,7 +92,10 @@ class _ChangePasswordFormState extends ConsumerState<ChangePasswordForm> {
             obscureText: _obscurePass3,
             decoration: InputDecoration(
                 hintText: 'Confirma nueva contraseña',
-                prefixIcon: const Icon(Icons.lock_outline),
+                 prefixIcon: Transform.rotate(
+                  angle: 90 , // Rotate the icon 90 degrees counter-clockwise
+                  child: const Icon(Icons.key),
+                ),
                 suffixIcon: IconButton(
                     icon: Icon(_obscurePass3
                         ? Icons.visibility

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/presentation/views/calendar/calendar_custom_styles.dart';
 import 'package:ghanta/presentation/views/calendar/event.dart';
 import 'package:intl/intl.dart';
@@ -6,9 +7,12 @@ import 'package:table_calendar/table_calendar.dart';
 import 'calendar_builders.dart';
 
 class CalendarView extends StatefulWidget {
+  final List<UserFeedback> feedbacks;
+
   CalendarView({
-    super.key,
-  });
+    Key? key,
+    required this.feedbacks, 
+  }) : super(key: key);
 
   @override
   State<CalendarView> createState() => _CalendarViewState();
@@ -49,6 +53,8 @@ void addEvent(String eventName) {
 
   @override
   void initState() {
+      widget.feedbacks.forEach((element) {print(element);});
+
     super.initState();
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));

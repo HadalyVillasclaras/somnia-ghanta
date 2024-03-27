@@ -16,6 +16,11 @@ class SettingsViewAccount extends StatelessWidget {
       children: [
         const SizedBox(height: 80),
         const Divider(height: 0.0),
+         const ListTile(
+          leading: Icon(Icons.person),
+          title: Text('Nombre user'),
+        ),
+        const Divider(height: 0.0),
         const ListTile(
           leading: Icon(Icons.email_outlined),
           title: Text('javier35@example.net'),

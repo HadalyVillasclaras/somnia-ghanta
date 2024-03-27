@@ -32,6 +32,11 @@ Feedback({
     'date': date, 
     'emotion': emotion,
   };
+  
+  @override
+  String toString() {
+    return 'Feedback{id: $id, activityId: $activityId, activityName: $activityName, userId: $userId, userName: $userName, feedback: $feedback, date: $date, emotion: $emotion}';
+  }
 
   // static Role roleFromJson(String role) {
   //   switch (role) {

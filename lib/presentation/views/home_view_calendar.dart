@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ghanta/config/constants/enviroment.dart';
+import 'package:ghanta/domain/_domain.dart';
+import 'package:ghanta/presentation/providers/feedback_provider.dart';
 import 'package:ghanta/presentation/views/calendar/calendar_view.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
 
 class HomeCalendarView extends ConsumerWidget {
   static const name = 'calendar_screen';
   const HomeCalendarView({super.key});
 
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     initializeDateFormatting('es_ES', null);
-
+    final feedbacksAsyncValue = ref.watch(userFeedbackProvider);
     return Scaffold(
       appBar: AppBar(
        automaticallyImplyLeading: false,
@@ -32,7 +34,18 @@ class HomeCalendarView extends ConsumerWidget {
             label: const Text('Volver', style: TextStyle(color: Colors.grey)),
           ),])
       ),
-      body: CalendarView(),
+      body: _buildBody(feedbacksAsyncValue)
+    );
+  }        
+}
+
+Widget _buildBody(AsyncValue<List<UserFeedback>> feedbacksAsyncValue) {
+    return feedbacksAsyncValue.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => Center(child: Text('Error: $error')),
+      data: (feedbacks) {
+        
+        return CalendarView(feedbacks: feedbacks);
+      },
     );
   }
-}

@@ -18,6 +18,7 @@ class HomeScreen extends ConsumerWidget {
         index: tabIndex,
         children: const [
           HomeView(), 
+          //esto causa problemas porque todas las views estan cargando a la vez, incluida las calls a la api....
           // HomeProfileView(),
           HomeCalendarView(),
           HomeCoursesView(), 

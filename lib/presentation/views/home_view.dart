@@ -4,10 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/config/constants/enviroment.dart';
 import 'package:ghanta/presentation/providers/auth/auth_provider.dart';
 import 'package:ghanta/presentation/providers/courses_provider.dart';
-import 'package:ghanta/presentation/providers/feedback_provider.dart';
 import 'package:ghanta/presentation/widgets/home/home_body.dart';
 import 'package:ghanta/presentation/widgets/home/home_header.dart';
 import 'package:go_router/go_router.dart';
+
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
@@ -22,15 +22,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
   void initState() {
     super.initState();
     ref.read(coursesProvider.notifier).getUserCourses(Environment.apiToken);
-    ref.read(feedbackProvider.notifier).getUserFeedback(Environment.apiToken);
-
   }
 
   @override
   Widget build(BuildContext context) {
     final sizes = MediaQuery.of(context).size;
     final controller = ScrollController();
+
     final courses = ref.watch(coursesProvider);
+    
     controller.addListener(() {
       if (controller.offset > controller.position.maxScrollExtent - (sizes.height * 0.05) &&
           !controller.position.outOfRange  && controller.position.userScrollDirection == ScrollDirection.reverse

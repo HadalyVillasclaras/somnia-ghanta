@@ -1,28 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ghanta/config/constants/enviroment.dart';
 import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/infraestructure/datasources/feedback_datasource_impl.dart';
+import 'package:ghanta/presentation/providers/auth/auth_provider.dart';
 
-final feedbackProvider =
-    StateNotifierProvider<FeedbackNotifier, List<Feedback>>((ref) {
-  return FeedbackNotifier();
+final userFeedbackProvider = FutureProvider<List<UserFeedback>>((ref) async {
+  final feedbackDatasource = FeedbackDatasourceImpl();
+
+  final authState = ref.read(authProvider);
+  final userToken = Environment.apiToken;
+  final userId = authState.user?.id; 
+
+    if (userId == null) {
+      throw Exception("User not logged in");
+    }
+
+  final feedbacks = await feedbackDatasource.getUserFeedback(userId, userToken);
+
+  return feedbacks;
 });
-
-class FeedbackNotifier extends StateNotifier<List<Feedback>> {
-  FeedbackNotifier() : super(<Feedback>[]);
-
-  final FeedbackDatasource _feedbackDatasource = FeedbackDatasourceImpl();
-
-   bool isLoading = true;
-
-  Future<void> getUserFeedback(String userToken) async {
-    isLoading = true;
-    final feedbacks = await _feedbackDatasource.getUserFeedback(userToken);
-    state = feedbacks; 
-    isLoading = false;
-  }
-
-
-
-
-
-}
