@@ -74,14 +74,13 @@ class AuthNotifier extends StateNotifier<AuthState> {
         errorMessage: null,
       );
 
-      print('registrado!');
     } on WrongCredentialsError {
       print('onwrong credentials');
 
       state = state.copyWith(
-          authStatus: AuthStatus.unauthenticated,
-          user: null,
-          errorMessage: 'Credenciales incorrectas');
+        authStatus: AuthStatus.unauthenticated,
+        user: null,
+        errorMessage: 'Credenciales incorrectas');
     } on CustomError catch (e) {
       state = state.copyWith(
         authStatus: AuthStatus.unauthenticated,
@@ -128,6 +127,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       }
     }
 
+    await keyValueStorageService.removeKey(token);
     await keyValueStorageService.removeKey('token');
     await keyValueStorageService.removeKey('user');
 
@@ -146,7 +146,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
       user: user,
       errorMessage: 'Bienvenido a Ghanta');
   }
-  
 }
 
 // --------- Estado

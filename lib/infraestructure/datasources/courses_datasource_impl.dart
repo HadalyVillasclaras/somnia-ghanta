@@ -84,4 +84,35 @@ class CoursesDatasourceImpl extends CoursesDatasource {
       }
     }
   }
+
+
+  @override
+  Future<List<Course>> getNewUserCourses(String userToken) async {
+    try {
+      final token =
+          await KeyValueStorageServiceImpl().getValue<String>('token') ?? '';
+      final response = await ApiConfig.dio.get('/users/6/enrolledCourses',
+          options: Options(headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          }));
+
+      final enrolledCourses = response.data['data'];
+      final coursesApiModel = List<CourseApiModel>.from(
+        enrolledCourses.map((x) => CourseApiModel.fromJson(x)));
+      
+      final courses = coursesApiModel.map((e) => CoursesMapper.coursesApiModelToEntity(e)).toList();
+      
+      return courses;
+
+    } on DioException catch (e) {
+      if (e.response!.statusCode == 404) {
+        throw NetworkError();
+      } else {
+        rethrow;
+      }
+    }
+  }
+
+
 }

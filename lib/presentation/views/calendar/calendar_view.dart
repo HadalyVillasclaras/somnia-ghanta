@@ -53,7 +53,7 @@ void addEvent(String eventName) {
 
   @override
   void initState() {
-      widget.feedbacks.forEach((element) {print(element);});
+      widget.feedbacks.forEach((element) {});
 
     super.initState();
     _selectedDay = _focusedDay;

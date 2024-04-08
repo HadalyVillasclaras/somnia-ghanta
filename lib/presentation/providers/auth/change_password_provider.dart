@@ -115,7 +115,6 @@ class ChangePassFormNotifier extends StateNotifier<ChangePassFormState> {
     final isValidPass = await verifyPasswordCallback(state.currentPassword);
     
     await Future.delayed( const Duration(milliseconds: 1000));
-    print('isValidPass $isValidPass');
     state = state.copyWith(
       isPosting: false,
       isFormPosted: true,

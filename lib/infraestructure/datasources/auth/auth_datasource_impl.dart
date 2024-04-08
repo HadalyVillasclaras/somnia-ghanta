@@ -54,9 +54,6 @@ class AuthDatasourceImpl extends AuthDatasource {
       final user = UserMapper()
           .userApiToEntity(LoginApiResponse.fromJson(response.data));
 
-      // if (user.role != Role.roleUser) {
-      //   throw WrongCredentialsError();
-      // }
       return user;
     } on DioException catch (e) {
       if (e.response?.statusCode == 401 ||

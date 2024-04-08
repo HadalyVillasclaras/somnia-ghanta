@@ -21,4 +21,10 @@ class CoursesRepositoryImpl extends CoursesRepository {
     return _datasource.getUserCourses(userToken);
   }
   
+
+    @override
+  Future<List<Course>> getNewUserCourses(String userToken) {
+    return _datasource.getNewUserCourses(userToken);
+  }
+
 }

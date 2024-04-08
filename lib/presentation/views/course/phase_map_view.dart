@@ -111,7 +111,6 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
                   // return  Container(
                   //   color:  i == 0 ? Colors.amber  :  Colors.indigoAccent ,
                   // );
-                  print(subphase.type);
 
                   return subphase.type == SubphaseType.normal
                       ? NormalLevel(

@@ -10,4 +10,7 @@ abstract class CoursesDatasource {
 
   Future<(List<Course>, String)> getUserCourses(String userToken);
 
+  Future<List<Course> > getNewUserCourses(String userToken);
+
+
 }

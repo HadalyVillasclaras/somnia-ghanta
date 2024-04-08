@@ -4,8 +4,7 @@ import 'package:ghanta/domain/entities/phase.dart';
 import 'package:ghanta/domain/entities/subphase.dart';
 import 'package:ghanta/infraestructure/datasources/courses_datasource_impl.dart';
 
-final coursesProvider =
-    StateNotifierProvider<CoursesNotifier, List<Course>>((ref) {
+final coursesProvider = StateNotifierProvider<CoursesNotifier, List<Course>>((ref) {
   return CoursesNotifier();
 });
 
@@ -22,7 +21,6 @@ class CoursesNotifier extends StateNotifier<List<Course>> {
 
     isLoading = false;
   }
-  
 
   Future<void> getUserCourses(String userToken) async {
     isLoading = true;
@@ -33,14 +31,14 @@ class CoursesNotifier extends StateNotifier<List<Course>> {
   }
 
   Future<void> getCourseById2(String id) async {
-  isLoading = true;
-  final courses = await _coursesDatasource.getCourse(id);
-  state = [courses.$1]; 
-  isLoading = false;
-}
+    isLoading = true;
+    final courses = await _coursesDatasource.getCourse(id);
+    state = [courses.$1]; 
+    isLoading = false;
+  }
 
   Course getCourseById(int courseId) {
- return state.firstWhere((Course course) => course.id == courseId); // asi no funcion xk no lo setea
+    return state.firstWhere((Course course) => course.id == courseId); // asi no funcion xk no lo setea
   }
 
   Phase getCurrentPhaseByCourseId(int courseId) {
@@ -53,9 +51,4 @@ class CoursesNotifier extends StateNotifier<List<Course>> {
     final phase = course.phases[phaseId];
     return phase.subphases.where((element) => element.id == subphaseId).first;
   }
-
-
-  
-
-
 }
