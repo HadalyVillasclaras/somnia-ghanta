@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/presentation/views/calendar/calendar_custom_styles.dart';
 import 'package:ghanta/presentation/views/calendar/event.dart';
@@ -36,7 +35,6 @@ class _CalendarViewState extends State<CalendarView> {
     super.initState();
 
     _organizeFeedbacks();
-    printFeedbackEvents();
 
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
@@ -56,12 +54,6 @@ class _CalendarViewState extends State<CalendarView> {
       feedbacksByDate = map;
     });
   }
-
-  void printFeedbackEvents() {
-    print('FEEDBACK EVENTS');
-      print(feedbacksByDate);
-  }
-
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
@@ -90,7 +82,7 @@ class _CalendarViewState extends State<CalendarView> {
       builder: (context) {
         return AlertDialog(
           scrollable: true,
-          title: Text("Registro:"),
+          title: Text("Registro de crisis:"),
           content: Padding(
             padding: EdgeInsets.all(8),
             child: TextField(
@@ -111,9 +103,6 @@ class _CalendarViewState extends State<CalendarView> {
       },
     );
   }
-
-
-
 
   //devuelve la lista de eventos que haga match con el DateTime  
   List<Event>_getEventsForDay(DateTime day) {
@@ -152,7 +141,10 @@ class _CalendarViewState extends State<CalendarView> {
               DateTime dateOnly = DateTime(date.year, date.month, date.day);
               // it checks on every month change
               if (feedbacksByDate.containsKey(dateOnly)) {
-                return FeedbacksMarkerBuilder(date: date);
+                List<int> emotions = feedbacksByDate[dateOnly]!
+                .expand((feedback) => feedback.feedbackDetails.map((detail) => detail.emotion))
+                .toList();
+                return FeedbacksMarkerBuilder(date: date, emotions: emotions);
               }
             },
           ),
@@ -161,7 +153,7 @@ class _CalendarViewState extends State<CalendarView> {
           },
         ),
         Container(
-          color: Color.fromARGB(255, 6, 28, 67),
+          color: const Color.fromARGB(255, 6, 28, 67),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
           child: const Text('Notas', style:TextStyle(color: Colors.white),),
         ),
@@ -247,6 +239,14 @@ class EmotionsField extends StatelessWidget {
   final DateTime? _selectedDay;
   final Map<DateTime, List<UserFeedback>> feedbacksByDate;
 
+  String? _getEmojiIconPath(int emotionNumber) { 
+    if (emotionNumber >= 1 && emotionNumber <= 16) {
+      return 'assets/icons/emotions/emoji-$emotionNumber.png';
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -254,12 +254,16 @@ class EmotionsField extends StatelessWidget {
       child: Wrap(
         children: _selectedDay != null && feedbacksByDate.containsKey(DateTime(_selectedDay!.year, _selectedDay!.month, _selectedDay!.day))
         ? feedbacksByDate[DateTime(_selectedDay!.year, _selectedDay!.month, _selectedDay!.day)]!
-            .expand((feedback) => feedback.feedbackDetails.map((detail) => Padding(
+          .expand((feedback) => feedback.feedbackDetails.map((detail) {
+              final emojiIconPath = _getEmojiIconPath(detail.emotion);
+              return emojiIconPath != null 
+              ? Padding(
                 padding: const EdgeInsets.all(1.0),
-                child: Text(detail.emotion.toString()),
-              )))
+                child: Image.asset(emojiIconPath, width: 50, height: 50),) 
+              : const SizedBox.shrink();  
+            }))
             .toList()
-        : [Text('')],
+        : [const Text('')],
       ),
     );
   }

@@ -22,7 +22,6 @@ class FeedbackDatasourceImpl extends FeedbackDatasource {
       final feedbackApiModelList = List<FeedbackApiModel>.from(
           response.data['data'].map((x) => FeedbackApiModel.fromJson(x)));
 
-      // final feedbacks = feedbackApiModelList.map((e) => FeedbackMapper.feedbackApiModelToEntity(e)).toList();   
       final userFeedbacks = UserFeedbackMapper.fromFeedbackApiModelList(feedbackApiModelList); 
       return userFeedbacks;
     } on DioException catch (e) {

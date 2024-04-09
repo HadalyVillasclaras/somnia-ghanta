@@ -18,3 +18,5 @@ class FeedbackDetail {
     required this.emotion,
   });
 }
+
+

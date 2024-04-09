@@ -8,8 +8,8 @@ export 'package:ghanta/domain/datasources/feedback/feedback_datasource.dart';
 
 
 export 'package:ghanta/domain/entities/course.dart';
-export 'package:ghanta/domain/entities/user_feedback.dart';
-export 'package:ghanta/domain/entities/feedback.dart';
+export 'package:ghanta/domain/entities/feedback/user_feedback.dart';
+export 'package:ghanta/domain/entities/feedback/feedback.dart';
 
 
 

@@ -11,7 +11,7 @@ class SelectedDayBuilder extends StatelessWidget {
       alignment: Alignment.bottomLeft,
       padding: const EdgeInsets.only(left: 3, bottom: 0),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.blueGrey, width: 2),
+        border: Border.all(color: Color.fromARGB(255, 6, 28, 67), width: 2),
         shape: BoxShape.rectangle,
       ),
       child: Text(
@@ -96,24 +96,34 @@ class OutsideDayBuilder extends StatelessWidget {
 
 class FeedbacksMarkerBuilder extends StatelessWidget {
   final DateTime date;
+  final List<int> emotions;
 
   const FeedbacksMarkerBuilder(
-    {Key? key, required this.date})
+    {Key? key, required this.date, required this.emotions,})
     : super(key: key);
+
+  String? _getEmojiIconPath(int emotionNumber) { 
+    if (emotionNumber >= 1 && emotionNumber <= 16) {
+      return 'assets/icons/emotions/emoji-$emotionNumber.png';
+    } else {
+      return null;
+    }
+  }
 
 @override
   Widget build(BuildContext context) {
     return Positioned(
       right: 3,
       top: 4,
-      child: Container(
-        width: 10,
-        height: 10,
-        margin: const EdgeInsets.symmetric(horizontal: 1.0),
-        decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 216, 86, 6), // Color of the marker
-        ),
-      ),
+      child: Wrap(
+      direction: Axis.horizontal,
+      children: emotions.map((emotion) {
+        final path = _getEmojiIconPath(emotion);
+        return path != null 
+        ? Image.asset(path, width: 15, height: 15) 
+        : const SizedBox.shrink();
+      }).toList(),
+      )
     );
   }
 }
