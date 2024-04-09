@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/presentation/views/calendar/calendar_custom_styles.dart';
 import 'package:ghanta/presentation/views/calendar/event.dart';
+import 'package:ghanta/presentation/views/calendar/feedback_event.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'calendar_builders.dart';
@@ -9,7 +11,7 @@ import 'calendar_builders.dart';
 class CalendarView extends StatefulWidget {
   final List<UserFeedback> feedbacks;
 
-  CalendarView({
+  const CalendarView({
     Key? key,
     required this.feedbacks, 
   }) : super(key: key);
@@ -21,10 +23,45 @@ class CalendarView extends StatefulWidget {
 class _CalendarViewState extends State<CalendarView> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  // Store the events
+
   Map<DateTime, List<Event>> events = {};
-  late final ValueNotifier<List<Event>> _selectedEvents;
   final TextEditingController _eventController = TextEditingController();
+  late final ValueNotifier<List<Event>> _selectedEvents;
+  
+  Map<DateTime, List<UserFeedback>> feedbacksByDate = {};
+  
+  // INIT STATE
+  @override
+  void initState() {
+    super.initState();
+
+    _organizeFeedbacks();
+    printFeedbackEvents();
+
+    _selectedDay = _focusedDay;
+    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+  }
+
+  void _organizeFeedbacks() {
+    final Map<DateTime, List<UserFeedback>> map = {};
+    for (var feedback in widget.feedbacks) {
+      DateTime date = DateTime(feedback.date.year, feedback.date.month, feedback.date.day);
+      if (map.containsKey(date)) {
+        map[date]?.add(feedback);
+      } else {
+        map[date] = [feedback];
+      }
+    }
+    setState(() {
+      feedbacksByDate = map;
+    });
+  }
+
+  void printFeedbackEvents() {
+    print('FEEDBACK EVENTS');
+      print(feedbacksByDate);
+  }
+
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
@@ -32,10 +69,10 @@ class _CalendarViewState extends State<CalendarView> {
       _focusedDay = focusedDay; // Update the focused day to the selected day
       _selectedEvents.value = _getEventsForDay(selectedDay); // Update the events for the selected day
     });
-}
-void addEvent(String eventName) {
-    final event = Event(title: eventName); 
+  }
 
+  void addEvent(String eventName) {
+    final event = Event(title: eventName); 
     setState(() {
       if (events[_focusedDay] != null) {
         events[_focusedDay]!.add(event);
@@ -46,21 +83,8 @@ void addEvent(String eventName) {
     });
   }
 
-  //devuelve la lista de eventos que haga match con el DateTime  
-  List<Event>_getEventsForDay(DateTime day) {
-    return events[day] ?? [];
-  }
 
-  @override
-  void initState() {
-      widget.feedbacks.forEach((element) {});
-
-    super.initState();
-    _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
-  }
-
-  void _showAddEventDialog() {
+  void _addCrisisDialog() {
     showDialog(
       context: context,
       builder: (context) {
@@ -86,6 +110,14 @@ void addEvent(String eventName) {
         );
       },
     );
+  }
+
+
+
+
+  //devuelve la lista de eventos que haga match con el DateTime  
+  List<Event>_getEventsForDay(DateTime day) {
+    return events[day] ?? [];
   }
 
   @override
@@ -117,8 +149,10 @@ void addEvent(String eventName) {
             selectedBuilder: (context, date, events) => SelectedDayBuilder(date: date),
             todayBuilder: (context, date, events) => TodayBuilder(date: date),
             markerBuilder: (context, date, events) {
-              if (events.isNotEmpty) {
-                return EventsMarkerBuilder(date: date, events: events);
+              DateTime dateOnly = DateTime(date.year, date.month, date.day);
+              // it checks on every month change
+              if (feedbacksByDate.containsKey(dateOnly)) {
+                return FeedbacksMarkerBuilder(date: date);
               }
             },
           ),
@@ -135,12 +169,9 @@ void addEvent(String eventName) {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Expanded(
+              Expanded(
                 flex: 1,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 10, 20, 30), 
-                  child: Text('This is some text on the left side'),
-                ),
+                child: NotesField(selectedDay: _selectedDay, feedbacksByDate: feedbacksByDate),
               ),
               Expanded(
                 flex: 1,
@@ -151,21 +182,26 @@ void addEvent(String eventName) {
                     ),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 10, 20, 30), 
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 30), 
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Row(
-                          children: [
-                            Icon(Icons.star, color: Colors.amber),
-                            Icon(Icons.star, color: Colors.amber),
-                          ],
-                        ),
+                        EmotionsField(selectedDay: _selectedDay, feedbacksByDate: feedbacksByDate),
                         SizedBox(
                           width: double.infinity, 
                           child: ElevatedButton(
-                            onPressed: _showAddEventDialog,
-                            child: Text('Button'),
+                            onPressed: _addCrisisDialog,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,  
+                              padding: EdgeInsets.all(0),
+                            ),
+                            child: const Text(
+                              'Consultar crisis de pánico',
+                              style: TextStyle(
+                                fontSize: 12, 
+                                fontWeight: FontWeight.w300, 
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -198,5 +234,74 @@ void addEvent(String eventName) {
         // ),
     ],
         );
+  }
+}
+
+class EmotionsField extends StatelessWidget {
+  const EmotionsField({
+    super.key,
+    required DateTime? selectedDay,
+    required this.feedbacksByDate,
+  }) : _selectedDay = selectedDay;
+
+  final DateTime? _selectedDay;
+  final Map<DateTime, List<UserFeedback>> feedbacksByDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Wrap(
+        children: _selectedDay != null && feedbacksByDate.containsKey(DateTime(_selectedDay!.year, _selectedDay!.month, _selectedDay!.day))
+        ? feedbacksByDate[DateTime(_selectedDay!.year, _selectedDay!.month, _selectedDay!.day)]!
+            .expand((feedback) => feedback.feedbackDetails.map((detail) => Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: Text(detail.emotion.toString()),
+              )))
+            .toList()
+        : [Text('')],
+      ),
+    );
+  }
+}
+
+class NotesField extends StatelessWidget {
+  const NotesField({
+    super.key,
+    required DateTime? selectedDay,
+    required this.feedbacksByDate,
+  }) : _selectedDay = selectedDay;
+
+  final DateTime? _selectedDay;
+  final Map<DateTime, List<UserFeedback>> feedbacksByDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 10, 10, 30), 
+      child: _selectedDay != null && feedbacksByDate.containsKey(DateTime(_selectedDay!.year, _selectedDay!.month, _selectedDay!.day))
+      ? SingleChildScrollView(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+             children: List.generate(
+              feedbacksByDate[DateTime(_selectedDay!.year, _selectedDay!.month, _selectedDay!.day)]!.expand((feedback) => feedback.feedbackDetails).length * 2 - 1,
+              (index) {
+                if (index.isEven) {
+                  final feedbackDetail = feedbacksByDate[DateTime(_selectedDay!.year, _selectedDay!.month, _selectedDay!.day)]!
+                    .expand((feedback) => feedback.feedbackDetails)
+                    .elementAt(index ~/ 2);
+                  return Text(
+                    feedbackDetail.feedback, 
+                    style: TextStyle(color: Colors.grey, fontSize: 13),
+                  );
+                } else {
+                  return Divider(color: Colors.grey,);
+                }
+              },
+            ),
+          ),
+      )
+      : Text(''),
+    );
   }
 }

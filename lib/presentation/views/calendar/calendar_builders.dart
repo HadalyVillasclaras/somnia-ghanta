@@ -94,32 +94,25 @@ class OutsideDayBuilder extends StatelessWidget {
 }
 
 
-class EventsMarkerBuilder extends StatelessWidget {
+class FeedbacksMarkerBuilder extends StatelessWidget {
   final DateTime date;
-  final List events;
 
-  const EventsMarkerBuilder(
-    {Key? key, required this.date, required this.events})
+  const FeedbacksMarkerBuilder(
+    {Key? key, required this.date})
     : super(key: key);
 
-  @override
+@override
   Widget build(BuildContext context) {
     return Positioned(
       right: 3,
       top: 4,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: events
-          .take(3) // Limit the number of dots
-          .map((event) => Container(
-            width: 10,
-            height: 10,
-            margin: const EdgeInsets.symmetric(horizontal: 1.0),
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 216, 86, 6),
-            ),
-          ))
-          .toList(),
+      child: Container(
+        width: 10,
+        height: 10,
+        margin: const EdgeInsets.symmetric(horizontal: 1.0),
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 216, 86, 6), // Color of the marker
+        ),
       ),
     );
   }

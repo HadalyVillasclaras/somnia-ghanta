@@ -22,7 +22,7 @@ class AuthScreen extends ConsumerWidget {
         if (authStatus == AuthStatus.authenticated) {
           ref.read(newCoursesProvider.notifier);
           context.go('/course/0');
-        } else {
+        } else if (authStatus == AuthStatus.unauthenticated) {
           print('not aunthenticated!');
           context.go('/login');
         }

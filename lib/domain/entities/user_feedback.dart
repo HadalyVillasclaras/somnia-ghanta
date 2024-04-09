@@ -4,8 +4,8 @@ class UserFeedback {
 
 // Constructor
 UserFeedback({
-    required this.date,
-    required this.feedbackDetails,
+  required this.date,
+  required this.feedbackDetails,
   });
 }
 

@@ -13,10 +13,12 @@ class HomeCalendarView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     initializeDateFormatting('es_ES', null);
+
     final feedbacksAsyncValue = ref.watch(userFeedbackProvider);
+
     return Scaffold(
       appBar: AppBar(
-       automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
         centerTitle: false,
         leadingWidth: 200,
         leading: Row(
@@ -34,17 +36,16 @@ class HomeCalendarView extends ConsumerWidget {
             label: const Text('Volver', style: TextStyle(color: Colors.grey)),
           ),])
       ),
-      body: _buildBody(feedbacksAsyncValue)
+      body: _calendarBody(feedbacksAsyncValue)
     );
   }        
 }
 
-Widget _buildBody(AsyncValue<List<UserFeedback>> feedbacksAsyncValue) {
+Widget _calendarBody(AsyncValue<List<UserFeedback>> feedbacksAsyncValue) {
     return feedbacksAsyncValue.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text('Error: $error')),
+      error: (error, stack) => const Center(child: Text('Calendario no disponible en estos momentos.')),
       data: (feedbacks) {
-        
         return CalendarView(feedbacks: feedbacks);
       },
     );
