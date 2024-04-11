@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ghanta/presentation/providers/auth/auth_provider.dart';
 import 'package:ghanta/presentation/widgets/shared/delete_account_modal.dart';
 import 'package:ghanta/presentation/views/settings/account/change_password_form.dart';
 
 
-class SettingsViewAccount extends StatelessWidget {
+class SettingsViewAccount extends ConsumerWidget {
   const SettingsViewAccount({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final sizes = MediaQuery.of(context).size;
+    final authState = ref.read(authProvider);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -16,14 +19,14 @@ class SettingsViewAccount extends StatelessWidget {
       children: [
         const SizedBox(height: 80),
         const Divider(height: 0.0),
-         const ListTile(
-          leading: Icon(Icons.person),
-          title: Text('Nombre user'),
+          ListTile(
+          leading: const Icon(Icons.person),
+          title: Text(authState.user!.name),
         ),
         const Divider(height: 0.0),
-        const ListTile(
-          leading: Icon(Icons.email_outlined),
-          title: Text('javier35@example.net'),
+        ListTile(
+          leading: const Icon(Icons.email_outlined),
+          title: Text(authState.user!.email),
         ),
         const Divider(height: 0.0),
         const ListTile(
