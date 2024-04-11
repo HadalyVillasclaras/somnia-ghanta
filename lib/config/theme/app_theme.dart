@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static ThemeData get themeData {
-    const primaryBlue = Color(0xff132244);
-
+    const primaryBlue = Color(0xFF141e48);
+    
     const colorScheme = ColorScheme(
       brightness: Brightness.light,
       primary: primaryBlue, // Custom primary color

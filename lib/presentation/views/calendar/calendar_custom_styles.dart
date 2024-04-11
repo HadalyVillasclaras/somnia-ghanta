@@ -9,7 +9,7 @@ HeaderStyle headerCustomStyle() {
     leftChevronMargin:const EdgeInsets.symmetric(horizontal: 0),
     rightChevronMargin: const EdgeInsets.symmetric(horizontal: 0),
     headerPadding:const EdgeInsets.symmetric(vertical: 0.0),
-    headerMargin: EdgeInsets.only(bottom: 10),
+    headerMargin: const EdgeInsets.only(bottom: 5),
     leftChevronIcon:const Icon(Icons.chevron_left, size: 20),
     rightChevronIcon:const Icon(Icons.chevron_right, size: 20),
     titleTextFormatter: (date, locale) {

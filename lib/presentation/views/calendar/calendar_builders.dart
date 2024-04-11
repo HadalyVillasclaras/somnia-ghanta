@@ -7,11 +7,13 @@ class SelectedDayBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeColor = Theme.of(context).colorScheme;
+
     return Container(
       alignment: Alignment.bottomLeft,
       padding: const EdgeInsets.only(left: 3, bottom: 0),
       decoration: BoxDecoration(
-        border: Border.all(color: Color.fromARGB(255, 6, 28, 67), width: 2),
+        border: Border.all(color: themeColor.primary, width: 2),
         shape: BoxShape.rectangle,
       ),
       child: Text(
@@ -49,18 +51,20 @@ class DefaultBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  final themeColor = Theme.of(context).colorScheme;
+
   final bool isLastColumn = day.weekday == DateTime.sunday; 
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          right: isLastColumn ? BorderSide.none : BorderSide(color: Colors.grey, width: 0.5),
+          right: isLastColumn ? BorderSide.none : BorderSide(color: themeColor.tertiary, width: 0.5),
         ),
       ),
       alignment: Alignment.bottomLeft,
       padding: const EdgeInsets.only(left: 3, bottom: 0),
       child: Text(
         '${day.day}',
-        style: TextStyle(fontSize: 14),
+        style: const TextStyle(fontSize: 14),
       ),
     );
   }
@@ -77,17 +81,19 @@ class OutsideDayBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isLastColumn = day.weekday == DateTime.sunday;
+    final themeColor = Theme.of(context).colorScheme;
+
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          right: isLastColumn ? BorderSide.none : const BorderSide(color: Colors.grey, width: 0.5),
+          right: isLastColumn ? BorderSide.none :  BorderSide(color: themeColor.tertiary, width: 0.5),
         ),
       ),
       alignment: Alignment.bottomLeft,
       padding: const EdgeInsets.only(left: 3, bottom: 0),
       child: Text(
         '${day.day}',
-        style: TextStyle(fontSize: 14, color: Colors.grey),
+        style:  TextStyle(fontSize: 14, color:themeColor.tertiary),
       ),
     );
   }
@@ -120,7 +126,7 @@ class FeedbacksMarkerBuilder extends StatelessWidget {
       children: emotions.map((emotion) {
         final path = _getEmojiIconPath(emotion);
         return path != null 
-        ? Image.asset(path, width: 15, height: 15) 
+        ? Image.asset(path, width: 18, height: 18) 
         : const SizedBox.shrink();
       }).toList(),
       )

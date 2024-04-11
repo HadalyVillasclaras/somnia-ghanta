@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/presentation/views/calendar/calendar_custom_styles.dart';
 import 'package:ghanta/presentation/views/calendar/event.dart';
-import 'package:ghanta/presentation/views/calendar/feedback_event.dart';
-import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'calendar_builders.dart';
 
@@ -82,9 +80,9 @@ class _CalendarViewState extends State<CalendarView> {
       builder: (context) {
         return AlertDialog(
           scrollable: true,
-          title: Text("Registro de crisis:"),
+          title: const Text("Registro de crisis:"),
           content: Padding(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child: TextField(
               controller: _eventController,
             ),
@@ -96,7 +94,7 @@ class _CalendarViewState extends State<CalendarView> {
                 _eventController.clear();
                 Navigator.of(context).pop();
               },
-              child: Text("Save")
+              child: const Text("Save")
             ),
           ],
         );
@@ -111,6 +109,8 @@ class _CalendarViewState extends State<CalendarView> {
 
   @override
   Widget build(BuildContext context) {
+    final themeColor = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -119,20 +119,31 @@ class _CalendarViewState extends State<CalendarView> {
           firstDay: DateTime.utc(2021, 10, 15), 
           lastDay: DateTime.utc(2030, 10, 15),
           startingDayOfWeek: StartingDayOfWeek.monday,
-          rowHeight: 55,
+          rowHeight: 58,
           daysOfWeekHeight: 25.0,
+          headerStyle:  headerCustomStyle(),
+          eventLoader: _getEventsForDay,
           focusedDay: _focusedDay, 
           selectedDayPredicate: (day) => isSameDay(day, _focusedDay),
           onDaySelected: _onDaySelected,
-          eventLoader: _getEventsForDay,
-          headerStyle:  headerCustomStyle(),
           availableGestures: AvailableGestures.all,
-          calendarStyle: const CalendarStyle(
+          calendarStyle: CalendarStyle(
               rowDecoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5)), // Row separators
+                border: Border(bottom: BorderSide(color: themeColor.tertiary, width: 0.5)), 
               ),
             ),
           calendarBuilders: CalendarBuilders(
+            dowBuilder: (context, day) {
+            List<String> dayNames = ['LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SÁB', 'DOM']; 
+            String dayName = dayNames[day.weekday - 1]; 
+
+            return Center(
+              child: Text(
+                dayName.toUpperCase(), 
+                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700 ),
+              ),
+            );
+          },
             defaultBuilder: (context, day, focusedDay) => DefaultBuilder(day: day),
             outsideBuilder: (context, day, focusedDay) => OutsideDayBuilder(day: day),
             selectedBuilder: (context, date, events) => SelectedDayBuilder(date: date),
@@ -153,7 +164,7 @@ class _CalendarViewState extends State<CalendarView> {
           },
         ),
         Container(
-          color: const Color.fromARGB(255, 6, 28, 67),
+          color: themeColor.primary,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
           child: const Text('Notas', style:TextStyle(color: Colors.white),),
         ),
@@ -168,13 +179,13 @@ class _CalendarViewState extends State<CalendarView> {
               Expanded(
                 flex: 1,
                 child: Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border(
-                      left: BorderSide(width: 1.0, color: Colors.grey), 
+                      left: BorderSide(width: 1.0, color: themeColor.tertiary), 
                     ),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 30), 
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 30), 
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -185,7 +196,7 @@ class _CalendarViewState extends State<CalendarView> {
                             onPressed: _addCrisisDialog,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red,  
-                              padding: EdgeInsets.all(0),
+                              padding: const EdgeInsets.all(0),
                             ),
                             child: const Text(
                               'Consultar crisis de pánico',
@@ -204,26 +215,6 @@ class _CalendarViewState extends State<CalendarView> {
             ],
           ),
         ),
-        // Expanded(
-        //   child: ValueListenableBuilder<List<Event>>(
-        //     valueListenable: _selectedEvents, 
-        //     builder: (context, value, _) {
-        //     return ListView.builder(itemCount: value.length, itemBuilder: (context, index) {
-        //       return Container(
-        //         margin: EdgeInsets.all(2),
-        //         decoration: BoxDecoration(
-        //           border: Border.all(),
-        //         ),
-        //         child: ListTile(
-        //           onTap: () => print(""),
-        //           title: Text("${value[index].title}"),
-        //         ),
-        //       );
-        //     }
-        //   );
-        // }
-        // ),
-        // ),
     ],
         );
   }
@@ -281,6 +272,8 @@ class NotesField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeColor = Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(10, 10, 10, 30), 
       child: _selectedDay != null && feedbacksByDate.containsKey(DateTime(_selectedDay!.year, _selectedDay!.month, _selectedDay!.day))
@@ -296,16 +289,16 @@ class NotesField extends StatelessWidget {
                     .elementAt(index ~/ 2);
                   return Text(
                     feedbackDetail.feedback, 
-                    style: TextStyle(color: Colors.grey, fontSize: 13),
+                    style: TextStyle(color: themeColor.tertiary, fontSize: 13),
                   );
                 } else {
-                  return Divider(color: Colors.grey,);
+                  return Divider(color: themeColor.tertiary,);
                 }
               },
             ),
           ),
       )
-      : Text(''),
+      : const Text(''),
     );
   }
 }
