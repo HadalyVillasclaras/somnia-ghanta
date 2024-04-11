@@ -44,7 +44,10 @@ class HomeCalendarView extends ConsumerWidget {
 Widget _calendarBody(AsyncValue<List<UserFeedback>> feedbacksAsyncValue) {
     return feedbacksAsyncValue.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => const Center(child: Text('Calendario no disponible en estos momentos.')),
+      error: (error, stack) => const Center(child: Padding(
+        padding: EdgeInsets.all(30),
+        child: Text('El calendario no está disponible en estos momentos.', textAlign: TextAlign.center,),
+      )),
       data: (feedbacks) {
         return CalendarView(feedbacks: feedbacks);
       },

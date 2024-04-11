@@ -13,14 +13,14 @@ class FeedbackDatasourceImpl extends FeedbackDatasource {
   Future<List<UserFeedback>> getUserFeedback(int userId, String userToken) async {
     try {
       final token = await KeyValueStorageServiceImpl().getValue<String>('token') ?? '';
-      final response = await ApiConfig.dio.get('/users/${userId}/feedbacks',
+      final response = await ApiConfig.dio.get('/users/$userId/feedbacks',
         options: Options(headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $token',
         }));
 
       final feedbackApiModelList = List<FeedbackApiModel>.from(
-          response.data['data'].map((x) => FeedbackApiModel.fromJson(x)));
+          response.data['data'].map((feedback) => FeedbackApiModel.fromJson(feedback)));
 
       final userFeedbacks = UserFeedbackMapper.fromFeedbackApiModelList(feedbackApiModelList); 
       return userFeedbacks;
@@ -30,6 +30,10 @@ class FeedbackDatasourceImpl extends FeedbackDatasource {
       } else {
         rethrow;
       }
+    } catch (e) {
+        print('error: ${e}');
+        rethrow;
+
     }
   }
 
@@ -71,7 +75,15 @@ class FeedbackDatasourceImpl extends FeedbackDatasource {
         } else {
           print('An unexpected error occurred: $e');
         }
-    rethrow;  // Rethrow the exception to allow further handling up the chain
+    rethrow;  
   }
   }
 }
+
+// 400 Data: {data: null, status: false, 
+////message: Feedback not created, user already made feedback in this activity, code: 400, errors: null}
+
+
+//401
+// {data: null, status: false, code: 401, 
+////message: Unauthenticated., developer_message: Unauthenticated.}

@@ -1,15 +1,12 @@
 class FeedbackApiModel {
-    // final List<PhaseApiModel> phases;
-    // final CurrentCourseStatus? currentCourseStatus;
-
     final int id;
-    final int activityId;
+    final dynamic activityId;
     final String activityName;
-    final int userId;
+    final dynamic userId;
     final String userName;
     final String feedback;
     final DateTime date;
-    final int emotion;
+    final dynamic emotion;
 
     FeedbackApiModel({
       required this.id,
@@ -22,7 +19,8 @@ class FeedbackApiModel {
       required this.emotion,
     });
 
-    factory FeedbackApiModel.fromJson(Map<String, dynamic> json) => FeedbackApiModel(
+    factory FeedbackApiModel.fromJson(Map<String, dynamic> json) {
+      return FeedbackApiModel(
       id: json["id"],
       activityId: json["activity_id"],
       activityName: json["activity_name"],
@@ -31,6 +29,5 @@ class FeedbackApiModel {
       feedback: json["feedback"],
       date: DateTime.parse(json["date"]),
       emotion: json["emotion"],
-    );
-
+    );}
 }

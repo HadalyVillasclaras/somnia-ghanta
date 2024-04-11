@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/config/constants/enviroment.dart';
 import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/infraestructure/datasources/feedback_datasource_impl.dart';
-import 'package:ghanta/infraestructure/models/responses/add_feedback_api_response.dart';
 import 'package:ghanta/presentation/providers/auth/auth_provider.dart';
 
 // USER FEEDBACK PROVIDER
@@ -36,32 +35,28 @@ class FeedbackNotifier extends StateNotifier<FeedbackFormState> {
   final FeedbackDatasource _feedbackDatasource;
   final String _userToken;
   final int _userId;
-  
 
   FeedbackNotifier(this._feedbackDatasource, this._userToken, this._userId) : super(FeedbackFormState());
 
   Future<void> submitFeedback(int activityId) async {
-    try {
-      await addFeedback(
-        activityId: activityId,
-        emotion: state.emotion,
-        feedback: state.feedback,
-      );
-    } catch (e) {
-    }
+    await addFeedback(
+      activityId: activityId,
+      emotion: state.emotion,
+      feedback: state.feedback,
+    );
   }
+
   Future<void> addFeedback({
     required int activityId,
     required int emotion,
     required String feedback,
   }) async {
-    
     try {
       final date = DateTime.now();
-      final response = await _feedbackDatasource.addUserFeedback(_userToken, 1, _userId, date, emotion + 1, feedback);
-      state = state.copyWith(submissionMessage: response.message, isSubmitted: true);
+      await _feedbackDatasource.addUserFeedback(_userToken, 1, _userId, date, emotion + 1, feedback);
+      state = state.copyWith(submissionMessage: "La información ha sido guardada correctamente en el calendario.", isSubmitted: true);
     } catch (e) {
-      state = state.copyWith(isSubmitted: true, submissionMessage: "El feedback se ha guardado correctamente.");
+      state = state.copyWith(isSubmitted: true, submissionMessage: "Se ha producido un error y la información no ha podido ser guardada.");
     }
   }
 
