@@ -36,9 +36,6 @@ class NewCoursesNotifier extends StateNotifier<NewCoursesState> {
     }
 
     isLoading = false;
-
-
-    print('object');
   }
 }
 

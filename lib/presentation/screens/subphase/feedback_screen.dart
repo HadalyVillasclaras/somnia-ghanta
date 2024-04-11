@@ -1,11 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/config/constants/colors_theme.dart';
+import 'package:ghanta/presentation/providers/feedback_provider.dart';
 
-class FeedbackScreen extends StatelessWidget {
+class FeedbackScreen extends ConsumerWidget {
   const FeedbackScreen({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
+@override
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<FeedbackFormState>(feedbackProvider, (prev, next) {
+      if (next.isSubmitted) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Feedback"),
+              content: Text(next.submissionMessage!),
+              actions: <Widget>[
+                FilledButton(
+                  child: const Text("De acuerdo"),
+                  onPressed: () {
+                    ref.read(feedbackProvider.notifier).resetSubmission();
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    });
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -13,9 +40,9 @@ class FeedbackScreen extends StatelessWidget {
       ),
       body: Container(
           padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.sizeOf(context).width * 0.12),
+          horizontal: MediaQuery.sizeOf(context).width * 0.12),
           decoration: const BoxDecoration(
-              gradient: LinearGradient(
+            gradient: LinearGradient(
             colors: [Color(0xffc5f7f4), Color(0xffffffff)],
             stops: [0.25, 0.75],
             begin: Alignment.bottomCenter,
@@ -25,13 +52,17 @@ class FeedbackScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text('¿Cómo te sientes hoy?', style: Theme.of(context).textTheme.headlineSmall!),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 const FeedbackOptions(),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 const FeedbackComment(),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                   await ref.read(feedbackProvider.notifier).submitFeedback(1);
+                   //fetch userFeedback again to update calendar with new feedback
+                   ref.invalidate(userFeedbackProvider);
+                  },
                   style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 50)),
                   child: const Text('Guardar'),
                 ),
@@ -42,8 +73,14 @@ class FeedbackScreen extends StatelessWidget {
   }
 }
 
-class FeedbackComment extends StatelessWidget {
+class FeedbackComment extends ConsumerStatefulWidget {
   const FeedbackComment({super.key});
+
+  @override
+  ConsumerState<FeedbackComment> createState() => _FeedbackCommentState();
+}
+
+class _FeedbackCommentState extends ConsumerState<FeedbackComment> {
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +104,11 @@ class FeedbackComment extends StatelessWidget {
                     .titleLarge!
                     .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
               )),
-          const TextField(
+          TextFormField(
             maxLines: 5,
+             onChanged: (value) =>
+                ref.read(feedbackProvider.notifier).onFeedbackChanged(value),
             decoration: InputDecoration(
-              //Cambiamos el color de dentro
-              // filled: true,
-              // fillColor: Colors.white,
               hintText: '¿Quieres contarnos algo?',
               border: InputBorder.none,
               contentPadding: EdgeInsets.all(10),
@@ -84,16 +120,16 @@ class FeedbackComment extends StatelessWidget {
   }
 }
 
-class FeedbackOptions extends StatefulWidget {
+class FeedbackOptions extends ConsumerStatefulWidget {
   const FeedbackOptions({
     super.key,
   });
 
   @override
-  State<FeedbackOptions> createState() => _FeedbackOptionsState();
+  ConsumerState<FeedbackOptions> createState() => _FeedbackOptionsState();
 }
 
-class _FeedbackOptionsState extends State<FeedbackOptions> {
+class _FeedbackOptionsState extends ConsumerState<FeedbackOptions> {
   int _selected = -1;
 
   @override
@@ -119,6 +155,7 @@ class _FeedbackOptionsState extends State<FeedbackOptions> {
           ),
           child: InkWell(
             onTap: () {
+              ref.read(feedbackProvider.notifier).onEmotionChanged(index);
               setState(() {
                 _selected = index;
               });

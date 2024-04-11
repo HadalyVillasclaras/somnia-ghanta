@@ -2,10 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:ghanta/config/_config.dart';
 import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/infraestructure/errors/courses_errors.dart';
-import 'package:ghanta/infraestructure/mappers/feedback_mapper.dart';
 import 'package:ghanta/infraestructure/mappers/user_feedback_mapper.dart';
 
 import 'package:ghanta/infraestructure/models/api_models/feedback_api.dart';
+import 'package:ghanta/infraestructure/models/responses/add_feedback_api_response.dart';
 import 'package:ghanta/infraestructure/services/key_value_storage_service_impl.dart';
 
 class FeedbackDatasourceImpl extends FeedbackDatasource {
@@ -31,5 +31,47 @@ class FeedbackDatasourceImpl extends FeedbackDatasource {
         rethrow;
       }
     }
+  }
+
+  @override
+  Future<AddFeedbackApiResponse> addUserFeedback(
+    String token,
+    int activityId, 
+    int userId,
+    DateTime date,
+    int emotion, 
+    String feedback) async{
+
+      try {
+        final formData = FormData.fromMap({
+          'activity_id': activityId.toString(),
+          'user_id': userId.toString(),
+          'date': DateTime.now(),
+          'emotion': emotion,
+          'feedback': feedback,
+        });
+    
+        final response = await ApiConfig.dio.post('/feedbacks',
+          data: formData, 
+          options: Options(
+            headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+            },
+            contentType: 'multipart/form-data'
+          ));
+
+        final feedbackResponse = AddFeedbackApiResponse.fromJson(response.data);
+
+        return feedbackResponse;
+      } catch (e) {
+        if (e is DioException) {
+          print('Status Code: ${e.response?.statusCode}');
+          print('Data: ${e.response?.data}');
+        } else {
+          print('An unexpected error occurred: $e');
+        }
+    rethrow;  // Rethrow the exception to allow further handling up the chain
+  }
   }
 }

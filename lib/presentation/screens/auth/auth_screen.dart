@@ -15,47 +15,51 @@ class AuthScreen extends ConsumerWidget {
     final auth = ref.watch(authProvider);
     final authStatus = auth.authStatus;
     final userToken = Environment.apiToken;
+    final courses = ref.watch(newCoursesProvider);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async{
-      await Future.delayed(Duration(seconds: 2));
-      if (context.mounted) { 
-        if (authStatus == AuthStatus.authenticated) {
-          ref.read(newCoursesProvider.notifier);
-          context.go('/course/0');
-        } else if (authStatus == AuthStatus.unauthenticated) {
-          print('not aunthenticated!');
-          context.go('/login');
-        }
-      }
-    });
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) async {
-    //   await Future.delayed(const Duration(seconds: 2));
-      
-    //   if (context.mounted) {
-    //   final auth = ref.watch(authProvider);
-    //   final authStatus = auth.authStatus;
-
+    // WidgetsBinding.instance.addPostFrameCallback((_) async{
+    //   await Future.delayed(Duration(seconds: 2));
+    //   if (context.mounted) { 
     //     if (authStatus == AuthStatus.authenticated) {
-    //       ref
-    //         .read(coursesProvider.notifier)
-    //         .getUserCourses(Environment.apiToken);
-    //       final course = ref.watch(coursesProvider);
-         
-    //       if (course.isEmpty) {
-    //         context.go('/home/0');
-    //       } else {
-    //         final notEmptyCourse =
-    //             course.firstWhere((course) => course.phases.isNotEmpty);
-    //         context.go('/course/${notEmptyCourse.id}');
-    //       }
+    //       ref.read(newCoursesProvider.notifier).getUserCourses(userToken);
+    //       print('NJKFSGSGFSG');
+    //       print(courses.courses);
+
+    //       context.go('/course/0');
     //     } else if (authStatus == AuthStatus.unauthenticated) {
+    //       print('not aunthenticated!');
     //       context.go('/login');
     //     }
     //   }
     // });
 
-    // While waiting, show the SplashScreen
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(seconds: 2));
+      
+      if (context.mounted) {
+      final auth = ref.watch(authProvider);
+      final authStatus = auth.authStatus;
+
+        if (authStatus == AuthStatus.authenticated) {
+          ref
+            .read(coursesProvider.notifier)
+            .getUserCourses(Environment.apiToken);
+          final course = ref.watch(coursesProvider);
+         
+          if (course.isEmpty) {
+            context.go('/home/0');
+          } else {
+            final notEmptyCourse =
+                course.firstWhere((course) => course.phases.isNotEmpty);
+            context.go('/course/${notEmptyCourse.id}');
+          }
+        } else if (authStatus == AuthStatus.unauthenticated) {
+          context.go('/login');
+        }
+      }
+    });
+
+    //While waiting, show the SplashScreen
     return const SplashScreen();
   }
 }

@@ -13,52 +13,28 @@ class CourseScreen extends ConsumerWidget {
   final int courseId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context, ref) {
+    final Course course = ref.watch(coursesProvider).firstWhere(
+      (Course course) => course.id == courseId,
+    );
 
-   
-    final newCoursesState = ref.watch(newCoursesProvider);
+    final sizes = MediaQuery.of(context).size;
+    final List<Phase> phases = course.phases ?? [];
 
-    Course course;
-    List<Phase> coursePhases = [];
-    try {
-      course = newCoursesState.courses.firstWhere((c) => c.id == courseId);
-      coursePhases = course.phases ?? [];
-    } catch (e) {
-      print("No course found with id $courseId");
-    }
-
-    // final Course course = ref.watch(coursesProvider).firstWhere(
-    //   (Course course) => course.id == courseId,
-    // );
-
-    // final sizes = MediaQuery.of(context).size;
-    // final List<Phase> phases = course.phases ?? [];
-
-    // final courseId = 0;
     return Scaffold(
       appBar: const NavigationTop(),
       extendBodyBehindAppBar: true,
-      body: _buildBody(newCoursesState),
-    );
-
-    // return Scaffold(
-    //   appBar: const NavigationTop(),
-    //   extendBodyBehindAppBar: true,
-    //   body: CourseScenario(
-    //     phases: coursePhases,
-    //     courseId: courseId,
-    //   ),
+      body: CourseScenario(
+        phases: phases,
+        courseId: courseId,
+      ),
         // body: Container(
         //   color: Colors.black,
         // )
-    // );
+    );
   }
-
-  
 }
-
 Widget _buildBody(NewCoursesState state) {
-      print(state);
       return ListView.builder(
       itemCount: state.courses.length,
       itemBuilder: (context, index) {
