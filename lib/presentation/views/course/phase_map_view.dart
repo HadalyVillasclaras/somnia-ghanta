@@ -37,7 +37,7 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
 
       final phaseTooltips = ref.read(phasesTooltipsProvider);
       final tooltipController = phaseTooltips[currentPosition];
-      tooltipController.showTooltip();
+      // tooltipController.showTooltip();
     });
   }
 

@@ -39,6 +39,16 @@ class Course {
     this.category,
   });
 
+@override
+  String toString() {
+    return 'Course(id: $id, titleEs: $titleEs, titleCa: $titleCa, price: $price, image: $image, '
+           'descriptionEs: $descriptionEs, descriptionCa: $descriptionCa, userId: $userId, '
+           'createdAt: $createdAt, updatedAt: $updatedAt, currentPhase: $currentPhase, '
+           'totalPhases: $totalPhases, currentSubphase: $currentSubphase, totalSubphases: $totalSubphases, '
+           'category: $category, phases: $phases)';
+  }
+
+  
   String getTitle({String lang = 'es'}) {
     if (lang == 'ca') {
       return titleCa;
@@ -55,6 +65,4 @@ class Course {
       return descriptionEs;
     }
   }
-
-
 }

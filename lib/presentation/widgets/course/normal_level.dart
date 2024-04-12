@@ -106,7 +106,6 @@ class NormalLevel extends ConsumerWidget {
                       tooltipsProvider[index].hideTooltip();
                       context.push('/course/$course/subphase/${subphase.id}');
                     },
-                    //HAcemos que el boton ocupe todo el ancho
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.all(
                           Size(sizes.width * 0.6, 50)),

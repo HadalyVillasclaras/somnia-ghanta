@@ -36,7 +36,10 @@ export 'package:ghanta/presentation/widgets/shared/emotion_buttons.dart';
 export 'package:ghanta/presentation/widgets/shared/navigation_top.dart';
 export 'package:ghanta/presentation/widgets/shared/bottom_navigation_bar.dart';
 export 'package:ghanta/presentation/widgets/shared/logout_modal.dart';
+export 'package:ghanta/presentation/widgets/shared/fade_in_widget.dart';
+
 
 
 export 'package:ghanta/presentation/widgets/course/course_scenario.dart';
+
 
