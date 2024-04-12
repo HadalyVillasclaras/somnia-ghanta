@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ghanta/presentation/providers/auth/auth_provider.dart';
 import 'package:ghanta/presentation/providers/auth/change_password_provider.dart';
 
 class ChangePasswordForm extends ConsumerStatefulWidget {

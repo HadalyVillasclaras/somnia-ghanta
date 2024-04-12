@@ -67,8 +67,6 @@ class CoursesDatasourceImpl extends CoursesDatasource {
       // );
 
 
-      final courseData;
-
       final courses = List<CourseApiModel>.from(
           response.data['data'].map((x) => CourseApiModel.fromJson(x)));
           

@@ -31,7 +31,7 @@ class FeedbackDatasourceImpl extends FeedbackDatasource {
         rethrow;
       }
     } catch (e) {
-        print('error: ${e}');
+        print('error: $e');
         rethrow;
 
     }

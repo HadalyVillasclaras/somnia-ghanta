@@ -10,7 +10,7 @@ import 'package:go_router/go_router.dart';
 class AuthScreen extends ConsumerWidget {
   const AuthScreen({Key? key}) : super(key: key);
 
-  @override
+ @override
   Widget build(BuildContext context, WidgetRef ref) {
     final auth = ref.watch(authProvider);
     final authStatus = auth.authStatus;
@@ -20,37 +20,40 @@ class AuthScreen extends ConsumerWidget {
       final courses = ref.watch(testCourseProvider);
 
       courses.whenData((courses) {
-        if (courses.isEmpty) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            context.go('/home/0');
-          });
-        } else {
-          Course? notEmptyCourse;
-
-          for (Course course in courses) {
-            if (course.phases.isNotEmpty) {
-              notEmptyCourse = course;
-              break; 
-            }
-          }
-
-          if (notEmptyCourse != null) {
-            //redireccionamos al primer curso con fase
+          if (courses.isEmpty) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              ref.read(coursesStateProvider.notifier).setCourses(courses);
-              context.go('/course/${notEmptyCourse!.id}');
+              context.go('/home/0');
             });
           } else {
-            //si ninguno tiene fases redireccionamos al primer curso aunque este vacío
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              ref.read(coursesStateProvider.notifier).setCourses(courses);
-              context.go(
-                '/course/${courses.first.id}'); 
-            });
+            Course? notEmptyCourse;
+
+            for (Course course in courses) {
+              if (course.phases.isNotEmpty) {
+                notEmptyCourse = course;
+                break; 
+              }
+            }
+
+            if (notEmptyCourse != null) {
+              // Redirect to the first course with a phase
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                ref.read(coursesStateProvider.notifier).setCourses(courses);
+                Future.delayed(const Duration(seconds: 2), () {
+                  context.go('/course/${notEmptyCourse!.id}');
+                });
+              });
+            } else {
+              // If no courses have phases, redirect to the first course even if it's empty
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                ref.read(coursesStateProvider.notifier).setCourses(courses);
+                Future.delayed(const Duration(seconds: 2), () {
+                context.go('/course/${courses.first.id}');
+                });
+              });
+            }
           }
-        }
       });
-    } else if (authStatus == AuthStatus.unauthenticated){
+    } else if (authStatus == AuthStatus.unauthenticated) {
       context.go('/login');
     }
 

@@ -72,7 +72,6 @@ class LoginForm extends ConsumerStatefulWidget {
 
 class _LoginFormState extends ConsumerState<LoginForm> {
   bool _obscureText = true;
-  bool _isLoading = false;
 
     void  showSnackbar(BuildContext context, String message){
     ScaffoldMessenger.of(context).hideCurrentSnackBar();

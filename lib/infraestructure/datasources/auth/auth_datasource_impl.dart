@@ -36,7 +36,6 @@ class AuthDatasourceImpl extends AuthDatasource {
 
   @override
   Future<User> getUser() {
-    // TODO: implement getUser
     throw UnimplementedError();
   }
 
@@ -90,7 +89,6 @@ class AuthDatasourceImpl extends AuthDatasource {
 
   @override
   Future<String> recoveryPassword(String email) {
-    // TODO: implement recoveryPassword
     throw UnimplementedError();
   }
 

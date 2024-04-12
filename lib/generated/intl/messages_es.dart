@@ -20,8 +20,8 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'es';
 
-  static String m0(current_phase, total_phases) =>
-      "Fase ${current_phase}/${total_phases}";
+  static String m0(currentPhase, totalPhases) =>
+      "Fase ${currentPhase}/${totalPhases}";
 
   static String m1(username) => "Buenos días, ${username}!";
 

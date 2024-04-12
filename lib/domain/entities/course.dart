@@ -1,6 +1,4 @@
-import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/domain/entities/phase.dart';
-import 'package:ghanta/domain/entities/subphase.dart';
 
 class Course {
   final int id;

@@ -4,7 +4,6 @@ import 'package:ghanta/presentation/providers/auth/auth_provider.dart';
 import 'package:ghanta/presentation/providers/auth/change_password_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ghanta/presentation/providers/_providers.dart';
-import 'package:ghanta/presentation/providers/auth/login_form_provider.dart';
 
 class DeleteAccountModal extends ConsumerWidget {
   const DeleteAccountModal({
@@ -96,7 +95,6 @@ class EnterPasswordModal extends ConsumerStatefulWidget {
 
 class _EnterPasswordModalState extends ConsumerState<EnterPasswordModal> {
   bool _obscureText = true;
-  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {

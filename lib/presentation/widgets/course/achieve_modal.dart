@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/domain/entities/subphase.dart';
 import 'package:ghanta/infraestructure/_infraestructure.dart';
 import 'package:ghanta/presentation/providers/_providers.dart';
-import 'package:ghanta/presentation/providers/ui_provider.dart';
-import 'package:ghanta/presentation/widgets/_widgets.dart';
 
 class AchievModal extends ConsumerWidget {
   const AchievModal({
