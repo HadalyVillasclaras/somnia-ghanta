@@ -26,9 +26,10 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       currentPosition = ref
-              .watch(coursesProvider.notifier)
-              .getCourseById(widget.phase.courseId)
-              .currentSubphase! -1;
+          .watch(coursesProvider.notifier)
+          .getCourseById(widget.phase.courseId)
+          .currentSubphase! -
+        1;
 
       if (scrollController.hasClients && currentPosition != 0) {
         moveScreenScroll(currentPosition);
@@ -40,17 +41,17 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
     });
   }
 
-  void moveScreenScroll (int i) { //inicial bounce animation
-    scrollController.animateTo(
-        CourseEnviroment.getVerticalSeparation(i) - 20,
-        duration: const Duration(milliseconds: 1000),
-        curve: Curves.easeInOut);
+  void moveScreenScroll(int i) {
+    //inicial bounce animation
+    scrollController.animateTo(CourseEnviroment.getVerticalSeparation(i) - 20,
+      duration: const Duration(milliseconds: 1000), curve: Curves.easeInOut);
   }
 
   @override
   Widget build(BuildContext context) {
     final subphases = widget.phase.subphases;
-    screenSize = subphases.length.toDouble() * CourseEnviroment.verticalSeparation;
+    screenSize =
+        subphases.length.toDouble() * CourseEnviroment.verticalSeparation;
     final List<SuperTooltipController> tooltipControllers =
         List.generate(subphases.length, (index) => SuperTooltipController());
     ref.read(phasesTooltipsProvider).addAll(tooltipControllers);
@@ -63,16 +64,13 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
 
     onTapFlower(int i, {isAchieve}) {
       moveBoat(i);
-                    print(isAchieve);
 
       //Haremos scroll solo si el usuario no ha llegado a la última subfase
-      if (i != subphases.length - 1 ) {
+      if (i != subphases.length - 1) {
         moveScreenScroll(i);
       }
 
       if (!isAchieve) return;
-
-                    print('after return');
 
       //Abrimos un modal
       showDialog(
@@ -81,10 +79,10 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
         builder: (context) {
           final isLast = i == subphases.length - 1;
           return AchievModal(
-              currentPosition: currentPosition,
-              moveBoat: moveBoat,
-              subphase: subphases[i],
-              isLast: isLast);
+            currentPosition: currentPosition,
+            moveBoat: moveBoat,
+            subphase: subphases[i],
+            isLast: isLast);
         },
       );
     }
@@ -105,29 +103,29 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
                   final subphase = entry.value;
                   double left = CourseEnviroment.getHorizontalSeparation(
                       i); // Reducción de la separación horizontal
-                  double top = CourseEnviroment.getVerticalSeparation(
-                      i) + 100; // Mayor separación vertical
+                  double top = CourseEnviroment.getVerticalSeparation(i) +
+                      100; // Mayor separación vertical
 
                   // return  Container(
                   //   color:  i == 0 ? Colors.amber  :  Colors.indigoAccent ,
                   // );
 
                   return subphase.type == SubphaseType.normal
-                      ? NormalLevel(
-                          subphase: subphase,
-                          left: left,
-                          course: widget.phase.courseId,
-                          top: top,
-                          index: i,
-                          onTap: () => onTapFlower(i, isAchieve: false),
-                        )
-                      : AchieveLevel(
-                          subphase: subphase,
-                          left: left,
-                          top: top,
-                          onTap: () {
-                            onTapFlower(i, isAchieve: true);
-                          });
+                  ? NormalLevel(
+                      subphase: subphase,
+                      left: left,
+                      course: widget.phase.courseId,
+                      top: top,
+                      index: i,
+                      onTap: () => onTapFlower(i, isAchieve: false),
+                    )
+                  : AchieveLevel(
+                      subphase: subphase,
+                      left: left,
+                      top: top,
+                      onTap: () {
+                        onTapFlower(i, isAchieve: true);
+                      });
                 }).toList(),
                 Boat(currentPosition: currentPosition),
               ],

@@ -93,8 +93,8 @@ class SubphaseScreen extends ConsumerWidget {
           body: ActivityBase(
               subphase: subphase,
               pageController: pageController,
-              // child: _loadActivityWidget(pageController, subphase.activities.first.activityTypology))),
-              child: _loadActivityWidget(pageController, ActivityType.meditation))),
+              child: _loadActivityWidget(pageController, subphase.activities.first.activityTypology))),
+              // child: _loadActivityWidget(pageController, ActivityType.meditation))),
 
 
 

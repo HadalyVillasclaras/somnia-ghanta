@@ -30,13 +30,6 @@ class CoursesNotifier extends StateNotifier<List<Course>> {
     isLoading = false;
   }
 
-  Future<void> getCourseById2(String id) async {
-    isLoading = true;
-    final courses = await _coursesDatasource.getCourse(id);
-    state = [courses.$1]; 
-    isLoading = false;
-  }
-
   Course getCourseById(int courseId) {
     return state.firstWhere((Course course) => course.id == courseId); // asi no funcion xk no lo setea
   }

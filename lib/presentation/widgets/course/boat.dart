@@ -5,7 +5,6 @@ import 'package:ghanta/presentation/providers/ui_provider.dart';
 
 class Boat extends ConsumerWidget {
   const Boat({super.key, required this.currentPosition});
-
   final int currentPosition;
 
   @override
@@ -16,8 +15,8 @@ class Boat extends ConsumerWidget {
       duration: Duration(
           milliseconds: currentPosition == 0 ? 2000 : currentPosition * 800),
       left: currentPosition.isEven
-          ? CourseEnviroment.horizontalEvenSeparation - 50
-          : CourseEnviroment.horizontalOddSeparation - 50,
+          ? CourseEnviroment.horizontalEvenSeparation - 80
+          : CourseEnviroment.horizontalOddSeparation - 80,
       top: currentPosition == 0
           ? 100
           : currentPosition * CourseEnviroment.verticalSeparation + 100 - 50,

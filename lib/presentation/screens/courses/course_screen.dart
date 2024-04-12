@@ -14,11 +14,10 @@ class CourseScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final Course course = ref.watch(coursesProvider).firstWhere(
-      (Course course) => course.id == courseId,
+    final coursesState = ref.watch(coursesStateProvider);
+    final Course course = coursesState.courses.firstWhere(
+      (course) => course.id == courseId,
     );
-
-    final sizes = MediaQuery.of(context).size;
     final List<Phase> phases = course.phases ?? [];
 
     return Scaffold(
@@ -34,15 +33,4 @@ class CourseScreen extends ConsumerWidget {
     );
   }
 }
-Widget _buildBody(NewCoursesState state) {
-      return ListView.builder(
-      itemCount: state.courses.length,
-      itemBuilder: (context, index) {
-        final course = state.courses[index];
-        return ListTile(
-          title: Text(course.titleEs),
-        );
-      },
-    );
-  }
 
