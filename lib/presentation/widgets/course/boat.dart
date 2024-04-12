@@ -19,8 +19,8 @@ class Boat extends ConsumerWidget {
           ? CourseEnviroment.horizontalEvenSeparation - 50
           : CourseEnviroment.horizontalOddSeparation - 50,
       top: currentPosition == 0
-          ? 0
-          : currentPosition * CourseEnviroment.verticalSeparation - 50,
+          ? 100
+          : currentPosition * CourseEnviroment.verticalSeparation + 100 - 50,
       child: AnimatedRotation(
         duration: const Duration(milliseconds: 2000),
         turns: currentPosition.isOdd ? 0.5 : 0.6,

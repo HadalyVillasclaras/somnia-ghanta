@@ -31,7 +31,7 @@ class AppTheme {
         displaySmall: TextStyle(fontSize: 36, fontWeight: FontWeight.w400),
         headlineLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
         headlineMedium: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
-        headlineSmall: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        headlineSmall: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
         titleLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
         titleMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         titleSmall: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),

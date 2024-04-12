@@ -106,7 +106,7 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
                   double left = CourseEnviroment.getHorizontalSeparation(
                       i); // Reducción de la separación horizontal
                   double top = CourseEnviroment.getVerticalSeparation(
-                      i); // Mayor separación vertical
+                      i) + 100; // Mayor separación vertical
 
                   // return  Container(
                   //   color:  i == 0 ? Colors.amber  :  Colors.indigoAccent ,
