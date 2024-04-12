@@ -23,6 +23,7 @@ class CourseScenario extends ConsumerWidget {
     final List<Phase> phases = currentCourse.phases;
 
     final phase = phases[0];
+    print(phases.toString());
 
     return SafeArea(
       bottom: false,
@@ -35,8 +36,8 @@ class CourseScenario extends ConsumerWidget {
         ),
         child: Stack(
           children: [
-         Header(phase: phase, currentPhase: currentPhase),
             FadeInWidget(child: PhaseMap(currentPhase: currentPhase, phases: phases)),
+            Header(phase: phase, currentPhase: currentPhase),
           ],
         ),
       ),
@@ -81,8 +82,8 @@ class Header extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(phase.getTitle(lang: Lang.getDeviceLang(context)), style: textTheme.headlineSmall!),
-              Text('Fase ${currentPhase + 1}', style: textTheme.bodyMedium!),
+              Text('Título de fase: ${phase.getTitle(lang: Lang.getDeviceLang(context))}', style: textTheme.headlineSmall!),
+              Text('Fase nº: ${currentPhase + 1}', style: textTheme.bodyMedium!),
             ],
           ),
         ),
@@ -123,21 +124,21 @@ class PhaseMap extends StatelessWidget {
 }
 
 
-          // AppBar(
-          //   surfaceTintColor: Colors.transparent,
-          //   automaticallyImplyLeading: false,
-          //   toolbarHeight: kToolbarHeight + 30,
-          //   title: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       const SizedBox(height: 20),
-          //       Text(phase.getTitle(lang: Lang.getDeviceLang(context)),
-          //         style: textTheme.headlineSmall!),
-          //       Text('Fase ${currentPhase + 1}',
-          //           style: textTheme.bodyMedium!),
-          //       const SizedBox(height: 20),
-          //     ],
-          //   ),
-          //   backgroundColor: Colors.white.withOpacity(0.2),
-          //   centerTitle: false,
-          // ),
+  // AppBar(
+  //   surfaceTintColor: Colors.transparent,
+  //   automaticallyImplyLeading: false,
+  //   toolbarHeight: kToolbarHeight + 30,
+  //   title: Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       const SizedBox(height: 20),
+  //       Text(phase.getTitle(lang: Lang.getDeviceLang(context)),
+  //         style: textTheme.headlineSmall!),
+  //       Text('Fase ${currentPhase + 1}',
+  //           style: textTheme.bodyMedium!),
+  //       const SizedBox(height: 20),
+  //     ],
+  //   ),
+  //   backgroundColor: Colors.white.withOpacity(0.2),
+  //   centerTitle: false,
+  // ),

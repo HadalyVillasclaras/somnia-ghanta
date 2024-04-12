@@ -17,7 +17,7 @@ class ActivityApiModel {
   final int subphaseId;
   final SubphaseApiModel? subphase;
   final ActivityTypologyApi? activityTypology;
-  final int activityTyplogyId;
+  final int activityTypologyId;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -37,7 +37,7 @@ class ActivityApiModel {
     required this.subphaseId,
     required this.subphase,
     required this.activityTypology,
-    required this.activityTyplogyId,
+    required this.activityTypologyId,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -60,8 +60,8 @@ class ActivityApiModel {
           subphase: json["subphase"] != null ? SubphaseApiModel.fromJson(json["subphase"]) : null,
           activityTypology: json["activity_typology"] != null ? ActivityTypologyApi.fromJson(
               json["activity_typology"]) : null,
-          // activityTyplogyId: json["activity_typology_id"], esto daba error
-          activityTyplogyId: json["activity_typology_id"] ?? 0,
+          // activityTypologyId: json["activity_typology_id"], esto daba error
+          activityTypologyId: json["activity_typology_id"] ?? 0,
           createdAt: DateTime.parse(json["created_at"]),
           updatedAt: DateTime.parse(json["updated_at"]));
 }

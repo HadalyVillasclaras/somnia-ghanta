@@ -10,11 +10,11 @@ class ActivityMapper {
       subphaseId: api.subphaseId,
       order: api.order,
       activityTypology:
-          ActivityTypologyMapper.apiModelToEntity(api.activityTyplogyId));
+          ActivityTypologyMapper.apiModelToEntity(api.activityTypology?.id));
 }
 
 class ActivityTypologyMapper {
-  static ActivityType apiModelToEntity(int id) {
+  static ActivityType apiModelToEntity(dynamic id) {
     switch (id) {
       case 1:
         return ActivityType.tinder;

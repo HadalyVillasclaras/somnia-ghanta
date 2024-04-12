@@ -15,6 +15,11 @@ class CoursesNotifier extends StateNotifier<List<Course>> {
 
    bool isLoading = true;
 
+    Future<Subphase> getSubphaseById(int courseId, int phaseId, int subphaseId) async {
+    final subphase = await _coursesDatasource.getSubphaseById(subphaseId);
+    return subphase;
+  }
+
   Future<void> getCourses() async {
     final courses = await _coursesDatasource.getCourses();
     state = courses.$1;
@@ -25,23 +30,26 @@ class CoursesNotifier extends StateNotifier<List<Course>> {
   Future<void> getUserCourses(String userToken) async {
     isLoading = true;
     final courses = await _coursesDatasource.getUserCourses(userToken);
-    // getCourseById2('1');
-    state = courses.$1; //aquí se setean los cursos
+    state = courses.$1; 
     isLoading = false;
   }
 
-  Course getCourseById(int courseId) {
-    return state.firstWhere((Course course) => course.id == courseId); // asi no funcion xk no lo setea
-  }
+  // No se usa
+  // Course getCourseById(int courseId) {
+  //   return state.firstWhere((Course course) => course.id == courseId); // asi no funcion xk no lo setea
+  // }
 
-  Phase getCurrentPhaseByCourseId(int courseId) {
-    final course = getCourseById(courseId);
-    return course.phases[course.currentPhase! - 1];
-  }
+  // No se usa
+  // Phase getCurrentPhaseByCourseId(int courseId) {
+  //   final course = getCourseById(courseId);
+  //   return course.phases[course.currentPhase! - 1];
+  // }
 
   Subphase  getSubphase(int courseId, int phaseId, int subphaseId) {
-    final course = getCourseById(courseId);
-    final phase = course.phases[phaseId];
+    final course = state.firstWhere((Course course) => course.id == courseId);
+    final phase = course.phases[0];
     return phase.subphases.where((element) => element.id == subphaseId).first;
   }
+
+
 }

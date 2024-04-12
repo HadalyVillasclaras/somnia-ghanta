@@ -44,20 +44,19 @@ final appRouter = GoRouter(routes: [
         final courseId = int.parse(state.pathParameters['courseId'] ?? '0');
         return CourseScreen(courseId: courseId);
       },
-      routes: [
-        GoRoute(
-          path: 'subphase/:subphaseId',
-          builder: (context, state) {
-            final phaseId = int.parse(state.pathParameters['phaseId'] ?? '0');
-            final subphaseId =
-                int.parse(state.pathParameters['subphaseId'] ?? '0');
-            final courseId = int.parse(state.pathParameters['courseId'] ?? '0');
+     ),
+     GoRoute(
+      path: '/course/:course/phase/:phaseId/subphase/:subphaseId',
+      builder: (context, state) {
+        final phaseId = int.parse(state.pathParameters['phaseId'] ?? '0');
+        final subphaseId =
+            int.parse(state.pathParameters['subphaseId'] ?? '0');
+        final courseId = int.parse(state.pathParameters['course'] ?? '0');
 
-            return SubphaseScreen(
-                subphaseId: subphaseId, courseId: courseId, phaseId: phaseId);
-          },
-        ),
-      ]),
+        return SubphaseScreen(
+            subphaseId: subphaseId, courseId: courseId, phaseId: phaseId);
+      },
+    ),
   GoRoute(
     path: '/login',
     builder: (context, state) => const LoginScreen(),

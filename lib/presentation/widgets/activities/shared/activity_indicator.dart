@@ -69,16 +69,16 @@ class _ActivityIndicatorState extends State<ActivityIndicator> {
               opacity: _isFirstPage ? 0 : 1,
               duration: const Duration(milliseconds: 300),
               child: IconButton(
-                  onPressed: _isFirstPage
-                      ? null
-                      : () {
-                          if (widget.pageController.page == 0) return;
-                          widget.pageController.previousPage(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeInOut);
-                        },
-                  icon: const Icon(Icons.arrow_back_ios,
-                      color: ColorsTheme.primaryColorBlue)),
+                onPressed: _isFirstPage
+                  ? null
+                  : () {
+                    if (widget.pageController.page == 0) return;
+                    widget.pageController.previousPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut);
+                    },
+                icon: const Icon(Icons.arrow_back_ios,
+                    color: ColorsTheme.primaryColorBlue)),
             ),
             SmoothPageIndicator(
               controller: widget.pageController,

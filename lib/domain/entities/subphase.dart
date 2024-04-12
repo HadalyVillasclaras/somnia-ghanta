@@ -13,17 +13,6 @@ class Subphase {
   final SubphaseType type;
   final List<Activity> activities;
 
-  /// Metodo para devolver el titulo dependiendo del idioma
-
-  String getTitle({String lang = 'es'}) {
-    if (lang == 'ca') {
-      return titleCa;
-    } else {
-      return titleEs;
-    }
-  }
-
-
   Subphase({
     required this.id,
     required this.titleEs,
@@ -35,4 +24,24 @@ class Subphase {
     required this.type,
     required this.activities,
   });
+
+@override
+  String toString() {
+    return 'Subphase(id: $id, titleEs: $titleEs, titleCa: $titleCa, estimatedTime: $estimatedTime, '
+           'phaseId: $phaseId, order: $order, subphaseTypologyId: $subphaseTypologyId, '
+           'type: $type, activities: ${activities.map((a) => a.toString()).join(', ')})';
+  }
+
+  
+  /// Metodo para devolver el titulo dependiendo del idioma
+
+  String getTitle({String lang = 'es'}) {
+    if (lang == 'ca') {
+      return titleCa;
+    } else {
+      return titleEs;
+    }
+  }
+
+
 }

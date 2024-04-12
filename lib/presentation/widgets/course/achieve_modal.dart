@@ -68,9 +68,7 @@ class AchievModal extends ConsumerWidget {
                   Navigator.of(context).pop();
                   if (isLast) return;
                   moveBoat(currentPosition + 1);
-                  ref
-                      .read(phasesTooltipsProvider)[currentPosition + 1]
-                      .showTooltip();
+                  ref.read(phasesTooltipsProvider)[currentPosition + 1].showTooltip();
                 },
                 child: const Text('Aceptar'),
               ),

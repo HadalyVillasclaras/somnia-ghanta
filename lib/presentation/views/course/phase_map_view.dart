@@ -4,6 +4,7 @@ import 'package:ghanta/config/_config.dart';
 import 'package:ghanta/domain/entities/phase.dart';
 import 'package:ghanta/domain/entities/subphase.dart';
 import 'package:ghanta/presentation/providers/courses_provider.dart';
+import 'package:ghanta/presentation/providers/new_courses_provider.dart';
 import 'package:ghanta/presentation/providers/ui_provider.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
 import 'package:super_tooltip/super_tooltip.dart';
@@ -17,6 +18,7 @@ class PhaseMapView extends ConsumerStatefulWidget {
 }
 
 class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
+
   double screenSize = 0.0;
   int currentPosition = 0;
   ScrollController scrollController = ScrollController();
@@ -24,17 +26,18 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      currentPosition = ref
-          .watch(coursesProvider.notifier)
-          .getCourseById(widget.phase.courseId)
-          .currentSubphase! -
-        1;
+      final coursesNotifier = ref.watch(coursesStateProvider.notifier);
+      final currentCourse = coursesNotifier.getCourseById(widget.phase.courseId);
+      final currentPhase = currentCourse.currentPhase! - 1;
+      currentPosition = currentPhase;
 
       if (scrollController.hasClients && currentPosition != 0) {
         moveScreenScroll(currentPosition);
       }
 
+      // Abri tooltip al entrar en screen
       // final phaseTooltips = ref.read(phasesTooltipsProvider);
       // final tooltipController = phaseTooltips[currentPosition];
       // tooltipController.showTooltip();
@@ -50,10 +53,11 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
   @override
   Widget build(BuildContext context) {
     final subphases = widget.phase.subphases;
-    screenSize =
-        subphases.length.toDouble() * CourseEnviroment.verticalSeparation;
+    screenSize = subphases.length.toDouble() * CourseEnviroment.verticalSeparation;
+
     final List<SuperTooltipController> tooltipControllers =
         List.generate(subphases.length, (index) => SuperTooltipController());
+
     ref.read(phasesTooltipsProvider).addAll(tooltipControllers);
 
     moveBoat(int i) {
@@ -98,18 +102,12 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
             child: Stack(
               fit: StackFit.expand,
               children: [
+                // por cada subfase creamos una planta
                 ...subphases.asMap().entries.map((entry) {
                   final i = entry.key;
                   final subphase = entry.value;
-                  double left = CourseEnviroment.getHorizontalSeparation(
-                      i); // Reducción de la separación horizontal
-                  double top = CourseEnviroment.getVerticalSeparation(i) +
-                      100; // Mayor separación vertical
-
-                  // return  Container(
-                  //   color:  i == 0 ? Colors.amber  :  Colors.indigoAccent ,
-                  // );
-
+                  double left = CourseEnviroment.getHorizontalSeparation(i); // Reducción de la separación horizontal
+                  double top = CourseEnviroment.getVerticalSeparation(i) +  100; // Añado 100 para que no se oculte tras el título
                   return subphase.type == SubphaseType.normal
                   ? NormalLevel(
                       subphase: subphase,

@@ -15,7 +15,7 @@ class AuthScreen extends ConsumerWidget {
     final auth = ref.watch(authProvider);
     final authStatus = auth.authStatus;
 
-    if (authStatus == AuthStatus.authenticated) {
+    WidgetsBinding.instance.addPostFrameCallback((_) { if (authStatus == AuthStatus.authenticated) {
       ref.watch(coursesProvider.notifier).getUserCourses(Environment.apiToken);
       final courses = ref.watch(testCourseProvider);
 
@@ -53,10 +53,10 @@ class AuthScreen extends ConsumerWidget {
             }
           }
       });
-    } else if (authStatus == AuthStatus.unauthenticated) {
+    } else  {
       context.go('/login');
     }
-
+    });
     return const SplashScreen();
   }
 }

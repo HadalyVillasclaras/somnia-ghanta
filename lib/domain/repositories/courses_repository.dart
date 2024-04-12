@@ -7,7 +7,7 @@ abstract class CoursesRepository {
   Future<(Course, String)> getCourse(String id);
 
   Future<(List<Course>, String)> getUserCourses(String userToken);
-  Future<List<Course>> getNewUserCourses(String userToken);
+  Future<List<Course>> getNewUserCourses(int userId, String userToken);
 
 
 }
