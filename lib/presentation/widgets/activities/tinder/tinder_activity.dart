@@ -45,55 +45,55 @@ class _TinderActivityStepOneState extends State<TinderActivityStepOne> {
               ),
             )),
         Positioned(
-            bottom: MediaQuery.sizeOf(context).height * 0.09,
-            left: -(MediaQuery.sizeOf(context).width * 0.12),
-            child: CircleAvatar(
-              backgroundColor:
-                  crossIsSelected ? ColorsTheme.primaryColorBlue : Colors.white,
-              child: Icon(
-                Icons.clear,
-                color: crossIsSelected
-                    ? Colors.white
-                    : ColorsTheme.primaryColorBlue,
-                size: 20,
-              ),
-            )),
+          bottom: MediaQuery.sizeOf(context).height * 0.09,
+          left: -(MediaQuery.sizeOf(context).width * 0.12),
+          child: CircleAvatar(
+            backgroundColor:
+                crossIsSelected ? ColorsTheme.primaryColorBlue : Colors.white,
+            child: Icon(
+              Icons.clear,
+              color: crossIsSelected
+                  ? Colors.white
+                  : ColorsTheme.primaryColorBlue,
+              size: 20,
+            ),
+          )),
         SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.25,
-            width: MediaQuery.sizeOf(context).width * 0.70,
-            child: AppinioSwiper(
-                swipeOptions: const SwipeOptions.only(left: true, right: true),
-                onSwipeBegin: (previousIndex, targetIndex, activity) {
-                  if (activity.direction == AxisDirection.left) {
-                    setState(() {
-                      crossIsSelected = true;
-                    });
-                  } else if (activity.direction == AxisDirection.right) {
-                    setState(() {
-                      heartIsSelected = true;
-                    });
-                  }
-
-                  if (targetIndex == 8) {
-                    //!Esto debe ser dinamico
-                    //Mostrar boton de compartir
-                    showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (context) => const TinderActivityPopUp());
-                  }
-                },
-                onSwipeEnd: (previousIndex, targetIndex, activity) {
+          height: MediaQuery.sizeOf(context).height * 0.25,
+          width: MediaQuery.sizeOf(context).width * 0.70,
+          child: AppinioSwiper(
+              swipeOptions: const SwipeOptions.only(left: true, right: true),
+              onSwipeBegin: (previousIndex, targetIndex, activity) {
+                if (activity.direction == AxisDirection.left) {
                   setState(() {
-                    heartIsSelected = false;
-                    crossIsSelected = false;
+                    crossIsSelected = true;
                   });
-                },
-                backgroundCardOffset: const Offset(0, 0),
-                cardBuilder: (context, index) => const TinderActivityCard(),
-                cardCount: 8 //! Esto debe ser dinamico
+                } else if (activity.direction == AxisDirection.right) {
+                  setState(() {
+                    heartIsSelected = true;
+                  });
+                }
 
-                )),
+                if (targetIndex == 8) {
+                  //!Esto debe ser dinamico
+                  //Mostrar boton de compartir
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) => const TinderActivityPopUp());
+                }
+              },
+              onSwipeEnd: (previousIndex, targetIndex, activity) {
+                setState(() {
+                  heartIsSelected = false;
+                  crossIsSelected = false;
+                });
+              },
+              backgroundCardOffset: const Offset(0, 0),
+              cardBuilder: (context, index) => const TinderActivityCard(),
+              cardCount: 8 //! Esto debe ser dinamico
+
+              )),
       ],
     ));
   }

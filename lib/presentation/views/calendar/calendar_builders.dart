@@ -126,7 +126,7 @@ class FeedbacksMarkerBuilder extends StatelessWidget {
       children: emotions.map((emotion) {
         final path = _getEmojiIconPath(emotion);
         return path != null 
-        ? Image.asset(path, width: 18, height: 18) 
+        ? Image.asset(path, width: 16, height: 16) 
         : const SizedBox.shrink();
       }).toList(),
       )

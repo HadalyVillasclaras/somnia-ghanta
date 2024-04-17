@@ -29,7 +29,8 @@ class SubphaseScreen extends ConsumerWidget {
       case ActivityType.audio:
         return AudioActivity(pageController: controller);
       case ActivityType.tinder:
-        return TinderActivity(pageController: controller);
+                return const DraggableActivity();
+
       case ActivityType.popup:
         return PopupActivity(pageController: controller);
       case ActivityType.draggable:
@@ -58,8 +59,6 @@ print('SUBPHASE SCREEN: $subphaseId, $courseId, $phaseId');
         body: Center(child: Text('Error loading subphase: $err')),
       ),
       data: (Subphase subphase) {
-print(subphaseId);
-
         return Scaffold(
           backgroundColor: theme.primary,
           extendBodyBehindAppBar: true,

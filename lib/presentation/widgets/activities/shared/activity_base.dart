@@ -21,7 +21,6 @@ class ActivityBase extends StatefulWidget {
 
 class _ActivityBaseState extends State<ActivityBase> {
   bool isDarkMode = false;
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -68,7 +67,6 @@ class _ActivityBaseState extends State<ActivityBase> {
           pageController: widget.pageController,
           // activityType: widget.subphase.activities[0].activityTypology,
           activityType: ActivityType.meditation,
-
           // activityType: ActivityType.popup,
         )
       ],

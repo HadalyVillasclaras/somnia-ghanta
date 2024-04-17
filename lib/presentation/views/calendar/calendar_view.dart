@@ -155,6 +155,9 @@ class _CalendarViewState extends State<CalendarView> {
                 List<int> emotions = feedbacksByDate[dateOnly]!
                 .expand((feedback) => feedback.feedbackDetails.map((detail) => detail.emotion))
                 .toList();
+                if (emotions.length > 3) {
+                  emotions = emotions.sublist(0, 3);  
+                }
                 return FeedbacksMarkerBuilder(date: date, emotions: emotions);
               }
             },
