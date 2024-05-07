@@ -3,6 +3,7 @@
 
 export 'package:ghanta/presentation/widgets/activities/shared/activity_body.dart';
 export 'package:ghanta/presentation/widgets/activities/shared/activity_text_body.dart';
+export 'package:ghanta/presentation/widgets/activities/shared/activity_intro_text.dart';
 
 export 'package:ghanta/presentation/widgets/home/store/home_courses_list.dart';
 

@@ -193,23 +193,23 @@ class _CalendarViewState extends State<CalendarView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         EmotionsField(selectedDay: _selectedDay, feedbacksByDate: feedbacksByDate),
-                        SizedBox(
-                          width: double.infinity, 
-                          child: ElevatedButton(
-                            onPressed: _addCrisisDialog,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,  
-                              padding: const EdgeInsets.all(0),
-                            ),
-                            child: const Text(
-                              'Consultar crisis de pánico',
-                              style: TextStyle(
-                                fontSize: 12, 
-                                fontWeight: FontWeight.w300, 
-                              ),
-                            ),
-                          ),
-                        ),
+                        // SizedBox(
+                        //   width: double.infinity, 
+                        //   child: ElevatedButton(
+                        //     onPressed: _addCrisisDialog,
+                        //     style: ElevatedButton.styleFrom(
+                        //       backgroundColor: Colors.red,  
+                        //       padding: const EdgeInsets.all(0),
+                        //     ),
+                        //     child: const Text(
+                        //       'Consultar crisis de pánico',
+                        //       style: TextStyle(
+                        //         fontSize: 12, 
+                        //         fontWeight: FontWeight.w300, 
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

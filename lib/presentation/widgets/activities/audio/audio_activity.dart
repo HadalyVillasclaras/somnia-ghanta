@@ -6,6 +6,7 @@ import 'package:fancy_audio_recorder/audio_recorder_button.dart';
 import 'package:flutter/material.dart';
 import 'package:ghanta/config/constants/colors_theme.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
+import 'package:ghanta/presentation/widgets/activities/shared/activity_intro_text.dart';
 
 class AudioActivity extends StatelessWidget {
   const AudioActivity({Key? key, required this.pageController})
@@ -18,33 +19,13 @@ class AudioActivity extends StatelessWidget {
     return PageView(
       controller: pageController,
       children: [
-        const AudioActivityStepOne(),
+        const ActivityIntroText(
+            text:'Duis a lacus convallis, sagittis erat nec, lobortis urna. Fusce ac risus malesuada, consectetur magna et, scelerisque felis. Phasellus laoreet scelerisque facilisis. Duis luctus sollicitudin semper. Aenean viverra enim eget enim euismod, vitae aliquet libero semper.'),
         AudioActivityStepTwo(
           pageController: pageController,
         ),
       ],
     );
-  }
-}
-
-class AudioActivityStepOne extends StatelessWidget {
-  const AudioActivityStepOne({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ActivityBody(
-        child: Column(
-      children: [
-        ConstrainedBox(
-            constraints: BoxConstraints(
-                maxWidth: MediaQuery.sizeOf(context).width * 0.9),
-            child: const ActivityTextBody(
-                'Aqui ira un comentario dinamico sobre la actividad de audio')),
-        const SizedBox(
-          height: 20,
-        ),
-      ],
-    ));
   }
 }
 
@@ -75,67 +56,166 @@ class _AudioActivityStepTwoState extends State<AudioActivityStepTwo> {
   @override
   Widget build(BuildContext context) {
     return ActivityBody(
-        child: Column(
       children: [
-        ConstrainedBox(
-          constraints:
-              BoxConstraints(maxWidth: MediaQuery.sizeOf(context).width * 0.9),
-          child: Column(
-            children: [
-              // const ActivityTextBody('Expresa tus sentimientos con un audio'),
-              const SizedBox(
-                height: 20,
-              ),
-              AudioRecorderButton(
-                maxRecordTime: const Duration(minutes: 2),
-                primaryColor: ColorsTheme.primaryColorBlue,
-                iconColor: Colors.white,
-                onRecordComplete: (path) {
-                  //Transfor the path to a base64 string
-                  convertAudioToBase64(path ?? '');
-
-                  if (path != null) {
-                    setState(() {
-                      _showShareButton = true;
-                    });
-                  } else {
-                    setState(() {
-                      _showShareButton = false;
-                    });
-                  }
-                },
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Visibility(
-                visible: _showShareButton,
-                child: FilledButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return const AudioShareModal();
-                      },
-                    );
-                  },
-                  style: FilledButton.styleFrom(
-                    backgroundColor: ColorsTheme.primaryColorBlue,
-                  ),
-                  child: const Text(
-                    'Continuar',
-                    style: TextStyle(color: Colors.white),
-                  ),
+         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text("00:00"), 
+            Expanded(
+              child: SliderTheme(
+                 data: SliderTheme.of(context).copyWith(
+                  thumbColor: Colors.white, 
+                  inactiveTrackColor: Colors.grey[300],
                 ),
-              )
+                child: Slider(
+                  value: 70, 
+                  max: 155, 
+                  onChanged: (value) {
+                  },
+                ),
+              ),
+            ),
+            const Text("02:35"), 
+          ],
+        ),
+        // const Text("01:35"), 
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: [
+        //     Expanded(
+        //       child: SliderTheme(
+        //         data: SliderTheme.of(context).copyWith(
+        //           thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 0),  // Hide the thumb
+        //           trackHeight: 2.0,  
+        //           inactiveTrackColor: Colors.grey[300],  // Color behind the progress
+        //           overlayColor: Colors.transparent,  // No overlay
+        //         ),
+        //         child: Stack(
+        //           alignment: Alignment.center,
+        //           children: [
+        //             Slider(
+        //               value: 75, 
+        //               max: 150, 
+        //               onChanged: (value) {},
+        //             ),
+        //             Positioned(
+        //               child: Container(
+        //                 height: 20,  
+        //                 width: 2, 
+        //                 color: ColorsTheme.primaryColorBlue,  
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        const SizedBox(
+          height: 30,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.skip_previous),
+              onPressed: () {},
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 45),
+              decoration: const BoxDecoration(
+                color: ColorsTheme.primaryColorBlue,
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                iconSize: 44,
+                icon: const Icon(Icons.play_arrow),
+                color: Colors.white,
+                onPressed: () {},
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.skip_next),
+              onPressed: () {},
+            ),
+          ],
+        ),
+        // AudioRecorderButton(
+        //   maxRecordTime: const Duration(minutes: 2),
+        //   primaryColor: ColorsTheme.primaryColorBlue,
+        //   iconColor: Colors.white,
+        //   onRecordComplete: (path) {
+        //     //Transfor the path to a base64 string
+        //     convertAudioToBase64(path ?? '');
+
+        //     if (path != null) {
+        //       setState(() {
+        //         _showShareButton = true;
+        //       });
+        //     } else {
+        //       setState(() {
+        //         _showShareButton = false;
+        //       });
+        //     }
+        //   },
+        // ),
+        const SizedBox(
+          height: 50,
+        ),
+        Visibility(
+          // visible: _showShareButton,
+          visible: true,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              FilledButton(
+                style: FilledButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.background,
+                    foregroundColor: Theme.of(context).colorScheme.primary,
+                    padding: const EdgeInsets.fromLTRB(0, 2, 15, 2)),
+                onPressed: () {},
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(
+                      Icons.chevron_left,
+                      size: 40,
+                    ),
+                    SizedBox(width: 4),
+                    Text('Repetir'),
+                  ],
+                ),
+              ),
+              FilledButton(
+                style: FilledButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.background,
+                    foregroundColor: Theme.of(context).colorScheme.primary,
+                    padding: const EdgeInsets.fromLTRB(15, 2, 0, 2)),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const AudioShareModal();
+                    },
+                  );
+                },
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Seguir'),
+                    SizedBox(width: 4),
+                    Icon(
+                      Icons.chevron_right,
+                      size: 40,
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
-        const SizedBox(
-          height: 20,
-        ),
       ],
-    ));
+    );
   }
 }
 
@@ -148,31 +228,25 @@ class AudioShareModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 15),
         width: MediaQuery.sizeOf(context).width * 0.8,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(20),
         ),
         child: IntrinsicHeight(
           child: Column(
             children: [
-              const Text(
+              Text(
                   '¿Quieres este audio y comunicar tus palabras a la persona que has elegido?',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: ColorsTheme.primaryColorBlue,
-                      fontWeight: FontWeight.bold)),
+                  style: Theme.of(context).textTheme.headlineSmall),
               const SizedBox(
                 height: 20,
               ),
               const Text(
                 'Observa cómo te sientes al apreciar y reconocer a los demás, y cómo te sientes al recibir sus respuestas.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 15,
-                ),
               ),
               const SizedBox(
                 height: 20,
@@ -180,34 +254,30 @@ class AudioShareModal extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: OutlinedButton(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.background,
+                        foregroundColor: Theme.of(context).colorScheme.primary,
+                      ),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      style: FilledButton.styleFrom(
-                        backgroundColor: Colors.white,
-                      ),
-                      child: const Text(
-                        'Ok',
-                        style: TextStyle(color: ColorsTheme.primaryColorBlue),
-                      ),
+                      child: const Text('Ok'),
                     ),
                   ),
                   const SizedBox(
-                    width: 20,
+                    width: 10,
                   ),
                   Expanded(
-                    child: FilledButton(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 2,
+                      ),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      style: FilledButton.styleFrom(
-                        backgroundColor: ColorsTheme.primaryColorBlue,
-                      ),
-                      child: const Text(
-                        'Compartir',
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      child: const Text('Compartir'),
                     ),
                   ),
                 ],

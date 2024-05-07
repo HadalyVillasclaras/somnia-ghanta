@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ghanta/config/constants/colors_theme.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-enum ActivityType { meditation, audio, tinder, popup, draggable }
+enum ActivityType { meditation, text, audio, tinder, popup, draggable }
 
 class ActivityIndicator extends StatefulWidget {
   const ActivityIndicator({
@@ -25,13 +25,15 @@ class _ActivityIndicatorState extends State<ActivityIndicator> {
   int _getPagesCount() {
     switch (widget.activityType) {
       case ActivityType.meditation:
-        return 4;
+        return 6;
       case ActivityType.audio:
         return 2;
       case ActivityType.tinder:
-        return 1;
+        return 2;
       case ActivityType.popup:
-        return 1;
+        return 2;
+      case ActivityType.text:
+        return 4;
       default:
         return 0;
     }
@@ -77,8 +79,7 @@ class _ActivityIndicatorState extends State<ActivityIndicator> {
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeInOut);
                     },
-                icon: const Icon(Icons.arrow_back_ios,
-                    color: ColorsTheme.primaryColorBlue)),
+                icon: const Icon(Icons.arrow_back_ios)),
             ),
             SmoothPageIndicator(
               controller: widget.pageController,
@@ -105,8 +106,7 @@ class _ActivityIndicatorState extends State<ActivityIndicator> {
                               duration: const Duration(milliseconds: 300),
                               curve: Curves.easeInOut);
                         },
-                  icon: const Icon(Icons.arrow_forward_ios,
-                      color: ColorsTheme.primaryColorBlue)),
+                  icon: const Icon(Icons.arrow_forward_ios)),
             ),
           ],
         ),

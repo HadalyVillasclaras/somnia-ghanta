@@ -88,7 +88,7 @@ class NormalLevel extends ConsumerWidget {
                   FilledButton.tonal(
                     onPressed: areUrlParamsValid ? () {
                       tooltipsProvider[index].hideTooltip();
-                      context.push('/course/$course/phase/${subphase.phaseId}/subphase/${subphase.id}');
+                      context.push('/course/$course/phase/${subphase.phaseId}/subphase/1');
                     } : null,
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.all( Size(sizes.width * 0.6, 50)),

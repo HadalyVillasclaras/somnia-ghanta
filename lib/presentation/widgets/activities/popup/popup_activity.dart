@@ -10,7 +10,12 @@ class PopupActivity extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageView(
       controller: pageController,
-      children: const [PopupActivityStepOne()],
+      children: const [
+        ActivityIntroText(
+            text:
+                'Duis a lacus convallis, sagittis erat nec, lobortis urna. Fusce ac risus malesuada, consectetur magna et, scelerisque felis. Phasellus laoreet scelerisque facilisis. Duis luctus sollicitudin semper. Aenean viverra enim eget enim euismod, vitae aliquet libero semper.'),
+        PopupActivityStepOne()
+      ],
     );
   }
 }
@@ -37,25 +42,25 @@ class _PopupActivityStepOneState extends State<PopupActivityStepOne> {
     ];
 
     List<String> descripcionNombres = [
-      'La A es la primera letra del abecedario',
-      'La B es la segunda letra del abecedario',
-      'La C es la tercera letra del abecedario',
-      'La D es la cuarta letra del abecedario',
-      'La E es la quinta letra del abecedario',
-      'La F es la sexta letra del abecedario',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac commodo est, non lobortis lectus.',
+      'Integer ac commodo est, non lobortis lectus.',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac commodo est, non lobortis lectus.',
+      'Integer ac commodo est, non lobortis lectus.',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac commodo est, non lobortis lectus.',
+      'Integer ac commodo est, non lobortis lectus.',
     ];
 
     return ActivityBody(
-        //De child hacemos un grid de 3 columnas
-        child: Column(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         if (selectedPill != -1)
           PopupActivityModal(
             nombre: nombres[selectedPill],
             descripcion: descripcionNombres[selectedPill],
           ),
+        const SizedBox(height: 30),
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.25,
+          height: MediaQuery.of(context).size.height * 0.2,
           child: GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -77,8 +82,32 @@ class _PopupActivityStepOneState extends State<PopupActivityStepOne> {
             },
           ),
         ),
+         Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+           children: [
+             FilledButton(
+                    style: FilledButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.background,
+                        foregroundColor: Theme.of(context).colorScheme.primary,
+                        padding: const EdgeInsets.fromLTRB(15, 2, 0, 2)),
+                    onPressed: () {
+                    },
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Seguir'),
+                        SizedBox(width: 4),
+                        Icon(
+                          Icons.chevron_right,
+                          size: 40,
+                        ),
+                      ],
+                    ),
+                  ),
+           ],
+         ),
       ],
-    ));
+    );
   }
 }
 
@@ -97,16 +126,15 @@ class PopupPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 10,
+      height: 8,
       margin: const EdgeInsets.all(5),
       decoration: BoxDecoration(
           color: isSelected ? ColorsTheme.primaryColorBlue : Colors.white,
-          borderRadius: BorderRadius.circular(20)),
+          borderRadius: BorderRadius.circular(15)),
       child: Center(
         child: Text(
           nombre,
           style: TextStyle(
-              fontSize: 20,
               color: isSelected ? Colors.white : ColorsTheme.primaryColorBlue,
               fontWeight: FontWeight.bold),
         ),
@@ -125,13 +153,11 @@ class PopupActivityModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 25),
       width: MediaQuery.sizeOf(context).width * 0.95,
-      // height: MediaQuery.sizeOf(context).height * 0.23,
       constraints: BoxConstraints(
-        minHeight: MediaQuery.sizeOf(context).height * 0.35,
-        maxHeight: MediaQuery.sizeOf(context).height * 0.35,
+        minHeight: MediaQuery.sizeOf(context).height * 0.32,
+        maxHeight: MediaQuery.sizeOf(context).height * 0.32,
       ),
       decoration: const BoxDecoration(
           color: Colors.white,
@@ -144,32 +170,22 @@ class PopupActivityModal extends StatelessWidget {
           ],
           borderRadius: BorderRadius.all(Radius.circular(30))),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ActivityTextBody(
             nombre,
-            textAlign: TextAlign.center,
             isSmall: false,
           ),
           ActivityTextBody(
             descripcion,
-            textAlign: TextAlign.center,
             isSmall: true,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              FilledButton(
-                onPressed: () {},
-                style: FilledButton.styleFrom(
-                  backgroundColor: ColorsTheme.primaryColorBlue,
-                ),
-                child: const Text(
-                  'Guardar',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {},
+              child: const Text('Ok'),
+            ),
           )
         ],
       ),

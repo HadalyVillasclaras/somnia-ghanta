@@ -23,7 +23,6 @@ class CourseScenario extends ConsumerWidget {
     final List<Phase> phases = currentCourse.phases;
 
     final phase = phases[0];
-    print(phases.toString());
 
     return SafeArea(
       bottom: false,

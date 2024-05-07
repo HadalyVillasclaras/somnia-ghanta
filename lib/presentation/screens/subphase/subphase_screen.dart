@@ -10,6 +10,8 @@ import 'package:ghanta/presentation/widgets/activities/draggable/draggable_activ
 import 'package:ghanta/presentation/widgets/activities/popup/popup_activity.dart';
 import 'package:ghanta/presentation/widgets/activities/shared/activity_base.dart';
 import 'package:ghanta/presentation/widgets/activities/tinder/tinder_activity.dart';
+import 'package:ghanta/presentation/widgets/activities/text/text_activity.dart';
+
 
 class SubphaseScreen extends ConsumerWidget {
   const SubphaseScreen(
@@ -29,12 +31,13 @@ class SubphaseScreen extends ConsumerWidget {
       case ActivityType.audio:
         return AudioActivity(pageController: controller);
       case ActivityType.tinder:
-                return const DraggableActivity();
-
+        return TinderActivity(pageController: controller);
       case ActivityType.popup:
         return PopupActivity(pageController: controller);
       case ActivityType.draggable:
         return const DraggableActivity();
+      case ActivityType.text:
+        return TextActivity(pageController: controller);
       default:
         return Container();
     }
@@ -42,16 +45,12 @@ class SubphaseScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-print('SUBPHASE SCREEN: $subphaseId, $courseId, $phaseId');
     final theme = Theme.of(context).colorScheme;
     final pageController = PageController();
-
-    // Watch the FutureProvider for subphase data.
     final subphaseAsyncValue = ref.watch(subphaseProvider(subphaseId));
-    // Handle the async data with proper UI handling for loading and error states.
+
     return subphaseAsyncValue.when(
-      loading: () => Scaffold(
-        backgroundColor: theme.primary,
+      loading: () => const  Scaffold(
         body: Center(child: CircularProgressIndicator()),
       ),
       error: (err, stack) => Scaffold(
@@ -60,7 +59,6 @@ print('SUBPHASE SCREEN: $subphaseId, $courseId, $phaseId');
       ),
       data: (Subphase subphase) {
         return Scaffold(
-          backgroundColor: theme.primary,
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -70,7 +68,8 @@ print('SUBPHASE SCREEN: $subphaseId, $courseId, $phaseId');
           body: ActivityBase(
               subphase: subphase,
               pageController: pageController,
-              child: _loadActivityWidget(pageController, subphase.activities.first.activityTypology)),
+              child:PopupActivity(pageController: pageController)),
+              // child: _loadActivityWidget(pageController, subphase.activities.first.activityTypology)),
         );
       },
     );

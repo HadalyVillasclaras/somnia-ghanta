@@ -30,8 +30,6 @@ class _DraggableActivityStepOneState extends State<DraggableActivityStepOne> {
         List<String>.generate(5, (index) => "Item $index");
 
     return ActivityBody(
-        isSpacerNeeded: false,
-        child: Column(
           children: [
             Container(
               margin: const EdgeInsets.only(top: 50),
@@ -132,7 +130,7 @@ class _DraggableActivityStepOneState extends State<DraggableActivityStepOne> {
                   ],
                 ))
           ],
-        ));
+       );
   }
 }
 

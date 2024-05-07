@@ -43,31 +43,30 @@ class _ActivityBaseState extends State<ActivityBase> {
             height: MediaQuery.sizeOf(context).height * 0.20,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
-              colors: [
-                Color.fromARGB(222, 255, 246, 211),
-                Color.fromARGB(0, 255, 255, 255)
-              ],
+                colors: [
+                  Color.fromARGB(222, 255, 246, 211),
+                  Color.fromARGB(0, 255, 255, 255)
+                ],
               stops: [0, 1],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ))),
 
         Positioned(
-          top: MediaQuery.sizeOf(context).height * 0.10,
+          top: MediaQuery.sizeOf(context).height * 0.11,
           left: 20,
-          child: Text(widget.subphase.getTitle(),
-              style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: ColorsTheme.primaryColorBlue)),
+          child: Text('Subfase: ${widget.subphase.getTitle()}',
+              style: Theme.of(context).textTheme.headlineSmall),
         ),
 
-        //Ponemos el child
+        //ACTIVITY WIDGET
         widget.child,
+
+        //PAGINATION
         ActivityIndicator(
           pageController: widget.pageController,
-          // activityType: widget.subphase.activities[0].activityTypology,
-          activityType: ActivityType.meditation,
-          // activityType: ActivityType.popup,
+          //activityType: widget.subphase.activities[0].activityTypology,
+          activityType: ActivityType.popup,
         )
       ],
     );
