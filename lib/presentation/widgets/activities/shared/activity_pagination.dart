@@ -46,6 +46,8 @@ class _ActivityPaginationState extends State<ActivityPagination> {
         return 6;
       case ActivityType.audio:
         return 2;
+      case ActivityType.voiceRecorder:
+        return 2;
       case ActivityType.tinder:
         return 2;
       case ActivityType.popup:

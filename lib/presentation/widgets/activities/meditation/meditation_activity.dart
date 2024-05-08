@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
+import 'package:ghanta/presentation/widgets/activities/shared/activity_end_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ghanta/config/constants/colors_theme.dart';
 
 class MeditationActivity extends StatelessWidget {
-  const MeditationActivity({
-    super.key, 
-    required this.pageController, 
-    required this.activity
-  });
+  const MeditationActivity(
+      {super.key, required this.pageController, required this.activity});
 
   final PageController pageController;
   final Activity activity;
@@ -19,15 +17,13 @@ class MeditationActivity extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageView(
       controller: pageController,
-      children: const [
-        ActivityIntroText(
-            text:
-                'Duis a lacus convallis, sagittis erat nec, lobortis urna. Fusce ac risus malesuada, consectetur magna et, scelerisque felis. Phasellus laoreet scelerisque facilisis. Duis luctus sollicitudin semper. Aenean viverra enim eget enim euismod, vitae aliquet libero semper.'),
-        MeditationActivityStepOne(),
-        MeditationActivityStepTwo(),
-        MeditationActivityStepThree(),
-        MeditationActivityStepFour(),
-        MeditationActivityStepFive()
+      children: [
+        ActivityIntroText(text: activity.descriptionEs),
+        const MeditationActivityStepOne(),
+        const MeditationActivityStepTwo(),
+        const MeditationActivityStepThree(),
+        const MeditationActivityStepFour(),
+        const MeditationActivityStepFive()
       ],
     );
   }
@@ -61,19 +57,22 @@ class MeditationActivityStepTwo extends StatelessWidget {
       children: [
         SizedBox(height: MediaQuery.sizeOf(context).height * 0.4),
         RichText(
-          softWrap:true,
-              textAlign:TextAlign.center,
+          softWrap: true,
+          textAlign: TextAlign.center,
           text: TextSpan(
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.primary), 
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge!
+                .copyWith(color: Theme.of(context).colorScheme.primary),
             children: const <TextSpan>[
               TextSpan(text: 'Tómate un momento para '),
               TextSpan(
                 text: 'INHALAR PROFUNDAMENTE',
-                style:
-                    TextStyle(color: Colors.red),
+                style: TextStyle(color: Colors.red),
               ),
               TextSpan(
-                text:' y exhalar suavamente, sintiendo como tu cuerpo se relaja con cada respiración.',
+                text:
+                    ' y exhalar suavamente, sintiendo como tu cuerpo se relaja con cada respiración.',
               ),
             ],
           ),
@@ -167,7 +166,7 @@ class MeditationActivityStepFive extends StatelessWidget {
     return ActivityBody(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SizedBox(height: MediaQuery.sizeOf(context).height * 0.45),
+        SizedBox(height: MediaQuery.sizeOf(context).height * 0.40),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -189,15 +188,11 @@ class MeditationActivityStepFive extends StatelessWidget {
           ],
         ),
         const SizedBox(
-          height: 30,
+          height: 20,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            IconButton(
-              icon: const Icon(Icons.skip_previous),
-              onPressed: () {},
-            ),
             const SizedBox(
               width: 25,
             ),
@@ -208,12 +203,12 @@ class MeditationActivityStepFive extends StatelessWidget {
             const SizedBox(
               width: 25,
             ),
-            IconButton(
-              icon: const Icon(Icons.skip_next),
-              onPressed: () {},
-            ),
           ],
         ),
+        const SizedBox(
+          height: 50,
+        ),
+       const ActivityEndButton(isVisible: true),
       ],
     );
   }

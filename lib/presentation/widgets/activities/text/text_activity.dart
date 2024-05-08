@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
+import 'package:ghanta/presentation/widgets/activities/shared/activity_end_button.dart';
 
 class TextActivity extends StatelessWidget {
   const TextActivity({
@@ -14,9 +15,17 @@ class TextActivity extends StatelessWidget {
 
  List<Widget> _createTextBlocks(String text) {
     List<Widget> blocks = [];
-    for (int i = 0; i < text.length; i += 190) {
-      String textChunk = text.substring(i, i + 190 > text.length ? text.length : i + 190);
-      blocks.add(TextBlock(text: textChunk));
+    int blockSize = 190;
+    for (int i = 0; i < text.length; i += blockSize) {
+      String textChunk = text.substring(i, i + blockSize > text.length ? text.length : i + blockSize);
+      bool isLastBlock = i + blockSize >= text.length;
+
+      blocks.add(
+        TextBlock(
+          text: textChunk,
+          isLast: isLastBlock,
+        )
+      );
     }
     return blocks;
   }
@@ -33,8 +42,10 @@ class TextActivity extends StatelessWidget {
 }
 
 class TextBlock extends StatelessWidget {
-  const TextBlock({super.key, required this.text});
+   const TextBlock({super.key, required this.text, this.isLast = false});
   final String text;
+  final bool isLast;
+
   @override
   Widget build(BuildContext context) {
     return ActivityBody(
@@ -48,7 +59,9 @@ class TextBlock extends StatelessWidget {
         const SizedBox(
           height: 25,
         ),
+        ActivityEndButton(isVisible: isLast),
       ],
     );
   }
 }
+

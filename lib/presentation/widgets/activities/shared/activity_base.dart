@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:ghanta/config/constants/colors_theme.dart';
 import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/domain/entities/subphase.dart';
-import 'package:ghanta/presentation/widgets/activities/shared/activity_pagination.dart';
 import 'package:ghanta/presentation/screens/_presentation.dart';
 import 'package:ghanta/presentation/widgets/activities/audio/audio_activity.dart';
-import 'package:ghanta/presentation/widgets/activities/draggable/draggable_activity.dart';
 import 'package:ghanta/presentation/widgets/activities/popup/popup_activity.dart';
-import 'package:ghanta/presentation/widgets/activities/shared/activity_base.dart';
 import 'package:ghanta/presentation/widgets/activities/tinder/tinder_activity.dart';
 import 'package:ghanta/presentation/widgets/activities/text/text_activity.dart';
+import 'package:ghanta/presentation/widgets/activities/voice_recorder/voice_recorder_activity.dart';
 
 class ActivityBase extends StatefulWidget {
   const ActivityBase({
@@ -24,14 +21,18 @@ class ActivityBase extends StatefulWidget {
 }
 
 class _ActivityBaseState extends State<ActivityBase> {
-    final pageController = PageController();
+  final pageController = PageController();
 
-   Widget _loadActivityWidget(PageController controller, Activity activity) {
+  Widget _loadActivityWidget(PageController controller, Activity activity) {
     switch (activity.activityTypology) {
       case ActivityType.meditation:
-        return MeditationActivity(pageController: controller, activity: activity);
+        return MeditationActivity(
+            pageController: controller, activity: activity);
       case ActivityType.audio:
         return AudioActivity(pageController: controller, activity: activity);
+      case ActivityType.voiceRecorder:
+        return VoiceRecorderActivity(
+            pageController: controller, activity: activity);
       case ActivityType.tinder:
         return TinderActivity(pageController: controller, activity: activity);
       case ActivityType.popup:
@@ -58,7 +59,8 @@ class _ActivityBaseState extends State<ActivityBase> {
               fit: BoxFit.cover,
               colorFilter: isDarkMode
                   ? ColorFilter.mode(
-                      Color.fromARGB(255, 14, 0, 143).withOpacity(0.6), BlendMode.darken)
+                      const Color.fromARGB(255, 14, 0, 143).withOpacity(0.6),
+                      BlendMode.darken)
                   : null,
             ),
           ),
@@ -67,25 +69,27 @@ class _ActivityBaseState extends State<ActivityBase> {
             height: MediaQuery.sizeOf(context).height * 0.20,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                colors: [
-                  Color.fromARGB(222, 255, 246, 211),
-                  Color.fromARGB(0, 255, 255, 255)
-                ],
+              colors: [
+                Color.fromARGB(222, 255, 246, 211),
+                Color.fromARGB(0, 255, 255, 255)
+              ],
               stops: [0, 1],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-            ))),
+            ))
+        ),
 
         //Título
         Positioned(
           top: MediaQuery.sizeOf(context).height * 0.11,
           left: 20,
-          child: Text('Subfase: ${widget.subphase.getTitle()}',
+          right: 20,
+          child: Text(widget.subphase.getTitle(),
               style: Theme.of(context).textTheme.headlineSmall),
         ),
 
         //ACTIVITY WIDGET
-         _loadActivityWidget(pageController, activity), 
+        _loadActivityWidget(pageController, activity),
 
         //PAGINATION
         ActivityPagination(

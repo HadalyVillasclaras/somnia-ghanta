@@ -3,38 +3,35 @@ import 'package:flutter/material.dart';
 import 'package:ghanta/config/constants/colors_theme.dart';
 import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
+import 'package:ghanta/presentation/widgets/activities/shared/activity_end_button.dart';
 
 class TinderActivity extends StatelessWidget {
-  const TinderActivity({
-    super.key, 
-    required this.pageController, 
-    required this.activity
-  });
+  const TinderActivity(
+      {super.key, required this.pageController, required this.activity});
 
   final PageController pageController;
   final Activity activity;
 
-
   @override
   Widget build(BuildContext context) {
     return PageView(
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       controller: pageController,
-      children:  [
-        ActivityIntroText(
-            text: activity.descriptionEs),
-        TinderActivityStepOne(activity: activity)],
+      children: [
+        ActivityIntroText(text: activity.descriptionEs),
+        TinderActivityStepOne(activity: activity)
+      ],
     );
   }
 }
 
 class TinderActivityStepOne extends StatefulWidget {
-   const TinderActivityStepOne({super.key, required this.activity});
+  const TinderActivityStepOne({super.key, required this.activity});
 
-    final Activity activity;
+  final Activity activity;
 
-    @override
-    State<TinderActivityStepOne> createState() => _TinderActivityStepOneState();
+  @override
+  State<TinderActivityStepOne> createState() => _TinderActivityStepOneState();
 }
 
 class _TinderActivityStepOneState extends State<TinderActivityStepOne> {
@@ -45,69 +42,76 @@ class _TinderActivityStepOneState extends State<TinderActivityStepOne> {
     final tinderData = widget.activity.tinderData;
     final totalCards = tinderData!.length;
 
-    return ActivityBody(
-        children: [Stack(
-      clipBehavior: Clip.none,
-      children: [
-        ActionButton(
-          isSelected: heartIsSelected,
-          icon: Icons.favorite,
-          position: Alignment.centerRight,
-          color: Colors.red,
-        ),
-        ActionButton(
-          isSelected: crossIsSelected,
-          icon: Icons.clear,
-          position: Alignment.centerLeft,
-          color: ColorsTheme.primaryColorBlue,
-        ),
+    return ActivityBody(children: [
+      Stack(
+        clipBehavior: Clip.none,
+        children: [
+          ActionButton(
+            isSelected: heartIsSelected,
+            icon: Icons.favorite,
+            position: Alignment.centerRight,
+            color: Colors.red,
+          ),
+          ActionButton(
+            isSelected: crossIsSelected,
+            icon: Icons.clear,
+            position: Alignment.centerLeft,
+            color: ColorsTheme.primaryColorBlue,
+          ),
 
-        //CARD
-        SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.25,
-            width: MediaQuery.sizeOf(context).width * 0.70,
-            child: AppinioSwiper(
-              loop:true,
-                swipeOptions: const SwipeOptions.only(left: true, right: true),
-                onSwipeBegin: (previousIndex, targetIndex, activity) {
-                  if (activity.direction == AxisDirection.left) {
+          //CARD
+          SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.25,
+              width: MediaQuery.sizeOf(context).width * 0.70,
+              child: AppinioSwiper(
+                  loop: true,
+                  swipeOptions:
+                      const SwipeOptions.only(left: true, right: true),
+                  onSwipeBegin: (previousIndex, targetIndex, activity) {
+                    if (activity.direction == AxisDirection.left) {
+                      setState(() {
+                        crossIsSelected = true;
+                      });
+                    } else if (activity.direction == AxisDirection.right) {
+                      setState(() {
+                        heartIsSelected = true;
+                      });
+                    }
+                  },
+                  onSwipeEnd: (previousIndex, targetIndex, activity) {
                     setState(() {
-                      crossIsSelected = true;
+                      heartIsSelected = false;
+                      crossIsSelected = false;
                     });
-                  } else if (activity.direction == AxisDirection.right) {
-                    setState(() {
-                      heartIsSelected = true;
-                    });
-                  }
-                },
-                onSwipeEnd: (previousIndex, targetIndex, activity) {
-                  setState(() {
-                    heartIsSelected = false;
-                    crossIsSelected = false;
-                  });
 
-                  if (previousIndex != targetIndex) { //dont trigge before the swipe is completed
-                    int adjustedIndex = (targetIndex - 1) % tinderData.length; //targetIndex starts in 1. when reaching total lenght, it starts from 0 again.  
+                    if (previousIndex != targetIndex) {
+                      //dont trigge before the swipe is completed
+                      int adjustedIndex = (targetIndex - 1) %
+                          tinderData
+                              .length; //targetIndex starts in 1. when reaching total lenght, it starts from 0 again.
 
-                    showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (context) => TinderActivityPopUp(
-                          popupText: tinderData[adjustedIndex].popupTextEs 
-                      )
-                    );
-                  }
-                },
-                backgroundCardOffset: const Offset(0, 0),
-                cardBuilder: (context, index) => TinderActivityCard(
-                      currentIndex: index,
-                      totalCards: totalCards,
-                      cardText: tinderData[index].cardTextEs,
-                    ),
-                cardCount: totalCards
-                )),
-      ],
-    )]);
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (context) => TinderActivityPopUp(
+                              popupText:
+                                  tinderData[adjustedIndex].popupTextEs));
+                    }
+                  },
+                  backgroundCardOffset: const Offset(0, 0),
+                  cardBuilder: (context, index) => TinderActivityCard(
+                        currentIndex: index,
+                        totalCards: totalCards,
+                        cardText: tinderData[index].cardTextEs,
+                      ),
+                  cardCount: totalCards)),
+        ],
+      ),
+        const SizedBox(
+          height: 50,
+        ),
+      const ActivityEndButton(isVisible: true),
+    ]);
   }
 }
 
@@ -157,14 +161,12 @@ class TinderActivityPopUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return AlertDialog(
         contentPadding: const EdgeInsets.all(0),
         content: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
           width: MediaQuery.sizeOf(context).width * 0.95,
           height: 350,
-        
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -207,9 +209,8 @@ class TinderActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical:20),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       width: MediaQuery.sizeOf(context).width * 0.70,
       decoration: const BoxDecoration(
           color: Colors.white,

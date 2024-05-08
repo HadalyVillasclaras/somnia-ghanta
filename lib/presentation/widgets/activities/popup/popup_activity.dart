@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ghanta/config/constants/colors_theme.dart';
 import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
+import 'package:ghanta/presentation/widgets/activities/shared/activity_end_button.dart';
 
 class PopupActivity extends StatelessWidget {
   const PopupActivity(
@@ -81,29 +82,7 @@ class _PopupActivityStepOneState extends State<PopupActivityStepOne> {
             },
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FilledButton(
-              style: FilledButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.background,
-                  foregroundColor: Theme.of(context).colorScheme.primary,
-                  padding: const EdgeInsets.fromLTRB(15, 2, 0, 2)),
-              onPressed: () {},
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Seguir'),
-                  SizedBox(width: 4),
-                  Icon(
-                    Icons.chevron_right,
-                    size: 40,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+        const ActivityEndButton(isVisible: true),
       ],
     );
   }
