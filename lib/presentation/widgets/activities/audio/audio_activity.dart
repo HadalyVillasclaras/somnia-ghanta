@@ -5,14 +5,19 @@ import 'dart:typed_data';
 import 'package:fancy_audio_recorder/audio_recorder_button.dart';
 import 'package:flutter/material.dart';
 import 'package:ghanta/config/constants/colors_theme.dart';
+import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
 import 'package:ghanta/presentation/widgets/activities/shared/activity_intro_text.dart';
 
 class AudioActivity extends StatelessWidget {
-  const AudioActivity({Key? key, required this.pageController})
-      : super(key: key);
+  const AudioActivity({ 
+    super.key, 
+    required this.pageController, 
+    required this.activity
+  });
 
   final PageController pageController;
+  final Activity activity;
 
   @override
   Widget build(BuildContext context) {

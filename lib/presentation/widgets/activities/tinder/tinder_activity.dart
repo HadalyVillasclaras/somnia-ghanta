@@ -1,22 +1,29 @@
 import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:ghanta/config/constants/colors_theme.dart';
+import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
 
 class TinderActivity extends StatelessWidget {
-  const TinderActivity({super.key, required this.pageController});
+  const TinderActivity({
+    super.key, 
+    required this.pageController, 
+    required this.activity
+  });
 
   final PageController pageController;
+  final Activity activity;
+
 
   @override
   Widget build(BuildContext context) {
     return PageView(
       physics: NeverScrollableScrollPhysics(),
       controller: pageController,
-      children: const [
+      children:  [
         ActivityIntroText(
-            text:'Duis a lacus convallis, sagittis erat nec, lobortis urna. Fusce ac risus malesuada, consectetur magna et, scelerisque felis. Phasellus laoreet scelerisque facilisis. Duis luctus sollicitudin semper. Aenean viverra enim eget enim euismod, vitae aliquet libero semper.'),
-        TinderActivityStepOne()],
+            text: activity.descriptionEs ?? ''),
+        const TinderActivityStepOne()],
     );
   }
 }

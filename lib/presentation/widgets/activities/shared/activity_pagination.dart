@@ -1,29 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:ghanta/config/constants/colors_theme.dart';
+import 'package:ghanta/domain/entities/activity.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-enum ActivityType { meditation, text, audio, tinder, popup, draggable }
+enum ActivityType { meditation, text, audio, tinder, popup, voiceRecorder }
 
-class ActivityIndicator extends StatefulWidget {
-  const ActivityIndicator({
+class ActivityPagination extends StatefulWidget {
+
+  const ActivityPagination({
     super.key,
     required this.pageController,
-    required this.activityType,
+    required this.activity,
   });
 
+  final Activity activity;
   final PageController pageController;
-  final ActivityType activityType;
 
   @override
-  State<ActivityIndicator> createState() => _ActivityIndicatorState();
+  State<ActivityPagination> createState() => _ActivityPaginationState();
 }
 
-class _ActivityIndicatorState extends State<ActivityIndicator> {
+class _ActivityPaginationState extends State<ActivityPagination> {
   bool _isFirstPage = true;
   bool _isLastPage = false;
 
+   late ActivityType activityType;
+ 
+  @override
+  void initState() {
+    super.initState();
+    activityType = widget.activity.activityTypology;
+
+    widget.pageController.addListener(() {
+      setState(() {
+        _isFirstPage =
+            widget.pageController.page == widget.pageController.initialPage;
+        _isLastPage = widget.pageController.page == _getPagesCount() - 1;
+      });
+    });
+  }
+
   int _getPagesCount() {
-    switch (widget.activityType) {
+    switch (activityType) {
       case ActivityType.meditation:
         return 6;
       case ActivityType.audio:
@@ -33,23 +51,14 @@ class _ActivityIndicatorState extends State<ActivityIndicator> {
       case ActivityType.popup:
         return 2;
       case ActivityType.text:
-        return 4;
+        return _calculateTextPages(widget.activity.descriptionEs);
       default:
         return 0;
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    widget.pageController.addListener(() {
-      setState(() {
-        _isFirstPage =
-            widget.pageController.page == widget.pageController.initialPage;
-        _isLastPage = widget.pageController.page == _getPagesCount() - 1;
-      });
-    });
+   int _calculateTextPages(String text) {
+    return (text.length / 190).ceil();
   }
 
   @override

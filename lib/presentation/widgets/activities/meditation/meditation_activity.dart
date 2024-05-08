@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ghanta/config/constants/colors_theme.dart';
 
 class MeditationActivity extends StatelessWidget {
   const MeditationActivity({
-    super.key,
-    required this.pageController,
+    super.key, 
+    required this.pageController, 
+    required this.activity
   });
 
   final PageController pageController;
+  final Activity activity;
 
   @override
   Widget build(BuildContext context) {

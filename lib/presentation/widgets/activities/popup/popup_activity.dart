@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:ghanta/config/constants/colors_theme.dart';
+import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
 
 class PopupActivity extends StatelessWidget {
-  const PopupActivity({super.key, required this.pageController});
+  const PopupActivity({
+     super.key, 
+    required this.pageController, 
+    required this.activity
+  });
 
   final PageController pageController;
+  final Activity activity;
+
   @override
   Widget build(BuildContext context) {
     return PageView(

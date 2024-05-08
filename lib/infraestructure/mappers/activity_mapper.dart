@@ -7,6 +7,8 @@ class ActivityMapper {
       id: api.id,
       titleEs: api.titleEs,
       titleCa: api.titleCa,
+      descriptionEs: api.descriptionEs,
+      descriptionCa: api.descriptionCa,
       subphaseId: api.subphaseId,
       order: api.order,
       activityTypology:
@@ -18,18 +20,18 @@ class ActivityTypologyMapper {
     switch (id) {
       case 1:
         return ActivityType.tinder;
-      case 2:
-        return ActivityType.audio;
       case 3:
-        return ActivityType.draggable;
-      case 4:
-        return ActivityType.audio;
-      case 5:
-        return ActivityType.popup;
+        return ActivityType.text;
       case 6:
+        return ActivityType.voiceRecorder;
+      case 7:
+        return ActivityType.popup;
+      case 9:
         return ActivityType.meditation;
-      default:
+      case 10:
         return ActivityType.audio;
+      default:
+        return ActivityType.meditation;
     }
   }
 }

@@ -127,7 +127,6 @@ class CoursesDatasourceImpl extends CoursesDatasource {
 
       final responseData = response.data['data'];
       final subphaseApi = SubphaseApiModel.fromJson(responseData);
-      print(subphaseApi.activities[0].activityTypology!.nameEs);
       final subphase = SubphaseMapper.subphaseApiModelToEntity(subphaseApi);
       
       return subphase;

@@ -2,15 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/config/constants/colors_theme.dart';
 import 'package:ghanta/domain/entities/subphase.dart';
-import 'package:ghanta/presentation/providers/_providers.dart';
 import 'package:ghanta/presentation/providers/new_courses_provider.dart';
-import 'package:ghanta/presentation/screens/_presentation.dart';
-import 'package:ghanta/presentation/widgets/activities/audio/audio_activity.dart';
-import 'package:ghanta/presentation/widgets/activities/draggable/draggable_activity.dart';
-import 'package:ghanta/presentation/widgets/activities/popup/popup_activity.dart';
 import 'package:ghanta/presentation/widgets/activities/shared/activity_base.dart';
-import 'package:ghanta/presentation/widgets/activities/tinder/tinder_activity.dart';
-import 'package:ghanta/presentation/widgets/activities/text/text_activity.dart';
 
 
 class SubphaseScreen extends ConsumerWidget {
@@ -24,29 +17,9 @@ class SubphaseScreen extends ConsumerWidget {
   final int courseId;
   final int phaseId;
 
-  Widget _loadActivityWidget(PageController controller, ActivityType type) {
-    switch (type) {
-      case ActivityType.meditation:
-        return MeditationActivity(pageController: controller);
-      case ActivityType.audio:
-        return AudioActivity(pageController: controller);
-      case ActivityType.tinder:
-        return TinderActivity(pageController: controller);
-      case ActivityType.popup:
-        return PopupActivity(pageController: controller);
-      case ActivityType.draggable:
-        return const DraggableActivity();
-      case ActivityType.text:
-        return TextActivity(pageController: controller);
-      default:
-        return Container();
-    }
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context).colorScheme;
-    final pageController = PageController();
     final subphaseAsyncValue = ref.watch(subphaseProvider(subphaseId));
 
     return subphaseAsyncValue.when(
@@ -67,10 +40,7 @@ class SubphaseScreen extends ConsumerWidget {
           ),
           body: ActivityBase(
               subphase: subphase,
-              pageController: pageController,
-              child:PopupActivity(pageController: pageController)),
-              // child: _loadActivityWidget(pageController, subphase.activities.first.activityTypology)),
-        );
+        ));
       },
     );
   }

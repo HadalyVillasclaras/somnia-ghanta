@@ -28,4 +28,4 @@ export 'package:ghanta/presentation/screens/subphase/feedback_screen.dart';
  */
 
 export 'package:ghanta/presentation/widgets/activities/meditation/meditation_activity.dart';
-export 'package:ghanta/presentation/widgets/activities/shared/activity_indicator.dart';
+export 'package:ghanta/presentation/widgets/activities/shared/activity_pagination.dart';

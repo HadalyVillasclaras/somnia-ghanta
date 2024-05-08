@@ -11,8 +11,8 @@ class Activity {
   final String? videoUrlCA;
   final String? audioUrlES;
   final String? audioUrlCA;
-  final String? descriptionEs;
-  final String? descriptionCa;
+  final String descriptionEs;
+  final String descriptionCa;
   final int subphaseId;
   final int order;
   final ActivityType activityTypology;
@@ -27,8 +27,8 @@ Activity({
     this.videoUrlCA,
     this.audioUrlES,
     this.audioUrlCA,
-    this.descriptionEs,
-    this.descriptionCa,
+    required this.descriptionEs,
+    required this.descriptionCa,
     required this.subphaseId,
     required this.order,
     required this.activityTypology,

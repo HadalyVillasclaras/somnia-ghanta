@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:ghanta/config/constants/colors_theme.dart';
+import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/domain/entities/subphase.dart';
-import 'package:ghanta/presentation/widgets/activities/shared/activity_indicator.dart';
+import 'package:ghanta/presentation/widgets/activities/shared/activity_pagination.dart';
+import 'package:ghanta/presentation/screens/_presentation.dart';
+import 'package:ghanta/presentation/widgets/activities/audio/audio_activity.dart';
+import 'package:ghanta/presentation/widgets/activities/draggable/draggable_activity.dart';
+import 'package:ghanta/presentation/widgets/activities/popup/popup_activity.dart';
+import 'package:ghanta/presentation/widgets/activities/shared/activity_base.dart';
+import 'package:ghanta/presentation/widgets/activities/tinder/tinder_activity.dart';
+import 'package:ghanta/presentation/widgets/activities/text/text_activity.dart';
 
 class ActivityBase extends StatefulWidget {
   const ActivityBase({
     super.key,
-    required this.child,
-    required this.pageController,
     required this.subphase,
   });
 
-  final Widget child;
-  final PageController pageController;
   final Subphase subphase;
 
   @override
@@ -20,9 +24,29 @@ class ActivityBase extends StatefulWidget {
 }
 
 class _ActivityBaseState extends State<ActivityBase> {
+    final pageController = PageController();
+
+   Widget _loadActivityWidget(PageController controller, Activity activity) {
+    switch (activity.activityTypology) {
+      case ActivityType.meditation:
+        return MeditationActivity(pageController: controller, activity: activity);
+      case ActivityType.audio:
+        return AudioActivity(pageController: controller, activity: activity);
+      case ActivityType.tinder:
+        return TinderActivity(pageController: controller, activity: activity);
+      case ActivityType.popup:
+        return PopupActivity(pageController: controller, activity: activity);
+      case ActivityType.text:
+        return TextActivity(pageController: controller, activity: activity);
+      default:
+        return Container();
+    }
+  }
+
   bool isDarkMode = false;
   @override
   Widget build(BuildContext context) {
+    var activity = widget.subphase.activities.first;
     return Stack(
       children: [
         Container(
@@ -34,7 +58,7 @@ class _ActivityBaseState extends State<ActivityBase> {
               fit: BoxFit.cover,
               colorFilter: isDarkMode
                   ? ColorFilter.mode(
-                      Colors.black.withOpacity(0.5), BlendMode.srcOver)
+                      Color.fromARGB(255, 14, 0, 143).withOpacity(0.6), BlendMode.darken)
                   : null,
             ),
           ),
@@ -52,6 +76,7 @@ class _ActivityBaseState extends State<ActivityBase> {
               end: Alignment.bottomCenter,
             ))),
 
+        //Título
         Positioned(
           top: MediaQuery.sizeOf(context).height * 0.11,
           left: 20,
@@ -60,13 +85,13 @@ class _ActivityBaseState extends State<ActivityBase> {
         ),
 
         //ACTIVITY WIDGET
-        widget.child,
+         _loadActivityWidget(pageController, activity), 
 
         //PAGINATION
-        ActivityIndicator(
-          pageController: widget.pageController,
-          //activityType: widget.subphase.activities[0].activityTypology,
-          activityType: ActivityType.popup,
+        ActivityPagination(
+          pageController: pageController,
+          activity: activity,
+          // activityType: ActivityType.popup,
         )
       ],
     );

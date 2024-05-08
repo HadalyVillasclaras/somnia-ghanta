@@ -1,32 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
-import 'package:go_router/go_router.dart';
 
 class TextActivity extends StatelessWidget {
   const TextActivity({
-    super.key,
-    required this.pageController,
+   super.key, 
+    required this.pageController, 
+    required this.activity
   });
 
   final PageController pageController;
+  final Activity activity;
+
+ List<Widget> _createTextBlocks(String text) {
+    List<Widget> blocks = [];
+    for (int i = 0; i < text.length; i += 190) {
+      String textChunk = text.substring(i, i + 190 > text.length ? text.length : i + 190);
+      blocks.add(TextBlock(text: textChunk));
+    }
+    return blocks;
+  }
 
   @override
   Widget build(BuildContext context) {
+     List<Widget> textBlocks = _createTextBlocks(activity.descriptionEs);
+
     return PageView(
       controller: pageController,
-      children: const [
-        TextBlock(),
-        TextBlock(),
-        TextBlock(),
-        TextBlock(),
-
-      ],
+      children: textBlocks,
     );
   }
 }
 
 class TextBlock extends StatelessWidget {
-  const TextBlock({super.key});
+  const TextBlock({super.key, required this.text});
+  final String text;
   @override
   Widget build(BuildContext context) {
     return ActivityBody(
@@ -34,7 +42,7 @@ class TextBlock extends StatelessWidget {
       children: [
         SizedBox(height: MediaQuery.sizeOf(context).height * 0.4),
         Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac commodo est, non lobortis lectus. Sed iaculis porttitor urna, eu pretium sem porttitor at. Cras magna mauris, sagittis quis ex eu, accumsan faucibus neque. Proin.', 
+            text, 
             style: Theme.of(context).textTheme.titleMedium,
 ),
         const SizedBox(
