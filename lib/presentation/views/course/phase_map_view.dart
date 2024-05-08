@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/config/_config.dart';
 import 'package:ghanta/domain/entities/phase.dart';
 import 'package:ghanta/domain/entities/subphase.dart';
-import 'package:ghanta/presentation/providers/courses_provider.dart';
 import 'package:ghanta/presentation/providers/new_courses_provider.dart';
 import 'package:ghanta/presentation/providers/ui_provider.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';

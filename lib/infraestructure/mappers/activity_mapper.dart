@@ -12,7 +12,11 @@ class ActivityMapper {
       subphaseId: api.subphaseId,
       order: api.order,
       activityTypology:
-          ActivityTypologyMapper.apiModelToEntity(api.activityTypology?.id));
+          ActivityTypologyMapper.apiModelToEntity(api.activityTypology?.id),
+      tinderData: api.activityTinderData,
+      popupData: api.activityPopupData,
+      textData: api.activityTextData
+   );
 }
 
 class ActivityTypologyMapper {
@@ -22,10 +26,10 @@ class ActivityTypologyMapper {
         return ActivityType.tinder;
       case 3:
         return ActivityType.text;
+      case 5:
+        return ActivityType.popup;
       case 6:
         return ActivityType.voiceRecorder;
-      case 7:
-        return ActivityType.popup;
       case 9:
         return ActivityType.meditation;
       case 10:
@@ -35,3 +39,4 @@ class ActivityTypologyMapper {
     }
   }
 }
+

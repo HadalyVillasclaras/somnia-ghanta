@@ -4,11 +4,8 @@ import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
 
 class PopupActivity extends StatelessWidget {
-  const PopupActivity({
-     super.key, 
-    required this.pageController, 
-    required this.activity
-  });
+  const PopupActivity(
+      {super.key, required this.pageController, required this.activity});
 
   final PageController pageController;
   final Activity activity;
@@ -17,18 +14,20 @@ class PopupActivity extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageView(
       controller: pageController,
-      children: const [
-        ActivityIntroText(
-            text:
-                'Duis a lacus convallis, sagittis erat nec, lobortis urna. Fusce ac risus malesuada, consectetur magna et, scelerisque felis. Phasellus laoreet scelerisque facilisis. Duis luctus sollicitudin semper. Aenean viverra enim eget enim euismod, vitae aliquet libero semper.'),
-        PopupActivityStepOne()
+      children: [
+        ActivityIntroText(text: activity.descriptionEs),
+        PopupActivityStepOne(
+          activity: activity,
+        )
       ],
     );
   }
 }
 
 class PopupActivityStepOne extends StatefulWidget {
-  const PopupActivityStepOne({super.key});
+  const PopupActivityStepOne({super.key, required this.activity});
+
+  final Activity activity;
 
   @override
   State<PopupActivityStepOne> createState() => _PopupActivityStepOneState();
@@ -39,32 +38,23 @@ class _PopupActivityStepOneState extends State<PopupActivityStepOne> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> nombres = [
-      'A',
-      'B',
-      'C',
-      'D',
-      'E',
-      'F',
-    ];
-
-    List<String> descripcionNombres = [
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac commodo est, non lobortis lectus.',
-      'Integer ac commodo est, non lobortis lectus.',
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac commodo est, non lobortis lectus.',
-      'Integer ac commodo est, non lobortis lectus.',
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac commodo est, non lobortis lectus.',
-      'Integer ac commodo est, non lobortis lectus.',
-    ];
+    final List<String> nombres =
+        widget.activity.popupData!.map((data) => data.titleTextEs).toList();
+    final List<String> descripcionNombres =
+        widget.activity.popupData!.map((data) => data.popupTextEs).toList();
 
     return ActivityBody(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         if (selectedPill != -1)
           PopupActivityModal(
-            nombre: nombres[selectedPill],
-            descripcion: descripcionNombres[selectedPill],
-          ),
+              nombre: nombres[selectedPill],
+              descripcion: descripcionNombres[selectedPill],
+              onClose: () {
+                setState(() {
+                  selectedPill = -1;
+                });
+              }),
         const SizedBox(height: 30),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.2,
@@ -76,9 +66,11 @@ class _PopupActivityStepOneState extends State<PopupActivityStepOne> {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  setState(() {
-                    selectedPill = index;
-                  });
+                  if (selectedPill == -1) {
+                    setState(() {
+                      selectedPill = index;
+                    });
+                  }
                 },
                 child: PopupPill(
                   nombre: nombres[index],
@@ -89,30 +81,29 @@ class _PopupActivityStepOneState extends State<PopupActivityStepOne> {
             },
           ),
         ),
-         Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.end,
-           children: [
-             FilledButton(
-                    style: FilledButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.background,
-                        foregroundColor: Theme.of(context).colorScheme.primary,
-                        padding: const EdgeInsets.fromLTRB(15, 2, 0, 2)),
-                    onPressed: () {
-                    },
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Seguir'),
-                        SizedBox(width: 4),
-                        Icon(
-                          Icons.chevron_right,
-                          size: 40,
-                        ),
-                      ],
-                    ),
+          children: [
+            FilledButton(
+              style: FilledButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.background,
+                  foregroundColor: Theme.of(context).colorScheme.primary,
+                  padding: const EdgeInsets.fromLTRB(15, 2, 0, 2)),
+              onPressed: () {},
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Seguir'),
+                  SizedBox(width: 4),
+                  Icon(
+                    Icons.chevron_right,
+                    size: 40,
                   ),
-           ],
-         ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -135,27 +126,39 @@ class PopupPill extends StatelessWidget {
     return Container(
       height: 8,
       margin: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
           color: isSelected ? ColorsTheme.primaryColorBlue : Colors.white,
           borderRadius: BorderRadius.circular(15)),
       child: Center(
         child: Text(
-          nombre,
+          _formatTitle(nombre),
           style: TextStyle(
               color: isSelected ? Colors.white : ColorsTheme.primaryColorBlue,
-              fontWeight: FontWeight.bold),
+              fontWeight: FontWeight.bold,
+              fontSize: 14),
+          textAlign: TextAlign.center,
         ),
       ),
     );
   }
 }
 
+String _formatTitle(String title) {
+  return title.length > 14 ? '${title.substring(0, 14)}...' : title;
+}
+
 class PopupActivityModal extends StatelessWidget {
-  const PopupActivityModal(
-      {super.key, required this.nombre, required this.descripcion});
+  const PopupActivityModal({
+    super.key,
+    required this.nombre,
+    required this.descripcion,
+    required this.onClose,
+  });
 
   final String nombre;
   final String descripcion;
+  final VoidCallback onClose;
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +193,7 @@ class PopupActivityModal extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: onClose,
               child: const Text('Ok'),
             ),
           )

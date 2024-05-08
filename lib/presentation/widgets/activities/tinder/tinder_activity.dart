@@ -22,7 +22,7 @@ class TinderActivity extends StatelessWidget {
       controller: pageController,
       children:  [
         ActivityIntroText(
-            text: activity.descriptionEs ?? ''),
+            text: activity.descriptionEs),
         const TinderActivityStepOne()],
     );
   }

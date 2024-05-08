@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ghanta/infraestructure/models/api_models/activity/activity_api.dart';
 import 'package:ghanta/presentation/screens/_presentation.dart';
 
 class Activity {
@@ -16,6 +17,10 @@ class Activity {
   final int subphaseId;
   final int order;
   final ActivityType activityTypology;
+  final List<TinderData>? tinderData;
+  final List<PopupData>? popupData;
+  final String? textData;
+
 
 Activity({
     required this.id,
@@ -32,6 +37,9 @@ Activity({
     required this.subphaseId,
     required this.order,
     required this.activityTypology,
+    this.tinderData,
+    this.popupData,
+    this.textData,
   });
 
  Widget getIconByType() {
