@@ -23,16 +23,18 @@ class TinderActivity extends StatelessWidget {
       children:  [
         ActivityIntroText(
             text: activity.descriptionEs),
-        const TinderActivityStepOne()],
+        TinderActivityStepOne(activity: activity)],
     );
   }
 }
 
 class TinderActivityStepOne extends StatefulWidget {
-  const TinderActivityStepOne({super.key});
+   const TinderActivityStepOne({super.key, required this.activity});
 
-  @override
-  State<TinderActivityStepOne> createState() => _TinderActivityStepOneState();
+    final Activity activity;
+
+    @override
+    State<TinderActivityStepOne> createState() => _TinderActivityStepOneState();
 }
 
 class _TinderActivityStepOneState extends State<TinderActivityStepOne> {
@@ -40,6 +42,9 @@ class _TinderActivityStepOneState extends State<TinderActivityStepOne> {
   bool crossIsSelected = false;
   @override
   Widget build(BuildContext context) {
+    final tinderData = widget.activity.tinderData;
+    final totalCards = tinderData!.length;
+
     return ActivityBody(
         children: [Stack(
       clipBehavior: Clip.none,
@@ -62,6 +67,7 @@ class _TinderActivityStepOneState extends State<TinderActivityStepOne> {
             height: MediaQuery.sizeOf(context).height * 0.25,
             width: MediaQuery.sizeOf(context).width * 0.70,
             child: AppinioSwiper(
+              loop:true,
                 swipeOptions: const SwipeOptions.only(left: true, right: true),
                 onSwipeBegin: (previousIndex, targetIndex, activity) {
                   if (activity.direction == AxisDirection.left) {
@@ -73,28 +79,32 @@ class _TinderActivityStepOneState extends State<TinderActivityStepOne> {
                       heartIsSelected = true;
                     });
                   }
-
-                  if (targetIndex == 8) {
-                    //!Esto debe ser dinamico
-                    //Mostrar boton de compartir
-                    showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (context) => const TinderActivityPopUp());
-                  }
                 },
                 onSwipeEnd: (previousIndex, targetIndex, activity) {
                   setState(() {
                     heartIsSelected = false;
                     crossIsSelected = false;
                   });
+
+                  if (previousIndex != targetIndex) { //dont trigge before the swipe is completed
+                    int adjustedIndex = (targetIndex - 1) % tinderData.length; //targetIndex starts in 1. when reaching total lenght, it starts from 0 again.  
+
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) => TinderActivityPopUp(
+                          popupText: tinderData[adjustedIndex].popupTextEs 
+                      )
+                    );
+                  }
                 },
                 backgroundCardOffset: const Offset(0, 0),
                 cardBuilder: (context, index) => TinderActivityCard(
                       currentIndex: index,
-                      totalCards: 8,
+                      totalCards: totalCards,
+                      cardText: tinderData[index].cardTextEs,
                     ),
-                cardCount: 8 //! Esto debe ser dinamico
+                cardCount: totalCards
                 )),
       ],
     )]);
@@ -138,26 +148,23 @@ class ActionButton extends StatelessWidget {
 }
 
 class TinderActivityPopUp extends StatelessWidget {
-  const TinderActivityPopUp({super.key});
+  const TinderActivityPopUp({
+    super.key,
+    required this.popupText,
+  });
+
+  final String popupText;
 
   @override
   Widget build(BuildContext context) {
+
     return AlertDialog(
         contentPadding: const EdgeInsets.all(0),
         content: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
           width: MediaQuery.sizeOf(context).width * 0.95,
           height: 350,
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10,
-                  offset: Offset(0, 5),
-                )
-              ],
-              borderRadius: BorderRadius.all(Radius.circular(30))),
+        
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -166,8 +173,8 @@ class TinderActivityPopUp extends StatelessWidget {
                 textAlign: TextAlign.center,
                 isSmall: false,
               ),
-              const ActivityTextBody(
-                'La felicidad puede ser una elección consciente al cultivar actitudes y prácticas que promueven el bienestar emocional y la satisfacción personal.',
+              ActivityTextBody(
+                popupText,
                 textAlign: TextAlign.center,
                 isSmall: true,
               ),
@@ -175,7 +182,6 @@ class TinderActivityPopUp extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
                     Navigator.pop(context);
                   },
                   child: const Text('Ok'),
@@ -192,23 +198,15 @@ class TinderActivityCard extends StatelessWidget {
     super.key,
     required this.currentIndex,
     required this.totalCards,
+    required this.cardText,
   });
 
   final int currentIndex;
   final int totalCards;
+  final String cardText;
 
   @override
   Widget build(BuildContext context) {
-    List<String> dummyTexts = [
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-      "Curabitur pretium tincidunt lacus nulla gravida orci a odio",
-      "Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris",
-      "Integer in mauris eu nibh euismod gravida"
-    ];
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical:20),
@@ -246,7 +244,7 @@ class TinderActivityCard extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               child: ActivityTextBody(
-                dummyTexts[currentIndex],
+                cardText,
                 textAlign: TextAlign.start,
                 isSmall: true,
               ),
