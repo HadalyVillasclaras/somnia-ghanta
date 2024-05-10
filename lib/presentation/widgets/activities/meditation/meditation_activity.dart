@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
-import 'package:ghanta/presentation/widgets/activities/shared/activity_end_button.dart';
+import 'package:ghanta/presentation/widgets/activities/shared/activity_audio_player.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ghanta/config/constants/colors_theme.dart';
 
 class MeditationActivity extends StatelessWidget {
   const MeditationActivity(
@@ -23,7 +21,10 @@ class MeditationActivity extends StatelessWidget {
         const MeditationActivityStepTwo(),
         const MeditationActivityStepThree(),
         const MeditationActivityStepFour(),
-        const MeditationActivityStepFive()
+        ActivityAudioPlayer(
+          pageController: pageController,
+          activity: activity,
+        )
       ],
     );
   }
@@ -153,62 +154,6 @@ class MeditationActivityStepFour extends StatelessWidget {
             context.push('/feedback');
           },
         ),
-      ],
-    );
-  }
-}
-
-class MeditationActivityStepFive extends StatelessWidget {
-  const MeditationActivityStepFive({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ActivityBody(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        SizedBox(height: MediaQuery.sizeOf(context).height * 0.40),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text("00:00"),
-            Expanded(
-              child: SliderTheme(
-                data: SliderTheme.of(context).copyWith(
-                  thumbColor: Colors.white,
-                  inactiveTrackColor: Colors.grey[300],
-                ),
-                child: Slider(
-                  value: 70,
-                  max: 155,
-                  onChanged: (value) {},
-                ),
-              ),
-            ),
-            const Text("02:35"),
-          ],
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(
-              width: 25,
-            ),
-            CircleIconActivity(
-              iconData: Icons.play_arrow_rounded,
-              onPressed: () {},
-            ),
-            const SizedBox(
-              width: 25,
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 50,
-        ),
-       const ActivityEndButton(isVisible: true),
       ],
     );
   }
