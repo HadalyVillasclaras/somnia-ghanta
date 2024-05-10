@@ -10,6 +10,8 @@ class ActivityMapper {
       descriptionEs: api.descriptionEs,
       descriptionCa: api.descriptionCa,
       subphaseId: api.subphaseId,
+      audioUrlES: api.audioUrlEs,
+      audioUrlCA: api.descriptionCa,
       order: api.order,
       activityTypology:
           ActivityTypologyMapper.apiModelToEntity(api.activityTypology?.id),

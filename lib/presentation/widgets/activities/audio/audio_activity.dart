@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -6,6 +7,8 @@ import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/presentation/screens/_presentation.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
 import 'package:ghanta/presentation/widgets/activities/shared/activity_end_button.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:ghanta/config/constants/enviroment.dart';
 
 class AudioActivity extends StatelessWidget {
   const AudioActivity(
@@ -22,6 +25,7 @@ class AudioActivity extends StatelessWidget {
         ActivityIntroText(text: activity.descriptionEs),
         AudioActivityStepTwo(
           pageController: pageController,
+          activity: activity,
         ),
       ],
     );
@@ -29,28 +33,89 @@ class AudioActivity extends StatelessWidget {
 }
 
 class AudioActivityStepTwo extends StatefulWidget {
-  const AudioActivityStepTwo({super.key, required this.pageController});
+  const AudioActivityStepTwo({super.key, required this.pageController, required this.activity});
   final PageController pageController;
-
+  final Activity activity;
   @override
   State<AudioActivityStepTwo> createState() => _AudioActivityStepTwoState();
 }
 
 class _AudioActivityStepTwoState extends State<AudioActivityStepTwo> {
-  bool _showShareButton = false;
+  late AudioPlayer audioPlayer;
+  Duration _position = Duration.zero;
+  Duration _duration = Duration.zero;
+  bool isPlaying = false;
+  String? fullAudioUrl;
+  bool isEndButtonVisible = false;
 
-  void convertAudioToBase64(String path) async {
-    // Lee el archivo de audio en bytes
-    if (path == '') return;
-    File audioFile = File(path);
-    Uint8List bytes = await audioFile.readAsBytes();
+  StreamSubscription? positionSubscription;
+  StreamSubscription? durationSubscription;
+  StreamSubscription? playerStateSubscription;
 
-    // Convierte los bytes a una cadena Base64
-    String base64String = base64Encode(bytes);
 
-    // Hacer algo con la cadena Base64, como enviarla a un servidor
-    print("Audio en Base64: $base64String");
+  @override
+  void initState() {
+    super.initState();
+    audioPlayer = AudioPlayer();
+
+    positionSubscription = audioPlayer.onPositionChanged.listen((p) {
+      if (mounted) {
+        setState(() {
+          _position = p;
+        });
+      }
+    });
+
+    durationSubscription = audioPlayer.onDurationChanged.listen((newDuration) {
+      if (mounted) {
+        setState(() {
+          _duration = newDuration;
+        });
+      }
+    });
+
+ 
+     if (widget.activity.audioUrlES != null) {
+      fullAudioUrl = Environment.baseUrlPublic + widget.activity.audioUrlES!;
+    }
+   if (fullAudioUrl != null) {
+      audioPlayer.setSourceUrl(fullAudioUrl!).catchError((error) {
+        print('Error setting audio source: $error');
+      });
+    }
+
+    playerStateSubscription = audioPlayer.onPlayerStateChanged.listen((state) {
+      if (mounted) {
+        setState(() {
+          isPlaying = state == PlayerState.playing;
+        });
+      }
+    });
+
+    audioPlayer.onPlayerComplete.listen((event) {
+      if (mounted) {
+        setState(() {
+          isEndButtonVisible = true; 
+        });
+      }
+    });
   }
+
+  @override
+  void dispose() {
+  positionSubscription?.cancel();
+    durationSubscription?.cancel();
+    playerStateSubscription?.cancel();
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+String formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes);
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "$twoDigitMinutes:$twoDigitSeconds";
+}
 
   @override
   Widget build(BuildContext context) {
@@ -59,21 +124,37 @@ class _AudioActivityStepTwoState extends State<AudioActivityStepTwo> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text("00:00"),
+             SizedBox(
+              width: 50, 
+              child: Text(
+                formatDuration(_position),
+                textAlign: TextAlign.center,
+              ),
+            ),
             Expanded(
               child: SliderTheme(
                 data: SliderTheme.of(context).copyWith(
                   thumbColor: Colors.white,
                   inactiveTrackColor: Colors.grey[300],
                 ),
-                child: Slider(
-                  value: 70,
-                  max: 155,
-                  onChanged: (value) {},
-                ),
+             child: Slider(
+                value: _position.inSeconds.toDouble() <= _duration.inSeconds.toDouble()
+                        ? _position.inSeconds.toDouble()
+                        : _duration.inSeconds.toDouble(),  
+                max: _duration.inSeconds.toDouble() > 0 ? _duration.inSeconds.toDouble() : 1,
+                onChanged: (value) {
+                  audioPlayer.seek(Duration(seconds: value.toInt()));
+                },
+              ),
               ),
             ),
-            const Text("02:35"),
+            SizedBox(
+              width: 50, 
+              child: Text(
+                formatDuration(_duration),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ],
         ),
         const SizedBox(
@@ -82,18 +163,29 @@ class _AudioActivityStepTwoState extends State<AudioActivityStepTwo> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-           CircleIconActivity(
-              iconData: Icons.play_arrow_rounded,
-              onPressed: () {},
+            CircleIconActivity(
+              iconData: isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+              onPressed: () {
+                if (audioPlayer != null) {
+                  if (isPlaying) {
+                    audioPlayer.pause(); 
+                    setState(() {
+                      isPlaying = false; 
+                    });
+                  } else {
+                    audioPlayer.play(UrlSource(fullAudioUrl!)).then((_) {
+                      setState(() { isPlaying = true; });
+                    });
+                  }
+                } 
+              },
             ),
           ],
         ),
-      
         const SizedBox(
           height: 50,
         ),
-        const ActivityEndButton(isVisible: true),
-
+        ActivityEndButton(isVisible: isEndButtonVisible),
       ],
     );
   }
