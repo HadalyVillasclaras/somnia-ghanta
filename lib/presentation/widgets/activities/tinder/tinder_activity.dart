@@ -37,6 +37,18 @@ class TinderActivityStepOne extends StatefulWidget {
 class _TinderActivityStepOneState extends State<TinderActivityStepOne> {
   bool heartIsSelected = false;
   bool crossIsSelected = false;
+  bool isEndButtonVisible = false; 
+  bool isCardBlocked = false; 
+
+  late AppinioSwiperController swiperController;
+
+ @override
+  void initState() {
+    super.initState();
+    swiperController = AppinioSwiperController();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final tinderData = widget.activity.tinderData;
@@ -64,7 +76,9 @@ class _TinderActivityStepOneState extends State<TinderActivityStepOne> {
               height: MediaQuery.sizeOf(context).height * 0.25,
               width: MediaQuery.sizeOf(context).width * 0.70,
               child: AppinioSwiper(
-                  loop: true,
+                loop: false,
+                isDisabled: isCardBlocked,
+                controller: swiperController,
                   swipeOptions:
                       const SwipeOptions.only(left: true, right: true),
                   onSwipeBegin: (previousIndex, targetIndex, activity) {
@@ -82,35 +96,47 @@ class _TinderActivityStepOneState extends State<TinderActivityStepOne> {
                     setState(() {
                       heartIsSelected = false;
                       crossIsSelected = false;
+
+                      if (targetIndex == totalCards) {
+                        isEndButtonVisible = true;
+                        isCardBlocked = true;
+                      }
+                     
                     });
 
-                    if (previousIndex != targetIndex) {
-                      //dont trigge before the swipe is completed
-                      int adjustedIndex = (targetIndex - 1) %
-                          tinderData
-                              .length; //targetIndex starts in 1. when reaching total lenght, it starts from 0 again.
+                    if (previousIndex != targetIndex && targetIndex != totalCards + 1) {
+                      //dont trigger before the swipe is completed
+                      int adjustedIndex = (targetIndex - 1) % tinderData.length; //targetIndex starts in 1. when reaching total lenght, it starts from 0 again.
 
                       showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) => TinderActivityPopUp(
-                              popupText:
-                                  tinderData[adjustedIndex].popupTextEs));
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (context) => TinderActivityPopUp(
+                          popupText:
+                            tinderData[adjustedIndex].popupTextEs
+                        )
+                      );
                     }
                   },
                   backgroundCardOffset: const Offset(0, 0),
-                  cardBuilder: (context, index) => TinderActivityCard(
+                  cardBuilder: (context, index) {
+                    if (index == totalCards ) {
+                      return const LastTinderActivityCard();  
+                    } else {
+                      return TinderActivityCard(
                         currentIndex: index,
                         totalCards: totalCards,
                         cardText: tinderData[index].cardTextEs,
-                      ),
-                  cardCount: totalCards)),
+                      );
+                    }
+                  },
+                  cardCount: totalCards + 1)),
         ],
       ),
         const SizedBox(
           height: 50,
         ),
-      const ActivityEndButton(isVisible: true),
+      ActivityEndButton(isVisible: isEndButtonVisible),
     ]);
   }
 }
@@ -246,6 +272,46 @@ class TinderActivityCard extends StatelessWidget {
             child: SingleChildScrollView(
               child: ActivityTextBody(
                 cardText,
+                textAlign: TextAlign.start,
+                isSmall: true,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class LastTinderActivityCard extends StatelessWidget {
+  const LastTinderActivityCard({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      width: MediaQuery.sizeOf(context).width * 0.70,
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 10,
+              offset: Offset(0, 5),
+            )
+          ],
+          borderRadius: BorderRadius.all(Radius.circular(30))),
+      child: const Column(
+        children: [
+          SizedBox(
+            height: 50,
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: ActivityTextBody(
+                'ULTIMA CARTA',
                 textAlign: TextAlign.start,
                 isSmall: true,
               ),
