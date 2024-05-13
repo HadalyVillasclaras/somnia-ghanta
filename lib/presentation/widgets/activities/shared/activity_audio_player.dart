@@ -8,10 +8,10 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:ghanta/config/constants/enviroment.dart';
 
 class ActivityAudioPlayer extends StatefulWidget {
-  const ActivityAudioPlayer({super.key, required this.pageController, required this.activity});
+  const ActivityAudioPlayer({super.key, required this.pageController, required this.activity });
   final PageController pageController;
   final Activity activity;
-  
+
   @override
   State<ActivityAudioPlayer> createState() => _ActivityAudioPlayerState();
 }
@@ -27,7 +27,6 @@ class _ActivityAudioPlayerState extends State<ActivityAudioPlayer> {
   StreamSubscription? positionSubscription;
   StreamSubscription? durationSubscription;
   StreamSubscription? playerStateSubscription;
-
 
   @override
   void initState() {
@@ -161,7 +160,10 @@ String formatDuration(Duration duration) {
         const SizedBox(
           height: 50,
         ),
-        ActivityEndButton(isVisible: isEndButtonVisible),
+        ActivityEndButton(
+          isVisible: isEndButtonVisible,
+          activityType: widget.activity.activityTypology
+          ), 
       ],
     );
   }

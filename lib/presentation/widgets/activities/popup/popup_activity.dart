@@ -36,6 +36,8 @@ class PopupActivityStepOne extends StatefulWidget {
 
 class _PopupActivityStepOneState extends State<PopupActivityStepOne> {
   int selectedPill = -1;
+  Set<int> tappedPills = <int>{};
+  bool isEndButtonVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,9 @@ class _PopupActivityStepOneState extends State<PopupActivityStepOne> {
               onClose: () {
                 setState(() {
                   selectedPill = -1;
+                  if (tappedPills.length == 6) {
+                    isEndButtonVisible = true;
+                  }
                 });
               }),
         const SizedBox(height: 30),
@@ -67,6 +72,7 @@ class _PopupActivityStepOneState extends State<PopupActivityStepOne> {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
+                  tappedPills.add(index);
                   if (selectedPill == -1) {
                     setState(() {
                       selectedPill = index;
@@ -76,13 +82,14 @@ class _PopupActivityStepOneState extends State<PopupActivityStepOne> {
                 child: PopupPill(
                   nombre: nombres[index],
                   isSelected: selectedPill == index,
+                  isTapped: tappedPills.contains(index),
                   descripcion: descripcionNombres[index],
                 ),
               );
             },
           ),
         ),
-        const ActivityEndButton(isVisible: true),
+        ActivityEndButton(isVisible: isEndButtonVisible),
       ],
     );
   }
@@ -93,22 +100,28 @@ class PopupPill extends StatelessWidget {
     super.key,
     required this.nombre,
     required this.isSelected,
+    required this.isTapped,
     required this.descripcion,
   });
 
   final String nombre;
   final bool isSelected;
   final String descripcion;
+  final bool isTapped;
 
   @override
   Widget build(BuildContext context) {
+    Color bgColor = isTapped ? Colors.white.withOpacity(0.5) : Colors.white;
+    if (isSelected) {
+      bgColor = ColorsTheme.primaryColorBlue;
+    }
+
     return Container(
       height: 8,
       margin: const EdgeInsets.all(5),
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-          color: isSelected ? ColorsTheme.primaryColorBlue : Colors.white,
-          borderRadius: BorderRadius.circular(15)),
+          color: bgColor, borderRadius: BorderRadius.circular(15)),
       child: Center(
         child: Text(
           _formatTitle(nombre),

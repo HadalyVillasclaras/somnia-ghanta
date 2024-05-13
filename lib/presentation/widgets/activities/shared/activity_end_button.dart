@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:ghanta/presentation/screens/_presentation.dart';
+import 'package:go_router/go_router.dart';
 
 class ActivityEndButton extends StatelessWidget {
   const ActivityEndButton({
     super.key,
     required this.isVisible,
+    this.activityType,
   });
 
   final bool isVisible;
+  final ActivityType? activityType;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +30,11 @@ class ActivityEndButton extends StatelessWidget {
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   padding: const EdgeInsets.fromLTRB(15, 1, 0, 1)),
               onPressed: () {
+                if (activityType == ActivityType.meditation) {
+                  context.push('/feedback');
+                } else {
                  Navigator.pop(context);
+                }
               },
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,

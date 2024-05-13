@@ -23,7 +23,7 @@ class MeditationActivity extends StatelessWidget {
         const MeditationActivityStepFour(),
         ActivityAudioPlayer(
           pageController: pageController,
-          activity: activity,
+          activity: activity
         )
       ],
     );
