@@ -56,6 +56,22 @@ Activity({
         return const Icon(Icons.self_improvement);
     }
   }
+
+  //  case 1:
+  //     return Image.asset('assets/icons/activity_icons/meditacion.png', width: 22, height: 22);
+  //   case 10:
+  //     return Image.asset('assets/icons/activity_icons/podcast.png', width: 22, height: 22);
+  //   case 3:
+  //     return Image.asset('assets/icons/activity_icons/texto.png', width: 22, height: 22);
+  //   case 5:
+  //     return Image.asset('assets/icons/activity_icons/tinder.png', width: 22, height: 22);
+  //   case ActivityType.popup:
+  //     return Image.asset('assets/icons/activity_icons/pop_up.png', width: 22, height: 22);
+  //   case 6:
+  //     return Image.asset('assets/icons/activity_icons/voice_record.png', width: 22, height: 22);
+  //   default:
+  //     return Image.asset('assets/icons/activity_icons/meditacion.png', width: 22, height: 22); 
+  //   }
   
   /// Metodo para devolver el titulo dependiendo del idioma
   String getTitle({String lang = 'es'}) {
