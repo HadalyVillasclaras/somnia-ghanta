@@ -36,8 +36,6 @@ class HomeHeader extends ConsumerWidget {
             const SizedBox(height: 10.0),
             Text(Lang.of(context).home_page_header_feelings, style: textTheme.bodyLarge!.copyWith(color: Colors.white)),
             const SizedBox(height: 20.0),
-            //Ponemos una row con botones de iconos de emociones
-            // const EmotionButtons()
           ],
         ),
       ),

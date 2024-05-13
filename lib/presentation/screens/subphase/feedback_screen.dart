@@ -29,7 +29,6 @@ class FeedbackScreen extends ConsumerWidget {
                           ref.read(feedbackProvider.notifier).resetSubmission();
                           Navigator.of(context).pop();
                           Navigator.of(context).pop();
-                      
                         },
                       ),
                     ),
@@ -62,7 +61,7 @@ class FeedbackScreen extends ConsumerWidget {
               children: [
                 Text('¿Cómo te sientes hoy?', style: theme.textTheme.headlineSmall!),
                 const SizedBox(height: 20),
-                const FeedbackOptions(),
+                const FeedbackOptions(), //emojis
                 const SizedBox(height: 20),
                 const FeedbackComment(),
                 const SizedBox(height: 20),
