@@ -74,33 +74,33 @@ class _CalendarViewState extends State<CalendarView> {
   }
 
 
-  void _addCrisisDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          scrollable: true,
-          title: const Text("Registro de crisis:"),
-          content: Padding(
-            padding: const EdgeInsets.all(8),
-            child: TextField(
-              controller: _eventController,
-            ),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                addEvent(_eventController.text);
-                _eventController.clear();
-                Navigator.of(context).pop();
-              },
-              child: const Text("Save")
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _addCrisisDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         scrollable: true,
+  //         title: const Text("Registro de crisis:"),
+  //         content: Padding(
+  //           padding: const EdgeInsets.all(8),
+  //           child: TextField(
+  //             controller: _eventController,
+  //           ),
+  //         ),
+  //         actions: [
+  //           ElevatedButton(
+  //             onPressed: () {
+  //               addEvent(_eventController.text);
+  //               _eventController.clear();
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: const Text("Save")
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   //devuelve la lista de eventos que haga match con el DateTime  
   List<Event>_getEventsForDay(DateTime day) {

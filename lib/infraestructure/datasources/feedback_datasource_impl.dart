@@ -70,13 +70,12 @@ class FeedbackDatasourceImpl extends FeedbackDatasource {
         return feedbackResponse;
       } catch (e) {
         if (e is DioException) {
-          print('Status Code: ${e.response?.statusCode}');
-          print('Data: ${e.response?.data}');
+          String errorMessage = e.response?.data['errors']['feedback'][0]  ?? 'Se ha producido un error y la información no ha podido ser guardada.';
+            throw Exception(errorMessage);
         } else {
-          print('An unexpected error occurred: $e');
+          throw Exception('Se ha producido un error y la información no ha podido ser guardada.');
         }
-    rethrow;  
-  }
+    }
   }
 }
 

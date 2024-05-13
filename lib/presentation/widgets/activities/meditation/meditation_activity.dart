@@ -151,7 +151,6 @@ class MeditationActivityStepFour extends StatelessWidget {
         CircleIconActivity(
           iconData: Icons.favorite,
           onPressed: () {
-            context.push('/feedback');
           },
         ),
       ],

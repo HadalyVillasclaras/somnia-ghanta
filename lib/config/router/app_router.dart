@@ -69,5 +69,8 @@ final appRouter = GoRouter(routes: [
     path: '/auth',
     builder: (context, state) => const AuthScreen(),
   ),
-  GoRoute(path: '/feedback', builder: (context, state) => const FeedbackScreen()),
+  GoRoute(path: '/feedback/:activityId', builder: (context, state) {
+    final activityId = int.parse(state.pathParameters['activityId'] ?? '0');
+  return FeedbackScreen(activityId: activityId);
+  } )
 ]);

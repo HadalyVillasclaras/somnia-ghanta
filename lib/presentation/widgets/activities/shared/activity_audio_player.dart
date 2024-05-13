@@ -162,7 +162,7 @@ String formatDuration(Duration duration) {
         ),
         ActivityEndButton(
           isVisible: isEndButtonVisible,
-          activityType: widget.activity.activityTypology
+          activity: widget.activity
           ), 
       ],
     );

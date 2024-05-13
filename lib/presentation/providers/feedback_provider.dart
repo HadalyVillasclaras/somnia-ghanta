@@ -54,24 +54,33 @@ class FeedbackNotifier extends StateNotifier<FeedbackFormState> {
     required String feedback,
   }) async {
     try {
+      if (emotion <= 0) {
+        throw Exception("Por favor, selecciona un emoji.");
+      }
+
       final date = DateTime.now();
-      await _feedbackDatasource.addUserFeedback(_userToken, 1, _userId, date, emotion + 1, feedback);
-      state = state.copyWith(submissionMessage: "La información ha sido guardada correctamente en el calendario.", isSubmitted: true);
+      await _feedbackDatasource.addUserFeedback(_userToken, activityId, _userId, date, emotion + 1, feedback);
+      state = state.copyWith(submissionMessage: "La información ha sido guardada correctamente en el calendario.", isSubmitted: true, hasError: false);
     } catch (e) {
-      state = state.copyWith(isSubmitted: true, submissionMessage: "Se ha producido un error y la información no ha podido ser guardada.");
+      if (e is Exception) {
+      String message = e.toString().replaceFirst('Exception: ', '');
+      state = state.copyWith(isSubmitted: true, hasError: true, submissionMessage: message);
+    } else {
+      state = state.copyWith(isSubmitted: true, hasError: true, submissionMessage: "Se ha producido un error y la información no ha podido ser guardada.");
+    }
     }
   }
 
   void onFeedbackChanged(String feedback) {
-    state = state.copyWith(feedback: feedback);
+    state = state.copyWith(feedback: feedback, isSubmitted: false);
   }
 
   void onEmotionChanged(int emotion) {
-    state = state.copyWith(emotion: emotion);
+    state = state.copyWith(emotion: emotion, isSubmitted: false);
   }
 
   void resetSubmission() {
-    state = state.copyWith(isSubmitted: false, submissionMessage: null, feedback: "", emotion: -1);
+    state = state.copyWith(isSubmitted: false, submissionMessage: null, feedback: "", emotion: -1, hasError: false);
   }
 }
 
@@ -81,12 +90,14 @@ class FeedbackFormState {
   final int emotion;
   final String? submissionMessage;
   final bool isSubmitted;
+  final bool hasError;
 
   FeedbackFormState({
     this.feedback = '',
     this.emotion = 0,
     this.submissionMessage,
     this.isSubmitted = false,
+    this.hasError = false,
   });
 
   FeedbackFormState copyWith({
@@ -94,12 +105,15 @@ class FeedbackFormState {
     int? emotion,
     String? submissionMessage,
     bool? isSubmitted,
+    bool? hasError,
+
   }) {
     return FeedbackFormState(
       feedback: feedback ?? this.feedback,
       emotion: emotion ?? this.emotion,
       submissionMessage: submissionMessage ?? this.submissionMessage,
       isSubmitted: isSubmitted ?? this.isSubmitted,
+      hasError: hasError ?? this.hasError,
     );
   }
 }

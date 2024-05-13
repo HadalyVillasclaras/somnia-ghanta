@@ -11,7 +11,7 @@ class ActivityMapper {
       descriptionCa: api.descriptionCa,
       subphaseId: api.subphaseId,
       audioUrlES: api.audioUrlEs,
-      audioUrlCA: api.descriptionCa,
+      audioUrlCA: api.audioUrlCa,
       order: api.order,
       activityTypology:
           ActivityTypologyMapper.apiModelToEntity(api.activityTypology?.id),
