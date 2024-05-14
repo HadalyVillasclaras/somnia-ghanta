@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/domain/entities/subphase.dart';
 import 'package:ghanta/presentation/screens/_presentation.dart';
-import 'package:ghanta/presentation/widgets/activities/audio/audio_activity.dart';
-import 'package:ghanta/presentation/widgets/activities/popup/popup_activity.dart';
-import 'package:ghanta/presentation/widgets/activities/tinder/tinder_activity.dart';
-import 'package:ghanta/presentation/widgets/activities/text/text_activity.dart';
-import 'package:ghanta/presentation/widgets/activities/voice_recorder/voice_recorder_activity.dart';
+import 'package:ghanta/presentation/widgets/_widgets.dart';
 
 class ActivityBase extends StatefulWidget {
   const ActivityBase({
@@ -22,17 +18,16 @@ class ActivityBase extends StatefulWidget {
 
 class _ActivityBaseState extends State<ActivityBase> {
   final pageController = PageController();
+  final ValueNotifier<int> pageIndexNotifier = ValueNotifier<int>(0);
 
-  Widget _loadActivityWidget(PageController controller, Activity activity) {
+   Widget _loadActivityWidget(PageController controller, Activity activity, ValueNotifier<int> pageIndexNotifier) {
     switch (activity.activityTypology) {
       case ActivityType.meditation:
-        return MeditationActivity(
-            pageController: controller, activity: activity);
+        return MeditationActivity(pageController: controller, activity: activity, pageIndexNotifier: pageIndexNotifier);
       case ActivityType.audio:
         return AudioActivity(pageController: controller, activity: activity);
       case ActivityType.voiceRecorder:
-        return VoiceRecorderActivity(
-            pageController: controller, activity: activity);
+        return VoiceRecorderActivity(pageController: controller, activity: activity);
       case ActivityType.tinder:
         return TinderActivity(pageController: controller, activity: activity);
       case ActivityType.popup:
@@ -44,27 +39,22 @@ class _ActivityBaseState extends State<ActivityBase> {
     }
   }
 
-  bool isDarkMode = false;
+ @override
+  void dispose() {
+    pageController.dispose();
+    pageIndexNotifier.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var activity = widget.subphase.activities.first;
+
     return Stack(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: const AssetImage(
-                "assets/actividades/app_V02-06.jpg",
-              ),
-              fit: BoxFit.cover,
-              colorFilter: isDarkMode
-                  ? ColorFilter.mode(
-                      const Color.fromARGB(255, 14, 0, 143).withOpacity(0.6),
-                      BlendMode.darken)
-                  : null,
-            ),
-          ),
-        ),
+        //Background image / filter
+        _buildBackground(activity.activityTypology),
+
         Container(
             height: MediaQuery.sizeOf(context).height * 0.20,
             decoration: const BoxDecoration(
@@ -76,8 +66,7 @@ class _ActivityBaseState extends State<ActivityBase> {
               stops: [0, 1],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-            ))
-        ),
+            ))),
 
         //Título
         Positioned(
@@ -89,15 +78,60 @@ class _ActivityBaseState extends State<ActivityBase> {
         ),
 
         //ACTIVITY WIDGET
-        _loadActivityWidget(pageController, activity),
+        _loadActivityWidget(pageController, activity, pageIndexNotifier),
 
         //PAGINATION
         ActivityPagination(
           pageController: pageController,
           activity: activity,
-          // activityType: ActivityType.popup,
         )
       ],
     );
+  }
+
+   Widget _buildBackground(ActivityType activityTypology) {
+    if (activityTypology == ActivityType.meditation) {
+      return ValueListenableBuilder<int>(
+        valueListenable: pageIndexNotifier,
+        builder: (context, pageIndex, child) {
+          return TweenAnimationBuilder<Color?>(
+            tween: ColorTween(
+              begin: Colors.transparent,
+              end: (pageIndex == 3 || pageIndex == 4 || pageIndex == 5)
+                  ? const Color.fromARGB(255, 14, 0, 143).withOpacity(0.6)
+                  : Colors.transparent,
+            ),
+            duration: const Duration(milliseconds: 500),
+            builder: (context, color, child) {
+              return Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: const AssetImage(
+                      "assets/actividades/app_V02-06.jpg",
+                    ),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                      color ?? Colors.transparent,
+                      BlendMode.darken,
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      );
+    } else {
+      return Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              "assets/actividades/app_V02-06.jpg",
+            ),
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+    }
   }
 }

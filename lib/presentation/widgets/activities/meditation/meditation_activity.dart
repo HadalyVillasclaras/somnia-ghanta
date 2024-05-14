@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:ghanta/domain/entities/activity.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
 import 'package:ghanta/presentation/widgets/activities/shared/activity_audio_player.dart';
-import 'package:go_router/go_router.dart';
 
 class MeditationActivity extends StatelessWidget {
   const MeditationActivity(
-      {super.key, required this.pageController, required this.activity});
+      {super.key, required this.pageController, required this.activity, required this.pageIndexNotifier,});
 
   final PageController pageController;
   final Activity activity;
+ final ValueNotifier<int> pageIndexNotifier;
 
   @override
   Widget build(BuildContext context) {
     return PageView(
       controller: pageController,
+       onPageChanged: (index) {
+        pageIndexNotifier.value = index;
+      },
       children: [
         ActivityIntroText(text: activity.descriptionEs),
         const MeditationActivityStepOne(),

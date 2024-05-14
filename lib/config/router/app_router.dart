@@ -27,10 +27,9 @@ final appRouter = GoRouter(routes: [
       final phaseId = int.parse(state.pathParameters['phaseId'] ?? '0');
       final subphaseId =
           int.parse(state.pathParameters['subphaseId'] ?? '0');
-      final courseId = int.parse(state.pathParameters['course'] ?? '0');
 
       return SubphaseScreen(
-          subphaseId: subphaseId, courseId: courseId, phaseId: phaseId);
+          subphaseId: subphaseId, phaseId: phaseId);
       },
     ),
     GoRoute(

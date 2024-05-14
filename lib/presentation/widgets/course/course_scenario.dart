@@ -26,8 +26,9 @@ class CourseScenario extends ConsumerWidget {
     return SafeArea(
       bottom: false,
       child: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
+        decoration:  const BoxDecoration(
+          color:  Colors.white,
+          image:  DecorationImage(
             image: AssetImage('assets/course/fondo.png'),
             fit: BoxFit.cover,
           ),

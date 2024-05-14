@@ -5,17 +5,17 @@ import 'package:ghanta/domain/entities/subphase.dart';
 import 'package:ghanta/presentation/providers/new_courses_provider.dart';
 import 'package:ghanta/presentation/widgets/activities/shared/activity_base.dart';
 
-
 class SubphaseScreen extends ConsumerWidget {
   const SubphaseScreen(
-      {Key? key,
+    {
+      Key? key,
       required this.subphaseId,
-      required this.courseId,
-      required this.phaseId})
-      : super(key: key);
-  final int subphaseId;
-  final int courseId;
-  final int phaseId;
+      required this.phaseId
+    })
+    : super(key: key);
+
+    final int subphaseId;
+    final int phaseId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,12 +23,21 @@ class SubphaseScreen extends ConsumerWidget {
     final subphaseAsyncValue = ref.watch(subphaseProvider(subphaseId));
 
     return subphaseAsyncValue.when(
-      loading: () => const  Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+     loading: () => Scaffold(
+      body: Container(
+        color: theme.primary,  
+        width: double.infinity,
+        height: double.infinity,
+        child: const Center(
+          child: CircularProgressIndicator(
+            color: Colors.white,
+          ),
+        ),
       ),
+    ),
       error: (err, stack) => Scaffold(
         backgroundColor: theme.primary,
-        body: Center(child: Text('Error loading subphase: $err')),
+        body: const Center(child: Text('Ha habido un error al cargar la actividad')),
       ),
       data: (Subphase subphase) {
         return Scaffold(

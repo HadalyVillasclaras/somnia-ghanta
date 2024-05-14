@@ -4,6 +4,11 @@
 export 'package:ghanta/presentation/widgets/activities/shared/activity_body.dart';
 export 'package:ghanta/presentation/widgets/activities/shared/activity_text_body.dart';
 export 'package:ghanta/presentation/widgets/activities/shared/activity_intro_text.dart';
+export 'package:ghanta/presentation/widgets/activities/audio/audio_activity.dart';
+export 'package:ghanta/presentation/widgets/activities/popup/popup_activity.dart';
+export 'package:ghanta/presentation/widgets/activities/tinder/tinder_activity.dart';
+export 'package:ghanta/presentation/widgets/activities/text/text_activity.dart';
+export 'package:ghanta/presentation/widgets/activities/voice_recorder/voice_recorder_activity.dart';
 
 export 'package:ghanta/presentation/widgets/home/store/home_courses_list.dart';
 
