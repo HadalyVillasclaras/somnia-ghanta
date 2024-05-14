@@ -19,7 +19,7 @@ class HomeProfileActivity extends StatelessWidget {
           style: Theme.of(context)
               .textTheme
               .headlineMedium!
-              .copyWith(color: theme.onBackground),
+              .copyWith(color: theme.onSurface),
         ),
         const SizedBox(
           height: 20,
@@ -28,8 +28,8 @@ class HomeProfileActivity extends StatelessWidget {
           dayProps: EasyDayProps(
             dayStructure: DayStructure.dayStrDayNum,
             todayStyle: DayStyle(
-                dayNumStyle: TextStyle(color: theme.onBackground),
-                dayStrStyle: TextStyle(color: theme.onBackground),
+                dayNumStyle: TextStyle(color: theme.onSurface),
+                dayStrStyle: TextStyle(color: theme.onSurface),
                 decoration: BoxDecoration(
                     //Cambiamos el color del border
                     border: Border.all(
@@ -39,8 +39,8 @@ class HomeProfileActivity extends StatelessWidget {
                         width: 2),
                     borderRadius: BorderRadius.circular(20))),
             inactiveDayStyle: DayStyle(
-              dayNumStyle: TextStyle(color: theme.onBackground),
-              dayStrStyle: TextStyle(color: theme.onBackground),
+              dayNumStyle: TextStyle(color: theme.onSurface),
+              dayStrStyle: TextStyle(color: theme.onSurface),
             ),
             activeDayStyle: DayStyle(
                 dayNumStyle: TextStyle(color: theme.onPrimary),
@@ -57,8 +57,8 @@ class HomeProfileActivity extends StatelessWidget {
           initialDate: DateTime.now(),
           locale: Lang.getDeviceLang(context),
           headerProps: EasyHeaderProps(
-              selectedDateStyle: TextStyle(color: theme.onBackground),
-              monthStyle: TextStyle(color: theme.onBackground)),
+              selectedDateStyle: TextStyle(color: theme.onSurface),
+              monthStyle: TextStyle(color: theme.onSurface)),
         )
       ],
     );

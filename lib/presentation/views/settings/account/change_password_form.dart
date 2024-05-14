@@ -119,7 +119,7 @@ class _ChangePasswordFormState extends ConsumerState<ChangePasswordForm> {
                     builder: (BuildContext context) {
                       return Dialog(
                         backgroundColor:
-                            Theme.of(context).colorScheme.background,
+                            Theme.of(context).colorScheme.surface,
                         elevation: 0,
                         surfaceTintColor: Colors.white,
                         shape: RoundedRectangleBorder(

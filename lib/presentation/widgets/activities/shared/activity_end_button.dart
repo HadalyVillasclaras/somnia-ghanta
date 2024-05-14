@@ -27,7 +27,7 @@ class ActivityEndButton extends StatelessWidget {
           children: [
             FilledButton(
               style: FilledButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.background,
+                  backgroundColor: Theme.of(context).colorScheme.surface,
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   padding: const EdgeInsets.fromLTRB(15, 1, 0, 1)),
               onPressed: () {

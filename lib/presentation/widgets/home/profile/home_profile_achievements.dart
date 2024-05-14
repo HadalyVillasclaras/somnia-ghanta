@@ -18,7 +18,7 @@ class HomeProfileAchievements extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(Lang.of(context).home_profile_my_achievements,
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                    color: theme.onBackground,
+                    color: theme.onSurface,
                   )),
         ),
 

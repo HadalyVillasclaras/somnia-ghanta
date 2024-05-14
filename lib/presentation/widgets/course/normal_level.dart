@@ -88,7 +88,7 @@ class NormalLevel extends ConsumerWidget {
                       context.push('/course/$course/phase/${subphase.phaseId}/subphase/${subphase.id}');
                     } : null,
                     style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all( Size(sizes.width * 0.6, 50)),
+                      minimumSize: WidgetStateProperty.all( Size(sizes.width * 0.6, 50)),
                     ),
                     child: const Text('Iniciar'),
                   ),

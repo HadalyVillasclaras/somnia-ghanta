@@ -22,7 +22,7 @@ class HomeCoursesList extends StatelessWidget {
             children: [
               Text(Lang.of(context).home_store_available_courses,
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontWeight: FontWeight.bold,
                       )),
 

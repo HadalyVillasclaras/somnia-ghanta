@@ -16,11 +16,9 @@ class AppTheme {
       tertiary: Colors.grey,
       error: Color(0xFFB00020), // Custom error color
       onError: Color(0xFFFFFFFF), // Color for text/iconography on error color
-      background: Color.fromARGB(255, 255, 255, 255), // Custom background color
-      onBackground:
+      surface: Color.fromARGB(255, 255, 255, 255), // Custom background color
+      onSurface:
           primaryBlue, // Color for text/iconography on background color
-      surface: Color(0xFFFFFFFF), // Custom surface color
-      onSurface: primaryBlue, // Color for text/iconography on surface color
     );
 
     // Define text theme

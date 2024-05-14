@@ -129,7 +129,7 @@ class _VoiceRecorderActivityStepTwoState extends State<VoiceRecorderActivityStep
             children: [
               FilledButton(
                 style: FilledButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.background,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                     foregroundColor: Theme.of(context).colorScheme.primary,
                     padding: const EdgeInsets.fromLTRB(0, 2, 15, 2)),
                 onPressed: () {},
@@ -147,7 +147,7 @@ class _VoiceRecorderActivityStepTwoState extends State<VoiceRecorderActivityStep
               ),
               FilledButton(
                 style: FilledButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.background,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                     foregroundColor: Theme.of(context).colorScheme.primary,
                     padding: const EdgeInsets.fromLTRB(15, 2, 0, 2)),
                 onPressed: () {
@@ -216,7 +216,7 @@ class AudioShareModal extends StatelessWidget {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                            Theme.of(context).colorScheme.background,
+                            Theme.of(context).colorScheme.surface,
                         foregroundColor: Theme.of(context).colorScheme.primary,
                       ),
                       onPressed: () {

@@ -28,7 +28,7 @@ class AchievModal extends ConsumerWidget {
     String flowerImgPath = 'assets/images/flores_logros/flor${_flowerImgIndex + 1}.png';
 
     return Dialog(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       elevation: 0,
       surfaceTintColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),

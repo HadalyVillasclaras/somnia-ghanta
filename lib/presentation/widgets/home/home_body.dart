@@ -26,7 +26,7 @@ class HomeBody extends StatelessWidget {
             const SizedBox(height: 20.0),
             Text(
               Lang.of(context).home_page_body_my_recent_courses,
-              style: textTheme.headlineSmall!.copyWith(color: colors.onBackground),
+              style: textTheme.headlineSmall!.copyWith(color: colors.onSurface),
             ),
             const SizedBox(height: 20.0),
 
@@ -44,7 +44,7 @@ class HomeBody extends StatelessWidget {
             ] else ...[
               Text(
                 'No hay cursos disponibles',
-                style: textTheme.bodyMedium!.copyWith(color: colors.onBackground),
+                style: textTheme.bodyMedium!.copyWith(color: colors.onSurface),
               ),
             ],
 
