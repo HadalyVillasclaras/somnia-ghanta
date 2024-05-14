@@ -126,17 +126,17 @@ class SettingsViewPrivacy extends StatelessWidget {
           ],
           ListView.separated(
             physics:
-                NeverScrollableScrollPhysics(), // To disable scrolling within the ListView
+               const NeverScrollableScrollPhysics(), // To disable scrolling within the ListView
             shrinkWrap: true, // To make ListView take the size of its children
             itemCount: texts.length,
             itemBuilder: (BuildContext context, int index) {
               return Text(texts[index]);
             },
             separatorBuilder: (BuildContext context, int index) {
-              return SizedBox(height: 20); // Space between paragraphs
+              return const SizedBox(height: 20); // Space between paragraphs
             },
           ),
-          SizedBox(height: 40),
+          const SizedBox(height: 40),
         ],
       );
     }

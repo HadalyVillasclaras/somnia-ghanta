@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/presentation/providers/_providers.dart';
-import 'package:ghanta/presentation/providers/new_courses_provider.dart';
 import 'package:ghanta/presentation/screens/_presentation.dart';
 import 'package:go_router/go_router.dart';
 

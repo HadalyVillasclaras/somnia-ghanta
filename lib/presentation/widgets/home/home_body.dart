@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/infraestructure/_infraestructure.dart';
-import 'package:ghanta/presentation/providers/new_courses_provider.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeBody extends StatelessWidget {

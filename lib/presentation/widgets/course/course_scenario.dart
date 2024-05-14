@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/domain/entities/phase.dart';
 import 'package:ghanta/infraestructure/_infraestructure.dart';
-import 'package:ghanta/presentation/providers/new_courses_provider.dart';
+import 'package:ghanta/presentation/providers/courses_provider.dart';
 import 'package:ghanta/presentation/screens/_presentation.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
 
@@ -27,7 +27,7 @@ class CourseScenario extends ConsumerWidget {
       bottom: false,
       child: Container(
         decoration:  const BoxDecoration(
-          color:  Colors.white,
+          color:  Color.fromARGB(255, 125, 228, 223),
           image:  DecorationImage(
             image: AssetImage('assets/course/fondo.png'),
             fit: BoxFit.cover,

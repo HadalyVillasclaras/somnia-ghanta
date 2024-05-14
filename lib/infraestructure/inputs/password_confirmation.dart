@@ -13,10 +13,10 @@ class PasswordConfirmation extends FormzInput<String, PasswordConfirmationError>
   const PasswordConfirmation.dirty({required this.originalPassword, String passwordConfirmation = ''}) : super.dirty(passwordConfirmation);
 
   @override
-  PasswordConfirmationError? validator(String passwordConfirmation) {
-    if (passwordConfirmation.isEmpty) {
+  PasswordConfirmationError? validator(String value) {
+    if (value.isEmpty) {
       return PasswordConfirmationError.empty;
-    } else if (originalPassword != passwordConfirmation) {
+    } else if (originalPassword != value) {
       return PasswordConfirmationError.mismatch;
     }
     return null; 

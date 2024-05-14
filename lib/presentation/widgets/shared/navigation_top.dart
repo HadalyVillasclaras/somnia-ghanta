@@ -10,9 +10,9 @@ class NavigationTop extends StatelessWidget implements PreferredSizeWidget {
     final theme = Theme.of(context).colorScheme;
     final currentLocation = _getCurrentLocation(context);
 
-    String _iconForRoute(String route, String iconBaseName) {
+    String iconForRoute(String route, String iconBaseName) {
       final isActive = currentLocation.contains(route);
-      return 'assets/icons/nav/${iconBaseName}${isActive ? '_filled' : '_outline'}.png';
+      return 'assets/icons/nav/$iconBaseName${isActive ? '_filled' : '_outline'}.png';
     }
 
     return AppBar(
@@ -32,7 +32,7 @@ class NavigationTop extends StatelessWidget implements PreferredSizeWidget {
             context.push('/home/0'); //HomeView
           },
           icon: Image.asset(
-            _iconForRoute('/home/0', 'flor'),
+            iconForRoute('/home/0', 'flor'),
             height: 28,
           ),
         ),
@@ -41,7 +41,7 @@ class NavigationTop extends StatelessWidget implements PreferredSizeWidget {
             context.push('/home/1'); //calendar
           },
           icon: Image.asset(
-            _iconForRoute('/home/1', 'calendar'),
+            iconForRoute('/home/1', 'calendar'),
             height: 28,
           ),
         ),
@@ -50,7 +50,7 @@ class NavigationTop extends StatelessWidget implements PreferredSizeWidget {
             context.push('/home/3'); //HomeViewConfig
           },
           icon: Image.asset(
-            _iconForRoute('/home/3', 'settings'),
+            iconForRoute('/home/3', 'settings'),
             height: 28,
           ),
         ),

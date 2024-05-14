@@ -63,6 +63,7 @@ class ChangePassFormState {
       isCurrentPassValid: isCurrentPassValid ?? this.isCurrentPassValid,
       currentPassword: currentPassword ?? this.currentPassword,
       newPassword: newPassword ?? this.newPassword,
+      // ignore: unnecessary_this
       newPasswordConfirmation: passwordConfirmation ?? this.newPasswordConfirmation,
       editedFieldsAfterSubmit: editedFieldsAfterSubmit ?? this.editedFieldsAfterSubmit,
       isRegisterOk: isRegisterOk ?? this.isRegisterOk
@@ -139,7 +140,7 @@ class ChangePassFormNotifier extends StateNotifier<ChangePassFormState> {
       currentPassword: state.currentPassword,
       newPassword: newPassword,
       passwordConfirmation: newPasswordConfirmation,
-      editedFieldsAfterSubmit: Set<String>(),
+      editedFieldsAfterSubmit: <String>{},
       isRegisterOk: false
     );
   }

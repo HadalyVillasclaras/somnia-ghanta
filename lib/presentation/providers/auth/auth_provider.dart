@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/domain/entities/user.dart';
@@ -75,7 +76,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
       );
 
     } on WrongCredentialsError {
-      print('onwrong credentials');
       state = state.copyWith(
         authStatus: AuthStatus.unauthenticated,
         user: null,
@@ -87,7 +87,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
         errorMessage: e.message, 
       );
     } catch (e) {
-      print('An unexpected error occurred: $e');
       state = state.copyWith(
         authStatus: AuthStatus.unauthenticated,
         user: null,
@@ -122,7 +121,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
       } on WrongCredentialsError {
         await keyValueStorageService.removeKey('token');
       } catch (e) {
-        print(e.toString());
+        debugPrint('Error setting audio source: $e');
+
       }
     }
 

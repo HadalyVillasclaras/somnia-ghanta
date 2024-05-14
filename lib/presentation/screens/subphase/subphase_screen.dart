@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/config/constants/colors_theme.dart';
 import 'package:ghanta/domain/entities/subphase.dart';
-import 'package:ghanta/presentation/providers/new_courses_provider.dart';
+import 'package:ghanta/presentation/providers/courses_provider.dart';
 import 'package:ghanta/presentation/widgets/activities/shared/activity_base.dart';
 
 class SubphaseScreen extends ConsumerWidget {

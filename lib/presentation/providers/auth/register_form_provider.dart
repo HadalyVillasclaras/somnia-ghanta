@@ -162,7 +162,7 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
       password: password,
       passwordConfirmation: passwordConfirmation,
       isValid: Formz.validate([email, password, passwordConfirmation]),
-      editedFieldsAfterSubmit: Set<String>(),
+      editedFieldsAfterSubmit: <String>{},
       isRegisterOk: false
     );
   }

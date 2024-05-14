@@ -43,6 +43,7 @@ class VoiceRecorderActivityStepTwo extends StatefulWidget {
 }
 
 class _VoiceRecorderActivityStepTwoState extends State<VoiceRecorderActivityStepTwo> {
+  // ignore: unused_field
   bool _showShareButton = false;
 
   void convertAudioToBase64(String path) async {
@@ -55,7 +56,7 @@ class _VoiceRecorderActivityStepTwoState extends State<VoiceRecorderActivityStep
     String base64String = base64Encode(bytes);
 
     // Hacer algo con la cadena Base64, como enviarla a un servidor
-    print("Audio en Base64: $base64String");
+    debugPrint("Audio en Base64: $base64String");
   }
 
   @override

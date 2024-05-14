@@ -55,7 +55,7 @@ class _ActivityAudioPlayerState extends State<ActivityAudioPlayer> {
     }
    if (fullAudioUrl != null) {
       audioPlayer.setSourceUrl(fullAudioUrl!).catchError((error) {
-        print('Error setting audio source: $error');
+        debugPrint('Error setting audio source: $error');
       });
     }
 
@@ -141,19 +141,17 @@ String formatDuration(Duration duration) {
             CircleIconActivity(
               iconData: isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
               onPressed: () {
-                if (audioPlayer != null) {
-                  if (isPlaying) {
-                    audioPlayer.pause(); 
-                    setState(() {
-                      isPlaying = false; 
-                    });
-                  } else {
-                    audioPlayer.play(UrlSource(fullAudioUrl!)).then((_) {
-                      setState(() { isPlaying = true; });
-                    });
-                  }
-                } 
-              },
+                if (isPlaying) {
+                  audioPlayer.pause(); 
+                  setState(() {
+                    isPlaying = false; 
+                  });
+                } else {
+                  audioPlayer.play(UrlSource(fullAudioUrl!)).then((_) {
+                    setState(() { isPlaying = true; });
+                  });
+                }
+                            },
             ),
           ],
         ),

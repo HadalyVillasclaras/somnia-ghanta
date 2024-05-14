@@ -22,7 +22,7 @@ class _CalendarViewState extends State<CalendarView> {
   DateTime? _selectedDay;
 
   Map<DateTime, List<Event>> events = {};
-  final TextEditingController _eventController = TextEditingController();
+  // final TextEditingController _eventController = TextEditingController();
   late final ValueNotifier<List<Event>> _selectedEvents;
   
   Map<DateTime, List<UserFeedback>> feedbacksByDate = {};
@@ -159,6 +159,8 @@ class _CalendarViewState extends State<CalendarView> {
                   emotions = emotions.sublist(0, 3);  
                 }
                 return FeedbacksMarkerBuilder(date: date, emotions: emotions);
+              } else {
+                return null;
               }
             },
           ),

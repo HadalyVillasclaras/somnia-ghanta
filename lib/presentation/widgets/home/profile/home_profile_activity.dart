@@ -52,7 +52,6 @@ class HomeProfileActivity extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20))),
           ),
           onDateChange: (selectedDate) {
-            print(selectedDate);
           
           },
           initialDate: DateTime.now(),
