@@ -52,5 +52,4 @@ final appRouter = GoRouter(routes: [
     path: '/auth',
     builder: (context, state) => const AuthScreen(),
   ),
- 
 ]);

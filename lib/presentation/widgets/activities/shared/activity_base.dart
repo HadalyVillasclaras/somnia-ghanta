@@ -55,6 +55,7 @@ class _ActivityBaseState extends State<ActivityBase> {
         //Background image / filter
         _buildBackground(activity.activityTypology),
 
+        //Gradient top
         Container(
             height: MediaQuery.sizeOf(context).height * 0.20,
             decoration: const BoxDecoration(
@@ -98,7 +99,7 @@ class _ActivityBaseState extends State<ActivityBase> {
             tween: ColorTween(
               begin: Colors.transparent,
               end: (pageIndex == 3 || pageIndex == 4 || pageIndex == 5)
-                  ? const Color.fromARGB(255, 14, 0, 143).withOpacity(0.6)
+                  ? const Color.fromARGB(255, 0, 44, 105).withOpacity(0.6)
                   : Colors.transparent,
             ),
             duration: const Duration(milliseconds: 500),

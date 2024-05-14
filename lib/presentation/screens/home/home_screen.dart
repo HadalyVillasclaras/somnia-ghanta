@@ -6,7 +6,6 @@ import 'package:ghanta/presentation/widgets/_widgets.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key, required this.tabIndex  }) : super(key: key);
-// final Widget child;
   final int tabIndex;
 
   @override
