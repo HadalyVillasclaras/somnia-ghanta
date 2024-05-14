@@ -13,7 +13,6 @@ class CourseScreen extends StatelessWidget {
       body: CourseScenario(
         courseId: courseId,
       ),
-
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/domain/_domain.dart';
-import 'package:ghanta/domain/entities/phase.dart';
 import 'package:ghanta/domain/entities/subphase.dart';
 import 'package:ghanta/infraestructure/datasources/courses_datasource_impl.dart';
 

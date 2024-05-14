@@ -5,6 +5,7 @@ export 'package:ghanta/presentation/screens/home/home_screen.dart';
 export 'package:ghanta/presentation/screens/feedback/feedback_screen.dart';
 export 'package:ghanta/presentation/screens/subphase/subphase_screen.dart';
 export 'package:ghanta/presentation/screens/courses/course_screen.dart';
+export 'package:ghanta/presentation/screens/courses/course_empty_screen.dart';
 
 export 'package:ghanta/presentation/views/home_view_config.dart';
 export 'package:ghanta/presentation/views/course/phase_map_view.dart';

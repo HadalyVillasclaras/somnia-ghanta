@@ -41,7 +41,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-    Future<bool> verifyPassword(String password) async {
+  Future<bool> verifyPassword(String password) async {
     try {
       final user = state.user;
       if (user == null) return false;
@@ -76,7 +76,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
     } on WrongCredentialsError {
       print('onwrong credentials');
-
       state = state.copyWith(
         authStatus: AuthStatus.unauthenticated,
         user: null,
@@ -149,7 +148,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
 }
 
 // --------- Estado
-
 enum AuthStatus { checking, authenticated, unauthenticated }
 
 class AuthState {

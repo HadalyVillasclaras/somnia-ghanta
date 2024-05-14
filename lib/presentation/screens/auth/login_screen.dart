@@ -15,7 +15,6 @@ class LoginScreen extends ConsumerWidget {
     ref.listen(authProvider, (prev, next) {
       if (next.errorMessage.isEmpty) return;
 
-
     Future.delayed(const Duration(seconds: 2));
       if (next.authStatus == AuthStatus.authenticated) {
         context.go('/auth');
@@ -71,8 +70,7 @@ class LoginForm extends ConsumerStatefulWidget {
 }
 
 class _LoginFormState extends ConsumerState<LoginForm> {
-  bool _obscureText = true;
-
+    bool _obscureText = true;
     void  showSnackbar(BuildContext context, String message){
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -142,23 +140,23 @@ class _LoginFormState extends ConsumerState<LoginForm> {
         ),
         const SizedBox(height: 40),
         ElevatedButton(
-            onPressed: () {
-              ref.read(loginFormProvider.notifier).onFormSubmitted();
-              // Cerramos el teclado
-              FocusScope.of(context).unfocus();
-            },
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(double.infinity, 50),
-            ),
-            child: loginForm.isPosting
-                ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                    ),
-                  )
-                : const Text('Iniciar Sesión')),
+          onPressed: () {
+            ref.read(loginFormProvider.notifier).onFormSubmitted();
+            // Cerramos el teclado
+            FocusScope.of(context).unfocus();
+          },
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(double.infinity, 50),
+          ),
+          child: loginForm.isPosting
+              ? const SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
+                )
+              : const Text('Iniciar Sesión')),
         const SizedBox(height: 40),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

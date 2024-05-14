@@ -31,7 +31,7 @@ class ActivityEndButton extends StatelessWidget {
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   padding: const EdgeInsets.fromLTRB(15, 1, 0, 1)),
               onPressed: () {
-                if (activity!.activityTypology == ActivityType.meditation) {
+                if (activity?.activityTypology == ActivityType.meditation) {
                   context.push('/feedback/${activity!.id}');
                   //context.go('/course/${notEmptyCourse!.id}');
                 } else {

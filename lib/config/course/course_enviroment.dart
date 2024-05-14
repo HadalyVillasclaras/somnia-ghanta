@@ -11,10 +11,6 @@ class CourseEnviroment {
   }
 
   static double getVerticalSeparation(int i) {
-    return i == 0
-                      ? 40
-                      : i *
-                          CourseEnviroment
-                              .verticalSeparation;
+    return i == 0 ? 40 : i * CourseEnviroment.verticalSeparation;
   }
 }

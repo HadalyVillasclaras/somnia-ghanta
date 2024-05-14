@@ -311,9 +311,8 @@ class LastTinderActivityCard extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               child: ActivityTextBody(
-                'ULTIMA CARTA',
-                textAlign: TextAlign.start,
-                isSmall: true,
+                '¡Actividad completada con éxito!',
+                textAlign: TextAlign.center,
               ),
             ),
           ),

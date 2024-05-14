@@ -4,7 +4,7 @@ import 'package:ghanta/domain/entities/subphase.dart';
 import 'package:ghanta/infraestructure/datasources/courses_datasource_impl.dart';
 import 'package:ghanta/presentation/providers/auth/auth_provider.dart';
 
-final testCourseProvider = FutureProvider<List<Course>>((ref) async {
+final getCoursesProvider = FutureProvider<List<Course>>((ref) async {
   final coursesRepository = CoursesDatasourceImpl();
   final authState = ref.read(authProvider);
   final userId = authState.user!.id;
@@ -12,33 +12,32 @@ final testCourseProvider = FutureProvider<List<Course>>((ref) async {
   await Future.delayed(const Duration(seconds: 2));
   final courses = await coursesRepository.getNewUserCourses(userId, userToken!);
   
-  return courses;
+   return courses;
 });
 
 
 final subphaseProvider = FutureProvider.family<Subphase, int>((ref, subphaseId) async {
   final coursesRepository = CoursesDatasourceImpl();
   final subphase = await coursesRepository.getSubphaseById(subphaseId);
-  
   return subphase;
 });
 
 
 final coursesStateProvider = StateNotifierProvider<CoursesNotifier, CoursesState>((ref) {
-   final authState = ref.read(authProvider);
+  final authState = ref.read(authProvider);
   final userId = authState.user!.id;
-  final userToken = authState.user?.token; 
-  return CoursesNotifier(userId, userToken);
+  final userToken = authState.user!.token; 
+  return CoursesNotifier(userId, userToken!);
 });
 
 class CoursesNotifier extends StateNotifier<CoursesState> {
   final int userId;
-  final String? userToken;
+  final String userToken;
   final CoursesDatasource _coursesDatasource = CoursesDatasourceImpl();
 
   CoursesNotifier(this.userId, this.userToken) : super(CoursesState());
 
-  Future<void> getUserCourses(userId, userToken) async {
+  Future<void> getUserCourses() async {
     state = state.copyWith(status: CoursesStatus.loading);
       try {
         final courses = await _coursesDatasource.getNewUserCourses(userId, userToken);
