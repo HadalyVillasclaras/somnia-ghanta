@@ -10,31 +10,30 @@ class NormalLevel extends ConsumerWidget {
   const NormalLevel({
     super.key,
     required this.index,
+    required this.course,
     required this.subphase,
     required this.left,
     required this.top,
     required this.onTap,
-    required this.course,
   });
 
+  final int index;
+  final int course;
   final Subphase subphase;
   final double left;
   final double top;
   final VoidCallback onTap;
-  final int course;
-  final int index;
 
   @override
   Widget build(BuildContext context, ref) {
     final sizes = MediaQuery.of(context).size;
     final tooltipsProvider = ref.watch(phasesTooltipsProvider);
       
-    final Activity? firstActivity = subphase.activities.isNotEmpty ? subphase.activities[0] : null;
+    final Activity? firstActivity = subphase.activities.isNotEmpty ? subphase.activities[0] : null; //Always get the first activity of subphase
     final String firstActivityTitle = firstActivity?.titleEs ?? "Sin actividad";
     final Widget activityIcon = firstActivity?.getIconByType() ?? const Icon(Icons.block);
 
-    bool areUrlParamsValid = course != null && subphase.phaseId != null && subphase.id != null &&
-                   course > 0 && subphase.phaseId > 0 && subphase.id > 0;
+    bool areUrlParamsValid = course > 0 && subphase.phaseId > 0 && subphase.id > 0;
 
     return Positioned(
       left: left,
@@ -48,13 +47,13 @@ class NormalLevel extends ConsumerWidget {
           child: Container(
               height: sizes.height * 0.22,
               width: sizes.width * 0.6,
-              padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.all(2),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(  //Título subfase
-                    'Título subfase: ${subphase.titleEs}',
+                  Text(  
+                    subphase.titleEs,//Título subfase
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleSmall!
                   ),
@@ -62,11 +61,11 @@ class NormalLevel extends ConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Column( //tiempo estimado
+                      Column( 
                         children: [
                           const Icon(Icons.timer_sharp),
                           Text(
-                            '${subphase.estimatedTime}m',
+                            '${subphase.estimatedTime}m',//tiempo estimado
                             style: Theme.of(context).textTheme.bodySmall!
                           ),
                         ],
@@ -76,17 +75,15 @@ class NormalLevel extends ConsumerWidget {
                           activityIcon,
                           Text(
                             firstActivityTitle,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall!
+                            style: Theme.of(context).textTheme.bodySmall!
                           ),
                         ],
                       )
                     ],
                   ),
-                  const SizedBox( height: 5,),
+                  const SizedBox( height: 1),
                   FilledButton.tonal(
-                    onPressed: areUrlParamsValid ? () {
+                    onPressed: areUrlParamsValid && firstActivity != null ? () {
                       tooltipsProvider[index].hideTooltip();
                       context.push('/course/$course/phase/${subphase.phaseId}/subphase/${subphase.id}');
                     } : null,

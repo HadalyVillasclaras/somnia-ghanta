@@ -17,6 +17,7 @@ class Activity {
   final int subphaseId;
   final int order;
   final ActivityType activityTypology;
+  final int? activityTypologyId;
   final List<TinderData>? tinderData;
   final List<PopupData>? popupData;
   final String? textData;
@@ -37,42 +38,31 @@ Activity({
     required this.subphaseId,
     required this.order,
     required this.activityTypology,
+    this.activityTypologyId,
     this.tinderData,
     this.popupData,
     this.textData,
   });
 
  Widget getIconByType() {
-    switch (activityTypology) {
-      case ActivityType.meditation:
-        return const Icon(Icons.self_improvement);
-      case ActivityType.audio:
-        return const Icon(Icons.multitrack_audio_sharp);
-      case ActivityType.tinder:
-        return const Icon(Icons.calendar_view_month_sharp);
-      case ActivityType.popup:
-        return const Icon(Icons.info);
+    switch (activityTypologyId) {
+      case 1: 
+        return Image.asset('assets/icons/activity_icons/tinder.png', width: 22, height: 22);
+      case 3:
+        return Image.asset('assets/icons/activity_icons/texto.png', width: 22, height: 22);
+      case 5:
+        return Image.asset('assets/icons/activity_icons/pop_up.png', width: 22, height: 22);
+      case 6:
+        return Image.asset('assets/icons/activity_icons/voice_record.png', width: 22, height: 22);
+      case 9:
+        return Image.asset('assets/icons/activity_icons/meditacion.png', width: 22, height: 22);
+      case 10:
+        return Image.asset('assets/icons/activity_icons/podcast.png', width: 22, height: 22);
       default:
-        return const Icon(Icons.self_improvement);
-    }
+        return Image.asset('assets/icons/activity_icons/meditacion.png', width: 22, height: 22); 
+      }
   }
 
-  //  case 1:
-  //     return Image.asset('assets/icons/activity_icons/meditacion.png', width: 22, height: 22);
-  //   case 10:
-  //     return Image.asset('assets/icons/activity_icons/podcast.png', width: 22, height: 22);
-  //   case 3:
-  //     return Image.asset('assets/icons/activity_icons/texto.png', width: 22, height: 22);
-  //   case 5:
-  //     return Image.asset('assets/icons/activity_icons/tinder.png', width: 22, height: 22);
-  //   case ActivityType.popup:
-  //     return Image.asset('assets/icons/activity_icons/pop_up.png', width: 22, height: 22);
-  //   case 6:
-  //     return Image.asset('assets/icons/activity_icons/voice_record.png', width: 22, height: 22);
-  //   default:
-  //     return Image.asset('assets/icons/activity_icons/meditacion.png', width: 22, height: 22); 
-  //   }
-  
   /// Metodo para devolver el titulo dependiendo del idioma
   String getTitle({String lang = 'es'}) {
     if (lang == 'ca') {

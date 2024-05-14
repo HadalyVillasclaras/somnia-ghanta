@@ -1,11 +1,8 @@
-
-
 import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/infraestructure/mappers/phases_mapper.dart';
 import 'package:ghanta/infraestructure/models/api_models/course_api.dart';
 
 class CoursesMapper {
-  
 
   static Course coursesApiModelToEntity (CourseApiModel courseApiModel) {
     return Course(
@@ -19,8 +16,6 @@ class CoursesMapper {
       userId: courseApiModel.userId.toString(),
       createdAt: courseApiModel.createdAt.toString(),
       updatedAt: courseApiModel.updatedAt.toString(),
-      // currentPhase: courseApiModel.currentCourseStatus!.currentPhase ?? 1,
-      // currentSubphase:  courseApiModel.currentCourseStatus!.currentSubphase ?? 1,
       currentPhase: courseApiModel.currentCourseStatus?.currentPhase ?? 1,
       currentSubphase:  courseApiModel.currentCourseStatus?.currentSubphase ?? 1,
       totalPhases: courseApiModel.phases.length,

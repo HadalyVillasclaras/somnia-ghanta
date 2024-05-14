@@ -34,14 +34,14 @@ class AuthScreen extends ConsumerWidget {
               }
             }
 
-              if (notEmptyCourse != null) {
-                ref.read(coursesStateProvider.notifier).setCourses(courses);
-                Future.delayed(const Duration(seconds: 2),
-                  () => context.go('/course/${notEmptyCourse!.id}'));
-              } else {
-                Future.delayed(const Duration(seconds: 2), 
-                  () => context.go('/course'));
-              }
+            if (notEmptyCourse != null) {
+              ref.read(coursesStateProvider.notifier).setCourses(courses);
+              Future.delayed(const Duration(seconds: 2),
+                () => context.go('/course/${notEmptyCourse!.id}'));
+            } else {
+              Future.delayed(const Duration(seconds: 2), 
+                () => context.go('/course'));
+            }
           }
         });
       } else {

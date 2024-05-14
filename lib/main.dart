@@ -7,18 +7,22 @@ import 'package:ghanta/generated/l10n.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await loadImage(const AssetImage('assets/course/fondo.png'));
-   await dotenv.load(fileName: '.env');
-  runApp(const ProviderScope(child: MyApp()));
+  await dotenv.load(fileName: '.env');
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      preloadImages(navigatorKey.currentContext!);
+    });
+
     return MaterialApp.router(
+      key: navigatorKey,
       title: 'Ghanta',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.themeData,
@@ -33,3 +37,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

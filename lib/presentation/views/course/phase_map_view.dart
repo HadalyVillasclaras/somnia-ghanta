@@ -3,49 +3,48 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/config/_config.dart';
 import 'package:ghanta/domain/entities/phase.dart';
 import 'package:ghanta/domain/entities/subphase.dart';
-import 'package:ghanta/presentation/providers/new_courses_provider.dart';
 import 'package:ghanta/presentation/providers/ui_provider.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
 import 'package:super_tooltip/super_tooltip.dart';
 
 class PhaseMapView extends ConsumerStatefulWidget {
-  const PhaseMapView({super.key, required this.phase});
+  const PhaseMapView({
+    super.key, 
+    required this.phase,
+    this.currentPhase = 0, 
+  });
   final Phase phase;
-
+  final int currentPhase;
+  
   @override
   ConsumerState<PhaseMapView> createState() => _PhaseMapViewState();
 }
 
 class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
-
   double screenSize = 0.0;
-  int currentPosition = 0;
+  late int currentPosition;
   ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final coursesNotifier = ref.watch(coursesStateProvider.notifier);
-      final currentCourse = coursesNotifier.getCourseById(widget.phase.courseId);
-      final currentPhase = currentCourse.currentPhase! - 1;
-      currentPosition = currentPhase;
+      currentPosition = widget.currentPhase; //importante! la posición debe ser ser la currentSubphase no la currentPhase
 
       if (scrollController.hasClients && currentPosition != 0) {
         moveScreenScroll(currentPosition);
       }
 
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
       // Abri tooltip al entrar en screen
       // final phaseTooltips = ref.read(phasesTooltipsProvider);
       // final tooltipController = phaseTooltips[currentPosition];
       // tooltipController.showTooltip();
-    });
+    // });
   }
 
   void moveScreenScroll(int i) {
     //inicial bounce animation
-    scrollController.animateTo(CourseEnviroment.getVerticalSeparation(i) - 20,
+    scrollController.animateTo(CourseEnviroment.getVerticalSeparation(i) - 15,
       duration: const Duration(milliseconds: 1000), curve: Curves.easeInOut);
   }
 
@@ -75,7 +74,7 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
 
       if (!isAchieve) return;
 
-      //Abrimos un modal
+      //Abrimos un modal de Logro
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -101,7 +100,7 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                // por cada subfase creamos una planta
+                // por cada subfase creamos un nenufar
                 ...subphases.asMap().entries.map((entry) {
                   final i = entry.key;
                   final subphase = entry.value;
@@ -109,6 +108,7 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
                   double top = CourseEnviroment.getVerticalSeparation(i) +  100; // Añado 100 para que no se oculte tras el título
                   return subphase.type == SubphaseType.normal
                   ? NormalLevel(
+                      key: ValueKey(subphase.id),
                       subphase: subphase,
                       left: left,
                       course: widget.phase.courseId,
@@ -117,6 +117,7 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
                       onTap: () => onTapFlower(i, isAchieve: false),
                     )
                   : AchieveLevel(
+                      key: ValueKey(subphase.id),
                       subphase: subphase,
                       left: left,
                       top: top,

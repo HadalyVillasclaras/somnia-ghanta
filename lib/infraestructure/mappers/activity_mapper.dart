@@ -13,6 +13,7 @@ class ActivityMapper {
       audioUrlES: api.audioUrlEs,
       audioUrlCA: api.audioUrlCa,
       order: api.order,
+      activityTypologyId: api.activityTypologyId, 
       activityTypology:
           ActivityTypologyMapper.apiModelToEntity(api.activityTypology?.id),
       tinderData: api.activityTinderData,

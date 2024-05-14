@@ -36,7 +36,7 @@ export 'package:ghanta/presentation/widgets/home/home_header.dart';
 export 'package:ghanta/presentation/widgets/shared/navigation_top.dart';
 export 'package:ghanta/presentation/widgets/shared/bottom_navigation_bar.dart';
 export 'package:ghanta/presentation/widgets/shared/logout_modal.dart';
-export 'package:ghanta/presentation/widgets/shared/fade_in_widget.dart';
+export 'package:ghanta/presentation/widgets/shared/fade_in_animation.dart';
 
 
 

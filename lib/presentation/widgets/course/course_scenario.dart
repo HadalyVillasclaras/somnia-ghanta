@@ -16,13 +16,12 @@ class CourseScenario extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-
     final coursesNotifier = ref.watch(coursesStateProvider.notifier);
     final currentCourse = coursesNotifier.getCourseById(courseId);
+
     final currentPhase = currentCourse.currentPhase! - 1; //-1 para buscar en arrays
     final List<Phase> phases = currentCourse.phases;
-
-    final phase = phases[0];
+    final phase = phases[currentPhase];
 
     return SafeArea(
       bottom: false,
@@ -35,8 +34,10 @@ class CourseScenario extends ConsumerWidget {
         ),
         child: Stack(
           children: [
-            FadeInWidget(child: PhaseMap(currentPhase: currentPhase, phases: phases)),
-            Header(phase: phase, currentPhase: currentPhase),
+            FadeInAnimation(
+              child: PhaseMap(currentPhase: currentPhase, phases: phases)
+            ),
+            CourseScenarioHeader(phase: phase, currentPhase: currentPhase),
           ],
         ),
       ),
@@ -44,8 +45,8 @@ class CourseScenario extends ConsumerWidget {
     }
 }
 
-class Header extends StatelessWidget {
-  const Header({
+class CourseScenarioHeader extends StatelessWidget {
+  const CourseScenarioHeader({
     super.key,
     required this.phase,
     required this.currentPhase,
@@ -82,7 +83,7 @@ class Header extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Título de fase: ${phase.getTitle(lang: Lang.getDeviceLang(context))}', style: textTheme.headlineSmall!),
-              Text('Fase nº: ${currentPhase + 1}', style: textTheme.bodyMedium!),
+              Text('Fase nº ${currentPhase + 1}', style: textTheme.bodyMedium!),
             ],
           ),
         ),
@@ -108,10 +109,9 @@ class PhaseMap extends StatelessWidget {
         Expanded(
           child: PageView(
             scrollDirection: Axis.vertical,
-            // Set the current page
             controller: PageController(initialPage: currentPhase),
             children: [
-              // Por cada fase mostramos un container con el title_es
+              // Por cada fase mostramos un container. falta el title 
               for (var i = 0; i < phases.length; i++) 
                 PhaseMapView(phase: phases[i])
             ]
@@ -121,23 +121,3 @@ class PhaseMap extends StatelessWidget {
     );
   }
 }
-
-
-  // AppBar(
-  //   surfaceTintColor: Colors.transparent,
-  //   automaticallyImplyLeading: false,
-  //   toolbarHeight: kToolbarHeight + 30,
-  //   title: Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       const SizedBox(height: 20),
-  //       Text(phase.getTitle(lang: Lang.getDeviceLang(context)),
-  //         style: textTheme.headlineSmall!),
-  //       Text('Fase ${currentPhase + 1}',
-  //           style: textTheme.bodyMedium!),
-  //       const SizedBox(height: 20),
-  //     ],
-  //   ),
-  //   backgroundColor: Colors.white.withOpacity(0.2),
-  //   centerTitle: false,
-  // ),

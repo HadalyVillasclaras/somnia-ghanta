@@ -1,35 +1,19 @@
 import 'dart:async';
-import 'dart:ui';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 
-Future<void> loadImage(ImageProvider provider) {
-  final ImageConfiguration config = ImageConfiguration(
-    bundle: rootBundle,
-    devicePixelRatio: window.devicePixelRatio,
-    platform: defaultTargetPlatform,
-  );
-  final Completer<void> completer = Completer<void>();
-  final ImageStream stream = provider.resolve(config);
+Future<void> preloadImages(BuildContext context) async {
+  List<String> images = [
+    'assets/course/fondo.png',
+    'assets/icons/activity_icons/tinder.png',
+    'assets/icons/activity_icons/texto.png',
+    'assets/icons/activity_icons/pop_up.png',
+    'assets/icons/activity_icons/voice_record.png',
+    'assets/icons/activity_icons/meditacion.png',
+    'assets/icons/activity_icons/podcast.png',
+  ];
 
-  late final ImageStreamListener listener;
-
-  listener = ImageStreamListener((ImageInfo image, bool sync) {
-    completer.complete();
-    stream.removeListener(listener);
-  }, onError: (Object exception, StackTrace? stackTrace) {
-    completer.complete();
-    stream.removeListener(listener);
-    FlutterError.reportError(FlutterErrorDetails(
-      context: ErrorDescription('image failed to load'),
-      library: 'image resource service',
-      exception: exception,
-      stack: stackTrace,
-      silent: true,
-    ));
-  });
-
-  stream.addListener(listener);
-  return completer.future;
+  for (String imagePath in images) {
+    await precacheImage(AssetImage(imagePath), context);
+  }
 }
+
