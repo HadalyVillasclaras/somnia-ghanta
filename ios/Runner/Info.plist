@@ -50,6 +50,6 @@
 		<key>NSMicrophoneUsageDescription</key>
 		<string>Para completar esta actividad necesitas usar el micrófono</string>
 		<key>UIStatusBarHidden</key>
-		<false/>
+		<true/>
 	</dict>
 </plist>

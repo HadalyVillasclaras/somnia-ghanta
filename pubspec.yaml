@@ -44,7 +44,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
   flutter_localizations:
     sdk: flutter
-  flutter_native_splash: ^2.4.0
+  flutter_native_splash: ^2.2.4
   flutter_riverpod: ^2.4.3
   flutter_staggered_grid_view: ^0.7.0
   formz: ^0.6.1
@@ -72,7 +72,17 @@ flutter_launcher_icons:
   min_sdk_android: 21
 
 flutter_native_splash:
-  background_image: "assets/images/gradient-bg.png"
+  background_image: assets/images/gradient-bg.png
+  fullscreen: true
+  icon_background_color: "#5aa5a9"
+  android_12:
+    image: assets/app-icons/icon.png
+    color: "#5aa5a9"
+    background_image: assets/images/gradient-bg.png
+    icon_background_color: "#5aa5a9"
+    fullscreen: true
+  android: true
+  ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -95,6 +105,7 @@ flutter:
     - assets/icons/emotions/
     - assets/icons/activity_icons/
     - assets/app-icons/
+    - assets/images/gradient-bg.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
