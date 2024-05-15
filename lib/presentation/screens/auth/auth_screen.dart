@@ -4,7 +4,7 @@ import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/presentation/providers/_providers.dart';
 import 'package:ghanta/presentation/screens/_presentation.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 class AuthScreen extends ConsumerWidget {
   const AuthScreen({Key? key}) : super(key: key);
 
@@ -19,6 +19,7 @@ class AuthScreen extends ConsumerWidget {
         final courses = ref.watch(getCoursesProvider);
 
         courses.whenData((courses) {
+          FlutterNativeSplash.remove();
           if (courses.isEmpty) {
             Future.delayed(
                 const Duration(seconds: 2), () => context.go('/course'));
