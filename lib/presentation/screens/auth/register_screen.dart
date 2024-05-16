@@ -92,6 +92,17 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    // Dont open keyboard automatically
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        FocusScope.of(context).requestFocus(FocusNode());
+      }
+    });
+  }
+  
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final registerForm = ref.watch(registerFormProvider);

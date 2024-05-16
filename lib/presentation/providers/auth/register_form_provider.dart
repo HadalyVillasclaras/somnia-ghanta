@@ -36,21 +36,6 @@ class RegisterFormState {
     this.isRegisterOk = false
   });
 
-  @override
-  String toString() {
-    return '''
-      RegisterFormState
-        isPosting: $isPosting
-        isFormPosted: $isFormPosted
-        isValid: $isValid
-        name: $name
-        email: $email
-        password: $password
-        passwordConfirmation: $passwordConfirmation
-        isRegisterOk: $isRegisterOk
-    ''';
-  }
-
   RegisterFormState copyWith({
     bool? isPosting,
     bool? isFormPosted,
@@ -74,11 +59,26 @@ class RegisterFormState {
       editedFieldsAfterSubmit: editedFieldsAfterSubmit ?? this.editedFieldsAfterSubmit,
       isRegisterOk: isRegisterOk ?? this.isRegisterOk
     );
+
+  
+  @override
+  String toString() {
+    return '''
+      RegisterFormState
+        isPosting: $isPosting
+        isFormPosted: $isFormPosted
+        isValid: $isValid
+        name: $name
+        email: $email
+        password: $password
+        passwordConfirmation: $passwordConfirmation
+        isRegisterOk: $isRegisterOk
+    ''';
+  }
 }
 
 class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
-  final Function(String, String, String, String)
-      registerUserCallback; //esto seria el caso de uso para realizar la autenticacion
+  final Function(String, String, String, String) registerUserCallback; 
 
   RegisterFormNotifier({required this.registerUserCallback})
       : super(RegisterFormState());

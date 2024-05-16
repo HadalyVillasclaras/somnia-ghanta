@@ -72,105 +72,127 @@ class LoginForm extends ConsumerStatefulWidget {
 class _LoginFormState extends ConsumerState<LoginForm> {
     bool _obscureText = true;
     void  showSnackbar(BuildContext context, String message){
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content:   Text(message))
-    );
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content:   Text(message))
+      );
+    }
+
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    // Dont open keyboard automatically
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        FocusScope.of(context).requestFocus(FocusNode());
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final loginForm = ref.watch(loginFormProvider);
     final theme = Theme.of(context);
+    final loginForm = ref.watch(loginFormProvider);
 
     ref.listen(authProvider, ((previous, next) { 
-    if (next.errorMessage.isEmpty  ) return;
-
-    showSnackbar(context, next.errorMessage);
-
+      if (next.errorMessage.isEmpty  ) return;
+      showSnackbar(context, next.errorMessage);
     }));
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(height: widget.sizes.height * 0.05),
-        const Text(
-          'Iniciar Sesión',
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 40),
-        TextField(
-          keyboardType: TextInputType.emailAddress,
-          autofocus: true,
-          onChanged: (value) =>
-              ref.read(loginFormProvider.notifier).onEmailChange(value),
-          decoration: InputDecoration(
-            hintText: 'Correo electrónico',
-            prefixIcon: const Icon(Icons.email_outlined),
-            errorText:
-              loginForm.email.isNotValid && loginForm.isFormPosted
-                ? 'Email no válido'
-                : null,
-          ),
-        ),
-        const SizedBox(height: 20),
-        TextField(
-          obscureText: _obscureText,
-          onChanged: (value) =>
-              ref.read(loginFormProvider.notifier).onPasswordChange(value),
-          decoration: InputDecoration(
-              hintText: 'Contraseña',
-              prefixIcon: const Icon(Icons.lock_outline),
-              errorText:
-                  loginForm.password.isNotValid && loginForm.isFormPosted  
-                      ? 'Contraseña no válida'
-                      : null,
-              suffixIcon: IconButton(
-                  icon: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off),
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  })
-              ),
-        ),
-        const SizedBox(height: 40),
-        ElevatedButton(
-          onPressed: () {
-            ref.read(loginFormProvider.notifier).onFormSubmitted();
-            // Cerramos el teclado
-            FocusScope.of(context).unfocus();
-          },
-          style: ElevatedButton.styleFrom(
-            minimumSize: const Size(double.infinity, 50),
-          ),
-          child: loginForm.isPosting
-              ? const SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
-                )
-              : const Text('Iniciar Sesión')),
-        const SizedBox(height: 40),
-        Row(
+
+    return GestureDetector(
+       onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Form(
+        key: _formKey,
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('¿No tienes una cuenta?', style: TextStyle(color: theme.colorScheme.tertiary ),),
-            TextButton(
+            SizedBox(height: widget.sizes.height * 0.05),
+            const Text(
+              'Iniciar Sesión',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 40),
+            TextFormField(
+              keyboardType: TextInputType.emailAddress,
+              autofocus: false,
+              onChanged: (value) =>
+                  ref.read(loginFormProvider.notifier).onEmailChange(value),
+              decoration: InputDecoration(
+                hintText: 'Correo electrónico',
+                prefixIcon: const Icon(Icons.email_outlined),
+                errorText:
+                  loginForm.isFormPosted && 
+                  !loginForm.editedFieldsAfterSubmit.contains('email') 
+                    ? 'Email no válido'
+                    : null,
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextFormField(
+              obscureText: _obscureText,
+              autofocus: false,
+              onChanged: (value) =>
+                  ref.read(loginFormProvider.notifier).onPasswordChange(value),
+              decoration: InputDecoration(
+                  hintText: 'Contraseña',
+                  prefixIcon: const Icon(Icons.lock_outline),
+                  errorText:
+                      loginForm.isFormPosted  && !loginForm.editedFieldsAfterSubmit.contains('password')
+                          ? 'Contraseña no válida'
+                          : null,
+                  suffixIcon: IconButton(
+                      icon: Icon(
+                          _obscureText ? Icons.visibility : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      })
+                  ),
+            ),
+            const SizedBox(height: 40),
+            ElevatedButton(
               onPressed: () {
-                context.push('/register');
+                ref.read(loginFormProvider.notifier).onFormSubmitted();
+                // Cerramos el teclado
+                FocusScope.of(context).unfocus();
               },
-              child: const Text('Regístrate'),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 50),
+              ),
+              child: loginForm.isPosting
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Text('Iniciar Sesión')),
+            const SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('¿No tienes una cuenta?', style: TextStyle(color: theme.colorScheme.tertiary ),),
+                TextButton(
+                  onPressed: () {
+                    context.push('/register');
+                  },
+                  child: const Text('Regístrate'),
+                ),
+              ],
             ),
           ],
         ),
-      ],
+      ),
     );
   }
 }
