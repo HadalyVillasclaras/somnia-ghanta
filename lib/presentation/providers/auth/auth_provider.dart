@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/domain/_domain.dart';
@@ -46,45 +47,44 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final user = state.user;
       if (user == null) return false;
-      final isValidPass =  await authRepository.verifyPassword(user.email, password);
+      final isValidPass =
+          await authRepository.verifyPassword(user.email, password);
       return isValidPass;
     } on WrongCredentialsError {
-      state = state.copyWith(
-        errorMessage: 'El password no es válido.');
+      state = state.copyWith(errorMessage: 'El password no es válido.');
       return false;
     } catch (e) {
       return false;
     }
   }
 
-  Future<void> registerUser(String name, String email, String password, String passwordConfirmation) async {
+  Future<void> registerUser(String name, String email, String password,
+      String passwordConfirmation) async {
     try {
       final registerResponse = await authRepository.register(
           name, email, password, passwordConfirmation);
-      
+
       state = state.copyWith(
         authStatus: AuthStatus.unauthenticated,
         user: User(
-          id: registerResponse.id, 
-          name: registerResponse.name, 
-          email: registerResponse.email, 
-          role: registerResponse.role, 
-          status: Status.inactive,
-          token: registerResponse.authorization.token
-        ),
+            id: registerResponse.id,
+            name: registerResponse.name,
+            email: registerResponse.email,
+            role: registerResponse.role,
+            status: Status.inactive,
+            token: registerResponse.authorization.token),
         errorMessage: null,
       );
-
     } on WrongCredentialsError {
       state = state.copyWith(
-        authStatus: AuthStatus.unauthenticated,
-        user: null,
-        errorMessage: 'Credenciales incorrectas');
+          authStatus: AuthStatus.unauthenticated,
+          user: null,
+          errorMessage: 'Credenciales incorrectas');
     } on CustomError catch (e) {
       state = state.copyWith(
         authStatus: AuthStatus.unauthenticated,
         user: null,
-        errorMessage: e.message, 
+        errorMessage: e.message,
       );
     } catch (e) {
       state = state.copyWith(
@@ -122,7 +122,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
         await keyValueStorageService.removeKey('token');
       } catch (e) {
         debugPrint('Error setting audio source: $e');
-
       }
     }
 
@@ -141,9 +140,62 @@ class AuthNotifier extends StateNotifier<AuthState> {
     // await keyValueStorageService.setKeyValue<String>('user', jsonEncode(user.toJson()));
 
     state = state.copyWith(
-      authStatus: AuthStatus.authenticated,
-      user: user,
-      errorMessage: 'Bienvenido a Ghanta');
+        authStatus: AuthStatus.authenticated,
+        user: user,
+        errorMessage: 'Bienvenido a Ghanta');
+  }
+
+  Future<bool> updateUser (
+    int id, 
+    String name, 
+    String email, 
+    String password
+  ) async {
+    final String token =
+        await keyValueStorageService.getValue<String>('token') ?? '';
+
+    if (token.isNotEmpty) {
+      try {
+        final user = User(
+          id: id,
+          name: name,
+          email: email,
+          role: User.roleFromJson('ROLE_USER'),
+          status: User.statusFromJson('ACTIVE'),
+        );
+
+        final updateResponse =
+            await authRepository.updateUser(user, password, token);
+
+        state = state.copyWith(
+          user: User(
+            id: updateResponse.user.id,
+            name: updateResponse.user.name,
+            email: updateResponse.user.email,
+            role: updateResponse.user.role,
+            status: updateResponse.user.status,
+          ),
+          errorMessage: '',
+        );
+
+        return true;
+      } on DioException catch (e) {
+        String errorMessage =
+            'Se ha producido un error y la contraseña no ha podido ser modificada.';
+        if (e.response?.statusCode == 401 ||
+            e.response?.statusCode == 403 ||
+            e.response?.statusCode == 400) {
+          errorMessage = 'Ha habido un error con la autenticación';
+        }
+        state = state.copyWith(errorMessage: errorMessage);
+        return false;
+      } catch (e) {
+        state =
+            state.copyWith(errorMessage: 'Se ha producido un error. Por favor, inténtelo más tarde.');
+        return false;
+      }
+    }
+    return false;
   }
 }
 
@@ -156,14 +208,14 @@ class AuthState {
   final String errorMessage;
 
   AuthState(
-    {this.authStatus = AuthStatus.checking,
-    this.user,
-    this.errorMessage = ''});
+      {this.authStatus = AuthStatus.checking,
+      this.user,
+      this.errorMessage = ''});
 
-  AuthState copyWith({AuthStatus? authStatus, User? user, String? errorMessage}) =>
-    AuthState(
-      authStatus: authStatus ?? this.authStatus,
-      user: user ?? this.user,
-      errorMessage: errorMessage ?? this.errorMessage
-    );
+  AuthState copyWith(
+          {AuthStatus? authStatus, User? user, String? errorMessage}) =>
+      AuthState(
+          authStatus: authStatus ?? this.authStatus,
+          user: user ?? this.user,
+          errorMessage: errorMessage ?? this.errorMessage);
 }

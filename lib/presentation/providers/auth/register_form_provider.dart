@@ -96,6 +96,7 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
   onPasswordChanged(String value) {
     final newPassword = Password.dirty(value);
     final updatedFields = Set<String>.from(state.editedFieldsAfterSubmit)..add('password');
+    
     state = state.copyWith(
       password: newPassword,
       editedFieldsAfterSubmit: updatedFields,

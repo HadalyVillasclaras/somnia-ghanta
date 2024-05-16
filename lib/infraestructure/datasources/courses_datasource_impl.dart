@@ -50,45 +50,7 @@ class CoursesDatasourceImpl extends CoursesDatasource {
   }
 
   @override
-  Future<(List<Course>, String)> getUserCourses(String userToken) async {
-    try {
-      final token =
-          await KeyValueStorageServiceImpl().getValue<String>('token') ?? '';
-      final response = await ApiConfig.dio.get('/users/6/enrolledCourses',
-          options: Options(headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer $token',
-          }));
-
-      final enrolledCourses = response.data['data'];
-      enrolledCourses.forEach((course) {
-        // print(course['id']);
-      });
-
-      // List<dynamic> coursesList = await Future.wait(
-      //   enrolledCourses.map((course) async => await getCourse(course['id'].toString())).toList(),
-      // );
-
-
-      final courses = List<CourseApiModel>.from(
-          response.data['data'].map((x) => CourseApiModel.fromJson(x)));
-          
-      return (
-        courses.map((e) => CoursesMapper.coursesApiModelToEntity(e)).toList(),
-        response.statusMessage!
-      );
-    } on DioException catch (e) {
-      if (e.response!.statusCode == 404) {
-        throw NetworkError();
-      } else {
-        rethrow;
-      }
-    }
-  }
-
-
-  @override
-  Future<List<Course>> getNewUserCourses(int userId, String userToken) async {
+  Future<List<Course>> getUserCourses(int userId, String userToken) async {
     try {
       final token =
           await KeyValueStorageServiceImpl().getValue<String>('token') ?? '';

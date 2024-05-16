@@ -17,7 +17,6 @@ class AuthScreen extends ConsumerWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FlutterNativeSplash.remove();
       if (authStatus == AuthStatus.authenticated) {
-        // ref.watch(coursesStateProvider.notifier).getUserCourses();
         final courses = ref.watch(getCoursesProvider);
         courses.whenData((courses) {
           // FlutterNativeSplash.remove();

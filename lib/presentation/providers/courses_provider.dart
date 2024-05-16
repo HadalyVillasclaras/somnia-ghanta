@@ -10,7 +10,7 @@ final getCoursesProvider = FutureProvider<List<Course>>((ref) async {
   final userId = authState.user!.id;
   final userToken = authState.user?.token; 
   await Future.delayed(const Duration(seconds: 2));
-  final courses = await coursesRepository.getNewUserCourses(userId, userToken!);
+  final courses = await coursesRepository.getUserCourses(userId, userToken!);
   
    return courses;
 });
@@ -40,7 +40,7 @@ class CoursesNotifier extends StateNotifier<CoursesState> {
   Future<void> getUserCourses() async {
     state = state.copyWith(status: CoursesStatus.loading);
       try {
-        final courses = await _coursesDatasource.getNewUserCourses(userId, userToken);
+        final courses = await _coursesDatasource.getUserCourses(userId, userToken);
         state = state.copyWith(status: CoursesStatus.success, courses: courses);
       } catch (e) {
         state = state.copyWith(status: CoursesStatus.error);

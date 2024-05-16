@@ -16,6 +16,7 @@ class SettingsViewAccount extends ConsumerWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(height: 80),
         const Divider(height: 0.0),
@@ -40,17 +41,14 @@ class SettingsViewAccount extends ConsumerWidget {
             showModalBottomSheet(
               context: context,
               isScrollControlled: true, // Allows the sheet to take up the full screen height if needed
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(40.0)),
-              ),
               builder: (BuildContext context) {
-                return FractionallySizedBox(
-                  heightFactor: 0.8, 
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: ChangePasswordForm(sizes: sizes),
-                  ),
-                );
+                 return ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(40.0)),
+              child: FractionallySizedBox(
+                heightFactor: 0.8,
+                child: ChangePasswordForm(sizes: sizes),
+              ),
+            );
               },
             );
           },

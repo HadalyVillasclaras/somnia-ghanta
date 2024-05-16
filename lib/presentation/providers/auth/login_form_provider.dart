@@ -69,6 +69,7 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
   onPasswordChange(String password) {
     final newPassword = Password.dirty(password);
     final updatedFields = Set<String>.from(state.editedFieldsAfterSubmit)..add('password');
+    
     state = state.copyWith(
         password: newPassword,
         editedFieldsAfterSubmit: updatedFields,

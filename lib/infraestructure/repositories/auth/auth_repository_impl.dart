@@ -1,7 +1,7 @@
 import 'package:ghanta/domain/_domain.dart';
 import 'package:ghanta/domain/datasources/auth/auth_datasource.dart';
 import 'package:ghanta/domain/entities/user.dart';
-import 'package:ghanta/infraestructure/models/responses/register_api_response.dart';
+import 'package:ghanta/infraestructure/models/responses/_responses.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final AuthDatasource _authDatasource;
@@ -26,6 +26,11 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<void> logout(String token) {
     return _authDatasource.logout(token);
+  }
+
+  @override
+  Future<UserApiResponse> updateUser(User user, String password, String token) {
+    return _authDatasource.updateUser(user, password, token);
   }
 
   @override

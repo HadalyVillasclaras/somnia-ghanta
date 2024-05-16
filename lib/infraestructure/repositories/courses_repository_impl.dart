@@ -17,14 +17,7 @@ class CoursesRepositoryImpl extends CoursesRepository {
   }
 
   @override
-  Future<(List<Course>, String)> getUserCourses(String userToken) {
-    return _datasource.getUserCourses(userToken);
+  Future<List<Course>> getUserCourses(int userId, String userToken) {
+    return _datasource.getUserCourses(userId, userToken);
   }
-  
-
-    @override
-  Future<List<Course>> getNewUserCourses(int userId, String userToken) {
-    return _datasource.getNewUserCourses(userId, userToken);
-  }
-
 }

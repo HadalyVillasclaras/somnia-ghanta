@@ -1,7 +1,5 @@
-
-
 import 'package:ghanta/domain/entities/user.dart';
-import 'package:ghanta/infraestructure/models/responses/register_api_response.dart';
+import 'package:ghanta/infraestructure/models/responses/_responses.dart';
 
 abstract class AuthDatasource {
 
@@ -16,6 +14,8 @@ abstract class AuthDatasource {
   Future<User> getUser();
 
   Future<void> logout(String token);
+
+  Future<UserApiResponse> updateUser(User user, String password, String token);
 
   Future<bool> verifyPassword(String email, String password);
 }

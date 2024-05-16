@@ -64,7 +64,6 @@ class FeedbackDatasourceImpl extends FeedbackDatasource {
           ));
 
         final feedbackResponse = AddFeedbackApiResponse.fromJson(response.data);
-
         return feedbackResponse;
       } catch (e) {
         if (e is DioException) {
@@ -76,11 +75,3 @@ class FeedbackDatasourceImpl extends FeedbackDatasource {
     }
   }
 }
-
-// 400 Data: {data: null, status: false, 
-////message: Feedback not created, user already made feedback in this activity, code: 400, errors: null}
-
-
-//401
-// {data: null, status: false, code: 401, 
-////message: Unauthenticated., developer_message: Unauthenticated.}

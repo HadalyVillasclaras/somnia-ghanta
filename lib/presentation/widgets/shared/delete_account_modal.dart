@@ -95,12 +95,37 @@ class EnterPasswordModal extends ConsumerStatefulWidget {
 
 class _EnterPasswordModalState extends ConsumerState<EnterPasswordModal> {
   bool _obscureText = true;
+   final _passwordController = TextEditingController();
+  String _localErrorMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordController.addListener(_clearLocalErrorMessage);
+  }
+
+  @override
+  void dispose() {
+    _passwordController.removeListener(_clearLocalErrorMessage);
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _clearLocalErrorMessage() {
+    if (_localErrorMessage.isNotEmpty) {
+      setState(() {
+        _localErrorMessage = '';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final changePassState = ref.watch(changePasswordProvider);
     final changePassNotifier = ref.watch(changePasswordProvider.notifier);
 
+    final authState = ref.watch(authProvider);
+    final authNotifier = ref.watch(authProvider.notifier);
 
     return Dialog(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -131,8 +156,8 @@ class _EnterPasswordModalState extends ConsumerState<EnterPasswordModal> {
               ),
             ),
             TextField(
+              controller: _passwordController,
               obscureText: _obscureText,
-              onChanged: (value) {changePassNotifier.onCurrentPasswordChange(value);},
               decoration: InputDecoration(
                 hintText: 'Contraseña',
                 prefixIcon: const Icon(Icons.lock_outline),
@@ -144,9 +169,9 @@ class _EnterPasswordModalState extends ConsumerState<EnterPasswordModal> {
                     _obscureText = !_obscureText;
                   });
                 }),
-                errorText: (!changePassState.isPosting && changePassState.isFormPosted && !changePassState.editedFieldsAfterSubmit.contains('currentPassword') && !changePassState.isCurrentPassValid)
-                  ? 'La contraseña no es correcta.'
-                  : null,
+              errorText: _localErrorMessage.isNotEmpty
+                ? 'La contraseña no es correcta.'
+                : null,
               ),
                   
             ),
@@ -161,13 +186,17 @@ class _EnterPasswordModalState extends ConsumerState<EnterPasswordModal> {
                       backgroundColor: Theme.of(context).colorScheme.surface,
                       foregroundColor: Theme.of(context).colorScheme.primary,
                     ),
-                    onPressed: () {
-                      ref.read(changePasswordProvider.notifier).onFormSubmit((isValidPass) {
-                        if (isValidPass) {
-                          ref.read(authProvider.notifier).logout();
-                          Future.microtask(() => context.go('/login'));
-                        }
-                      });
+                    onPressed: () async{
+                      final isValidPass = await authNotifier.verifyPassword(_passwordController.text);
+
+                      if (isValidPass) {
+                        ref.read(authProvider.notifier).logout();
+                        Future.microtask(() => context.go('/login'));
+                      } else {
+                         setState(() {
+                          _localErrorMessage = 'La contraseña no es correcta.';
+                        });
+                      }
                     },
                     child: changePassState.isPosting
                       ? const SizedBox(

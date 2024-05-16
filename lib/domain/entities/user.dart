@@ -9,8 +9,6 @@ enum Status {
   inactive,
 }
 
-//Role from json
-
 class User {
   final int id;
   final String name;
@@ -58,6 +56,30 @@ class User {
         return Status.inactive;
       default:
         return Status.inactive;
+    }
+  }
+
+    static String roleToApiString(Role role) {
+    switch (role) {
+      case Role.roleAdmin:
+        return 'ROLE_ADMIN';
+      case Role.roleUser:
+        return 'ROLE_USER';
+      case Role.roleCourseManager:
+        return 'ROLE_COURSE_MANAGER';
+      default:
+        throw Exception('Unknown role');
+    }
+  }
+
+  static String statusToApiString(Status status) {
+    switch (status) {
+      case Status.active:
+        return 'ACTIVE';
+      case Status.inactive:
+        return 'INACTIVE';
+      default:
+        throw Exception('Unknown status');
     }
   }
 }
