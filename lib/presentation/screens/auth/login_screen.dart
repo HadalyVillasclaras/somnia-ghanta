@@ -130,7 +130,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                 prefixIcon: const Icon(Icons.email_outlined),
                 errorText:
                   loginForm.isFormPosted && 
-                  !loginForm.editedFieldsAfterSubmit.contains('email') 
+                  !loginForm.editedFieldsAfterSubmit.contains('email') && loginForm.wasFormSubmitted
                     ? 'Email no válido'
                     : null,
               ),
@@ -145,7 +145,8 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                   hintText: 'Contraseña',
                   prefixIcon: const Icon(Icons.lock_outline),
                   errorText:
-                      loginForm.isFormPosted  && !loginForm.editedFieldsAfterSubmit.contains('password')
+                      loginForm.isFormPosted  && !loginForm.editedFieldsAfterSubmit.contains('password') 
+                      && loginForm.wasFormSubmitted
                           ? 'Contraseña no válida'
                           : null,
                   suffixIcon: IconButton(

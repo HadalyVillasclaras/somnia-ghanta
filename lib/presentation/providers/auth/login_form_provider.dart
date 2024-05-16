@@ -17,7 +17,7 @@ class LoginFormState {
   final Email email;
   final Password password;
   final Set<String> editedFieldsAfterSubmit;
-  final bool isRegisterOk;
+  final bool wasFormSubmitted;
 
   LoginFormState({
     this.isPosting = false,
@@ -26,7 +26,7 @@ class LoginFormState {
     this.email = const Email.pure(),
     this.password = const Password.pure(),
     this.editedFieldsAfterSubmit = const <String>{},
-    this.isRegisterOk = false    
+    this.wasFormSubmitted = false    
   });
 
   LoginFormState copyWith({
@@ -36,7 +36,7 @@ class LoginFormState {
     Email? email,
     Password? password,
     Set<String>? editedFieldsAfterSubmit,
-    bool? isRegisterOk
+    bool? wasFormSubmitted
   }) =>
     LoginFormState(
       isPosting: isPosting ?? this.isPosting,
@@ -45,7 +45,7 @@ class LoginFormState {
       email: email ?? this.email,
       password: password ?? this.password,
       editedFieldsAfterSubmit: editedFieldsAfterSubmit ?? this.editedFieldsAfterSubmit,
-      isRegisterOk: isRegisterOk ?? this.isRegisterOk    
+      wasFormSubmitted: wasFormSubmitted ?? this.wasFormSubmitted    
     );
 
  
@@ -84,10 +84,15 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
     await Future.delayed(const Duration(
         milliseconds: 1000)); //ralentizamos para que salga el spinner
 
-    loginCallback(state.email.value, state.password.value);
+     final loginSuccess = await loginCallback(state.email.value, state.password.value);
 
-    state = state.copyWith(isPosting: false);
-    state = state.copyWith(isFormPosted: true);
+    if (loginSuccess) {
+      // Reset state after successful login
+      state = LoginFormState();
+    } else {
+      state = state.copyWith(isPosting: false, isFormPosted: true, wasFormSubmitted: true);
+    }
+
   }
 
   _touchEveryField() {
@@ -101,7 +106,6 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
       password: password,
       isFormValid: Formz.validate([email, password]),
       editedFieldsAfterSubmit: <String>{},
-      isRegisterOk: false  
       );
   }
 }
