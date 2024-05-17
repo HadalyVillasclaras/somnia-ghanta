@@ -28,17 +28,6 @@ class _HomeViewConfigState extends State<HomeViewConfig> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // TextButton.icon(
-          //   onPressed: () {
-          //     Navigator.pop(context);
-          //   },
-          //   icon: const Icon(
-          //     Icons.arrow_back_ios,
-          //     color: Colors.grey,
-          //     size: 15,
-          //   ),
-          //   label: const Text('Volver', style: TextStyle(color: Colors.grey)),
-          // ),
           Expanded(
             child: IndexedStack(
               index: _selectedIndex,
@@ -49,11 +38,11 @@ class _HomeViewConfigState extends State<HomeViewConfig> {
                   child: const SettingsViewAccount(),
                   onBack: () => _changeIndex(0),
                 ),
-                SettingOptionWrapper(
-                  title: 'Idioma',
-                  child: const SettingsViewLanguage(),
-                  onBack: () => _changeIndex(0),
-                ),
+                // SettingOptionWrapper(
+                //   title: 'Idioma',
+                //   child: const SettingsViewLanguage(),
+                //   onBack: () => _changeIndex(0),
+                // ),
                 SettingOptionWrapper(
                   title: 'Privacidad',
                   child: const SettingsViewPrivacy(),
@@ -143,18 +132,18 @@ class ConfigOptions extends StatelessWidget {
         },
       ),
       const Divider(),
-      ListTile(
-        leading: const Icon(Icons.language),
-        title: const Text('Idioma'),
-        trailing: const Icon(
-          Icons.arrow_forward_ios,
-          size: 15,
-        ),
-        onTap: () {
-          onTap(2);
-        },
-      ),
-      const Divider(),
+      // ListTile(
+      //   leading: const Icon(Icons.language),
+      //   title: const Text('Idioma'),
+      //   trailing: const Icon(
+      //     Icons.arrow_forward_ios,
+      //     size: 15,
+      //   ),
+      //   onTap: () {
+      //     onTap(2);
+      //   },
+      // ),
+      // const Divider(),
       ListTile(
         leading: const Icon(Icons.lock),
         title: const Text('Privacidad'),
@@ -163,7 +152,7 @@ class ConfigOptions extends StatelessWidget {
           size: 15,
         ),
         onTap: () {
-          onTap(3);
+          onTap(2);
         },
       ),
       const Divider(),
@@ -175,7 +164,7 @@ class ConfigOptions extends StatelessWidget {
           size: 15,
         ),
         onTap: () {
-          onTap(4);
+          onTap(3);
         },
       ),
       const Divider(),
