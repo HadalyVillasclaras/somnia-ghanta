@@ -122,9 +122,8 @@ class _EnterPasswordModalState extends ConsumerState<EnterPasswordModal> {
   @override
   Widget build(BuildContext context) {
     final changePassState = ref.watch(changePasswordProvider);
-    final changePassNotifier = ref.watch(changePasswordProvider.notifier);
 
-    final authState = ref.watch(authProvider);
+    // final authState = ref.watch(authProvider);
     final authNotifier = ref.watch(authProvider.notifier);
 
     return Dialog(

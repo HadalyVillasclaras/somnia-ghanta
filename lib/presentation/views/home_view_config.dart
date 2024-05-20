@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ghanta/presentation/views/settings/account/settings_view_account.dart';
 import 'package:ghanta/presentation/views/settings/settings_view_help.dart';
 import 'package:ghanta/presentation/views/settings/setting_option_wrapper.dart';
-import 'package:ghanta/presentation/views/settings/settings_view_language.dart';
+// import 'package:ghanta/presentation/views/settings/settings_view_language.dart';
 import 'package:ghanta/presentation/views/settings/settings_view_privacy.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
 

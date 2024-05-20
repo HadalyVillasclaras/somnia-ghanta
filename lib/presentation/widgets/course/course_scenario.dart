@@ -83,8 +83,8 @@ class CourseScenarioHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Título de fase: ${phase.getTitle(lang: Lang.getDeviceLang(context))}', style: textTheme.headlineSmall!),
-              Text('Fase nº ${currentPhase + 1}', style: textTheme.bodyMedium!),
+              Text(phase.getTitle(lang: Lang.getDeviceLang(context)), style: textTheme.headlineSmall!),
+              Text('Fase ${currentPhase + 1}', style: textTheme.bodyMedium!),
             ],
           ),
         ),

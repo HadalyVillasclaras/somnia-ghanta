@@ -152,7 +152,6 @@
 				C77B72441379701A855C3A72 /* Pods-RunnerTests.release.xcconfig */,
 				62BDBA258C159A5B1C121440 /* Pods-RunnerTests.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -474,6 +473,22 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"assets_audio_player\"",
+					"-framework",
+					"\"assets_audio_player_web\"",
+					"-framework",
+					"\"audioplayers_darwin\"",
+					"-framework",
+					"\"path_provider_foundation\"",
+					"-framework",
+					"\"record\"",
+					"-framework",
+					"\"shared_preferences_foundation\"",
+					"-lc++",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.ghanta;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -652,6 +667,22 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"assets_audio_player\"",
+					"-framework",
+					"\"assets_audio_player_web\"",
+					"-framework",
+					"\"audioplayers_darwin\"",
+					"-framework",
+					"\"path_provider_foundation\"",
+					"-framework",
+					"\"record\"",
+					"-framework",
+					"\"shared_preferences_foundation\"",
+					"-lc++",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.ghanta;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -673,6 +704,22 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"assets_audio_player\"",
+					"-framework",
+					"\"assets_audio_player_web\"",
+					"-framework",
+					"\"audioplayers_darwin\"",
+					"-framework",
+					"\"path_provider_foundation\"",
+					"-framework",
+					"\"record\"",
+					"-framework",
+					"\"shared_preferences_foundation\"",
+					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.ghanta;
 				PRODUCT_NAME = "$(TARGET_NAME)";
