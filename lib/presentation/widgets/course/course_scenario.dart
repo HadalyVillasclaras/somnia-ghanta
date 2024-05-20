@@ -6,18 +6,47 @@ import 'package:ghanta/presentation/providers/courses_provider.dart';
 import 'package:ghanta/presentation/screens/_presentation.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
 
-class CourseScenario extends ConsumerWidget {
-  const CourseScenario({
-    super.key,
-    required this.courseId,
-  });
+
+class CourseScenario extends ConsumerStatefulWidget {
+  const CourseScenario({super.key, required this.courseId});
 
   final int courseId;
 
   @override
-  Widget build(BuildContext context, ref) {
+  CourseScenarioState createState() => CourseScenarioState();
+}
+
+
+class CourseScenarioState extends ConsumerState<CourseScenario> {
+  late final PageController _pageController;
+  int _currentPhaseIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    _pageController.addListener(() {
+      int newCurrentPhase = _pageController.page!.round();
+      if (_currentPhaseIndex != newCurrentPhase) {
+        setState(() {
+          _currentPhaseIndex = newCurrentPhase;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
     final coursesNotifier = ref.watch(coursesStateProvider.notifier);
-    final currentCourse = coursesNotifier.getCourseById(courseId);
+    final currentCourse = coursesNotifier.getCourseById(widget.courseId);
 
     final currentPhase = currentCourse.currentPhase! - 1; //-1 para buscar en arrays
     final List<Phase> phases = currentCourse.phases;
@@ -26,24 +55,63 @@ class CourseScenario extends ConsumerWidget {
     return SafeArea(
       bottom: false,
       child: Container(
-        decoration:  const BoxDecoration(
+          decoration:  const BoxDecoration(
           color:  Color.fromARGB(255, 125, 228, 223),
           image:  DecorationImage(
             image: AssetImage('assets/course/fondo.png'),
             fit: BoxFit.cover,
           ),
         ),
+
         child: Stack(
           children: [
             FadeInAnimation(
-              child: PhaseMap(currentPhase: currentPhase, phases: phases)
+              child: PhaseMap(
+                currentPhase: _currentPhaseIndex,
+                phases: phases,
+                pageController: _pageController,
+              )
             ),
-            CourseScenarioHeader(phase: phase, currentPhase: currentPhase),
+            CourseScenarioHeader(
+              phase: phases[_currentPhaseIndex],
+              currentPhase: _currentPhaseIndex,
+            ),
           ],
         ),
       ),
     );
     }
+}
+
+class PhaseMap extends StatelessWidget {
+  const PhaseMap({
+    super.key,
+    required this.currentPhase,
+    required this.phases,
+    required this.pageController,
+  });
+
+  final int currentPhase;
+  final List<Phase> phases;
+  final PageController pageController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: PageView(
+            controller: pageController,
+            scrollDirection: Axis.vertical,
+            children: [
+              for (var i = 0; i < phases.length; i++)
+                PhaseMapView(phase: phases[i])
+            ]
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class CourseScenarioHeader extends StatelessWidget {
@@ -89,36 +157,6 @@ class CourseScenarioHeader extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class PhaseMap extends StatelessWidget {
-  const PhaseMap({
-    super.key,
-    required this.currentPhase,
-    required this.phases,
-  });
-
-  final int currentPhase;
-  final List<Phase> phases;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: PageView(
-            scrollDirection: Axis.vertical,
-            controller: PageController(initialPage: currentPhase),
-            children: [
-              // Por cada fase mostramos un container. falta el title 
-              for (var i = 0; i < phases.length; i++) 
-                PhaseMapView(phase: phases[i])
-            ]
-          ),
-        ),
-      ],
     );
   }
 }
