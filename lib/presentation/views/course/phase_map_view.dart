@@ -221,7 +221,7 @@ class CourseScenarioHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(currentPhase.titleEs, style: textTheme.headlineSmall!),
-              Text('Fase: ${currentPhase.order}', style: textTheme.bodyMedium!),
+              Text('Fase ${currentPhase.order}', style: textTheme.bodyMedium!),
             ],
           ),
         ),
