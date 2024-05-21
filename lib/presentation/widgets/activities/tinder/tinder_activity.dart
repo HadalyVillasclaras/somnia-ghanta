@@ -24,14 +24,14 @@ class _TinderActivityState extends State<TinderActivity> {
         if (details.delta.dx > 0) {
           if (widget.pageController.page! > 0) {
             widget.pageController.previousPage(
-              duration: Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 200),
               curve: Curves.easeIn,
             );
           }
         } else if (details.delta.dx < 0) {
           if (widget.pageController.page! < 1) {
             widget.pageController.nextPage(
-              duration: Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 200),
               curve: Curves.easeIn,
             );
           }

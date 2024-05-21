@@ -7,7 +7,6 @@ import 'package:ghanta/domain/entities/subphase.dart';
 import 'package:ghanta/presentation/providers/ui_provider.dart';
 import 'package:ghanta/presentation/widgets/_widgets.dart';
 import 'package:super_tooltip/super_tooltip.dart';
-import 'package:ghanta/infraestructure/_infraestructure.dart';
 
 class PhaseMapView extends ConsumerStatefulWidget {
   const PhaseMapView({
@@ -62,6 +61,7 @@ class _PhaseMapViewState extends ConsumerState<PhaseMapView> {
         final GlobalKey key = keys[i];
         final RenderBox box =
             key.currentContext?.findRenderObject() as RenderBox;
+        // ignore: unnecessary_null_comparison
         if (box != null) {
           final subphase = widget.subphases[i];
           hasBeenLogged[i] = true;
