@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ghanta/domain/entities/phase.dart';
+import 'package:ghanta/domain/entities/subphase.dart';
 import 'package:ghanta/infraestructure/_infraestructure.dart';
 import 'package:ghanta/presentation/providers/courses_provider.dart';
 import 'package:ghanta/presentation/screens/_presentation.dart';
@@ -52,6 +53,8 @@ class CourseScenarioState extends ConsumerState<CourseScenario> {
     final List<Phase> phases = currentCourse.phases;
     final phase = phases[currentPhase];
 
+    List<Subphase> allSubphases = phases.expand((phase) => phase.subphases).toList();
+
     return SafeArea(
       bottom: false,
       child: Container(
@@ -63,56 +66,39 @@ class CourseScenarioState extends ConsumerState<CourseScenario> {
           ),
         ),
 
-        child: Stack(
-          children: [
-            FadeInAnimation(
-              child: PhaseMap(
-                currentPhase: _currentPhaseIndex,
-                phases: phases,
-                pageController: _pageController,
-              )
-            ),
-            CourseScenarioHeader(
-              phase: phases[_currentPhaseIndex],
-              currentPhase: _currentPhaseIndex,
-            ),
-          ],
+        child: FadeInAnimation(
+          child: PhaseMapView(subphases: allSubphases, currentCourse: currentCourse,)
         ),
       ),
+      // CourseScenarioHeader(
+            //   phase: phases[_currentPhaseIndex],
+            //   currentPhase: _currentPhaseIndex,
+            // ),
     );
     }
 }
 
-class PhaseMap extends StatelessWidget {
-  const PhaseMap({
-    super.key,
-    required this.currentPhase,
-    required this.phases,
-    required this.pageController,
-  });
+// class PhaseMap extends StatelessWidget {
+//   const PhaseMap({
+//     super.key,
+//     required this.currentPhase,
+//     required this.phases,
+//     required this.pageController,
+//   });
 
-  final int currentPhase;
-  final List<Phase> phases;
-  final PageController pageController;
+//   final int currentPhase;
+//   final List<Phase> phases;
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: PageView(
-            controller: pageController,
-            scrollDirection: Axis.vertical,
-            children: [
-              for (var i = 0; i < phases.length; i++)
-                PhaseMapView(phase: phases[i])
-            ]
-          ),
-        ),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     List<Subphase> allSubphases = phases.expand((phase) => phase.subphases).toList();
+//     return Column(
+//       children: [
+//         PhaseMapView(subphases: allSubphases),
+//       ],
+//     );
+//   }
+// }
 
 class CourseScenarioHeader extends StatelessWidget {
   const CourseScenarioHeader({

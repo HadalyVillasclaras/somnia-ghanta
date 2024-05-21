@@ -15,7 +15,7 @@ class PhaseMapper {
       subphases: phaseApiModel.subphases == null
           ? []
           : phaseApiModel.subphases!
-              .map((subphase) => SubphaseMapper.subphaseApiModelToEntity(subphase))
+              .map((subphase) => SubphaseMapper.subphaseApiModelToEntity(subphase, phaseApiModel.courseId))
               .toList()
     );
 }

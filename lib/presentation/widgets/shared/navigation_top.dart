@@ -27,7 +27,7 @@ class NavigationTop extends ConsumerWidget implements PreferredSizeWidget {
       ),
       title: InkWell(
         onTap: () {
-          context.go('/course/4'); 
+          context.go('/course/${currentCourse.id}'); 
         },
         child: Image.asset(
           'assets/images/logo-ghanta.png',

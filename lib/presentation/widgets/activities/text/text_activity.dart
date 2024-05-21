@@ -15,7 +15,7 @@ class TextActivity extends StatelessWidget {
 
  List<Widget> _createTextBlocks(String text) {
     List<Widget> blocks = [];
-    int blockSize = 190;
+    int blockSize = 210;
     for (int i = 0; i < text.length; i += blockSize) {
       String textChunk = text.substring(i, i + blockSize > text.length ? text.length : i + blockSize);
       bool isLastBlock = i + blockSize >= text.length;

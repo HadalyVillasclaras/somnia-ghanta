@@ -3,12 +3,13 @@ import 'package:ghanta/infraestructure/mappers/activity_mapper.dart';
 import 'package:ghanta/infraestructure/models/api_models/subphase_api.dart';
 
 class SubphaseMapper {
-  static Subphase subphaseApiModelToEntity(SubphaseApiModel subphaseApiModel) =>
+  static Subphase subphaseApiModelToEntity(SubphaseApiModel subphaseApiModel, [int? courseId]) =>
       Subphase(
           id: subphaseApiModel.id,
           titleEs: subphaseApiModel.titleEs,
           titleCa: subphaseApiModel.titleCa,
           estimatedTime: int.parse(subphaseApiModel.estimatedTime),
+          courseId: courseId,
           phaseId: subphaseApiModel.phaseId,
           order: subphaseApiModel.order,
           subphaseTypologyId: subphaseApiModel.subphaseTyplogyId,

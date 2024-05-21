@@ -8,6 +8,7 @@ class SubphaseApiModel {
     final String estimatedTime;
     final int order;
     final int phaseId;
+    final int? courseId;
     final PhaseApiModel? phase;
     final String subphaseTypologyTitleEs;
     final String subphaseTypologyTitleCa;
@@ -24,6 +25,7 @@ class SubphaseApiModel {
         required this.estimatedTime,
         required this.order,
         required this.phaseId,
+        this.courseId,
         required this.phase,
         required this.subphaseTypologyTitleEs,
         required this.subphaseTypologyTitleCa,
@@ -34,12 +36,13 @@ class SubphaseApiModel {
         required this.activities,
     });
 
-    factory SubphaseApiModel.fromJson(Map<String, dynamic> json) => SubphaseApiModel(
+    factory SubphaseApiModel.fromJson(Map<String, dynamic> json,  [int? courseId]) => SubphaseApiModel(
         id: json["id"],
         titleEs: json["title_es"],
         titleCa: json["title_ca"],
         estimatedTime: json["estimated_time"],
         order: json["order"],
+        courseId: courseId,
         phaseId: json["phase_id"],
         phase: json["phase"] == null ? null : PhaseApiModel.fromJson(json["phase"]),
         subphaseTypologyTitleEs: json["subphase_typology_title_es"] ?? "",

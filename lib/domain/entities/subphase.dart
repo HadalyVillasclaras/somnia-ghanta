@@ -8,6 +8,7 @@ class Subphase {
   final String titleCa;
   final int estimatedTime;
   final int phaseId;
+  final int? courseId;
   final int order;
   final int subphaseTypologyId;
   final SubphaseType type;
@@ -19,6 +20,7 @@ class Subphase {
     required this.titleCa,
     required this.estimatedTime,
     required this.phaseId,
+    this.courseId,
     required this.order,
     required this.subphaseTypologyId,
     required this.type,
@@ -28,7 +30,7 @@ class Subphase {
 @override
   String toString() {
     return 'Subphase(id: $id, titleEs: $titleEs, titleCa: $titleCa, estimatedTime: $estimatedTime, '
-           'phaseId: $phaseId, order: $order, subphaseTypologyId: $subphaseTypologyId, '
+           'phaseId: $phaseId, courseId: $courseId, order: $order, subphaseTypologyId: $subphaseTypologyId, '
            'type: $type, activities: ${activities.map((a) => a.toString()).join(', ')})';
   }
 

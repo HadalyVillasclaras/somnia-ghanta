@@ -60,7 +60,7 @@ class PhaseApiModel {
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         order: json["order"],
-        subphases: json["subphases"] == null ? [] : List<SubphaseApiModel>.from(json["subphases"].map((x) => SubphaseApiModel.fromJson(x))),
+        subphases: json["subphases"] == null ? [] : List<SubphaseApiModel>.from(json["subphases"].map((subphase) => SubphaseApiModel.fromJson(subphase))),
     );
 
 }
